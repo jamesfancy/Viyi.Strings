@@ -1,117 +1,77 @@
-﻿using System.Collections.Generic;
+using System.IO;
+using Viyi.Strings.Codec.Abstract;
+using Viyi.Strings.Codec.Io;
 
 namespace Viyi.Strings.Codec
 {
     public partial class Base64Codec
     {
-        sealed class Encoder
+        sealed class Encoder : TextEncoder
         {
-            const int bufferSize = 3;
-            readonly ICharWriter writer;
-            readonly byte[] buffer = new byte[bufferSize];
-            int bufferIndex;
+            static readonly char[] Base64Chars = {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+                'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', '='
+            };
 
-            internal Encoder(ICharWriter writer)
-            {
-                this.writer = writer;
-            }
+            public Encoder(Options.CodecOptions options) : base(options) { }
 
-            internal void Encode(IEnumerable<byte[]> data)
+            protected override void Encode(ICodecTextWriter writer, Stream input)
             {
-                foreach (var segment in data)
+                byte[] buffer = new byte[3];
+                char[] chars = new char[4];
+
+                int readCount;
+                while ((readCount = input.Read(buffer, 0, 3)) == 3)
                 {
-                    Encode(segment);
+                    int combo = buffer[0] << 16 | buffer[1] << 8 | buffer[2];
+                    chars[0] = Base64Chars[combo >> 18];
+                    chars[1] = Base64Chars[combo >> 12 & 0x3f];
+                    chars[2] = Base64Chars[combo >> 6 & 0x3f];
+                    chars[3] = Base64Chars[combo & 0x3f];
+                    writer.Write(chars);
                 }
 
-                // 如果 bufferIndex 大于 0（必定小于 3），需要收尾
-                switch (bufferIndex)
-                {
-                    case 1:
-                        EncodeLast(buffer[0]);
-                        break;
-                    case 2:
-                        EncodeLast(buffer[0], buffer[1]);
-                        break;
-                }
-            }
+                writeRest();
 
-            void Encode(byte[] segment)
-            {
-                if (segment == null || segment.Length == 0)
+                void writeRest()
                 {
-                    return;
-                }
-
-                // i 指示在 segment 中的位置，贯穿始终
-                int i = 0;
-
-                // 如果上个 segment 没处理完，bufferIndex 表示上次剩下的字节数
-                // 这里需要先将 buffer 填满
-                if (bufferIndex > 0)
-                {
-                    while (bufferIndex < bufferSize && i < segment.Length)
+                    switch (readCount)
                     {
-                        buffer[bufferIndex++] = segment[i++];
+                        case 2:
+                            encodeLast2(chars, buffer[0], buffer[1]);
+                            // should write later
+                            break;
+                        case 1:
+                            encodeLast1(chars, buffer[0]);
+                            // should writer later
+                            break;
+                        default:
+                            // All done. Does not need writing.
+                            return;
                     }
 
-                    // 如果 segment 太小，仍然没把上个 segment 留下的 buffer 填满，
-                    // 只好等下一个 segment 来接着填
-                    if (bufferIndex < bufferSize)
-                    {
-                        return;
-                    }
-
-                    // 填满了 buffer，Encode 处理掉，再将 bufferIndex 标记为 0，表示当前无 buffer
-                    EncodeMiddle(buffer);
-                    bufferIndex = 0;
+                    writer.Write(chars, 0, readCount);
                 }
 
-                // 因为每次都是处理 3 个字节，所以最后一个起始位置一定是至少比字节组长度少 3
-                int lastStart = segment.Length - bufferSize;
-                for (; i <= lastStart; i += bufferSize)
+                void encodeLast2(char[] chars, byte b1, byte b2)
                 {
-                    EncodeMiddle(segment, i);
+                    int combo = b1 << 8 | b2;
+                    chars[0] = Base64Chars[combo >> 10];
+                    chars[1] = Base64Chars[combo >> 4 & 0x3f];
+                    chars[2] = Base64Chars[combo << 2 & 0x3f];
+                    chars[3] = Base64Chars[64];
                 }
 
-                // 如果 i 没达到 segment.Length，说明还有不足 3 个字节需要处理
-                // 存入 buffer 中
-                for (; i < segment.Length; i++)
+                void encodeLast1(char[] chars, byte b1)
                 {
-                    buffer[bufferIndex++] = segment[i];
+                    chars[0] = Base64Chars[b1 >> 2];
+                    chars[1] = Base64Chars[b1 << 4 & 0x3f];
+                    chars[2] = Base64Chars[64];
+                    chars[3] = Base64Chars[64];
                 }
-            }
-
-            void EncodeMiddle(byte[] data, int start = 0)
-            {
-                EncodeMiddle(data[start], data[start + 1], data[start + 2]);
-            }
-
-            void EncodeMiddle(byte b1, byte b2, byte b3)
-            {
-                int combo = b1 << 16 | b2 << 8 | b3;
-                writer.Write(base64Chars[combo >> 18]);
-                writer.Write(base64Chars[combo >> 12 & 0x3f]);
-                writer.Write(base64Chars[combo >> 6 & 0x3f]);
-                writer.Write(base64Chars[combo & 0x3f]);
-            }
-
-            void EncodeLast(byte b1, byte b2)
-            {
-                int combo = b1 << 8 | b2;
-                writer.Write(base64Chars[combo >> 10]);
-                writer.Write(base64Chars[combo >> 4 & 0x3f]);
-                writer.Write(base64Chars[combo << 2 & 0x3f]);
-                writer.Write(base64Chars[64]);
-                writer.Flush();
-            }
-
-            void EncodeLast(byte b1)
-            {
-                writer.Write(base64Chars[b1 >> 2]);
-                writer.Write(base64Chars[b1 << 4 & 0x3f]);
-                writer.Write(base64Chars[64]);
-                writer.Write(base64Chars[64]);
-                writer.Flush();
             }
         }
     }

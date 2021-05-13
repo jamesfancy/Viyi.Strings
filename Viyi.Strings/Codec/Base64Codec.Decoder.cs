@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
@@ -12,7 +11,7 @@ namespace Viyi.Strings.Codec
         private static class DecodeHelper
         {
             public const int Offset = 43;
-            public static readonly byte[] Codes =
+            public static readonly int[] Codes =
             {                                               // ASCII offset 43
                 62, 0xff, 0xff, 0xff, 63,                   // [+~/] 43~47 (count 5)
                 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,     // [0~9] 48~57 (count 10)
@@ -30,105 +29,96 @@ namespace Viyi.Strings.Codec
 
             public static bool IsValidChar(char ch) => ch < 43 || ch > 122
                 ? false
-                : Map(ch) != 0xff;
+                : CharToInt(ch) != 0xff;
 
-            public static byte Map(char ch) => Codes[ch - Offset];
+            public static int CharToInt(char ch) => Codes[ch - Offset];
         }
 
         sealed class Decoder : TextDecoder
         {
-            //static bool IsValidChar(char ch) => ReverseCodes.IsValidChar(ch);
+            const int BufferLength = 1024;
 
-            const int bufferSize = 4;
-            readonly Stream stream;
-            readonly char[] buffer = new char[bufferSize];
-            int bufferIndex;
+            readonly char[] buffer = new char[BufferLength];
+            int offset = 0;
+            private int rest => BufferLength - offset;
 
-            internal Decoder(Stream outStream, CodecOptions options)
-                : base(options)
-            {
-                stream = outStream;
-            }
+            Stream? output;
 
-            internal void Decode(IEnumerable<string> lines)
-            {
-                foreach (var line in lines)
-                {
-                    Decode(line);
-                }
-
-                switch (bufferIndex)
-                {
-                    case 1:
-                        throw new FormatException("input is not complate base64 text");
-                    case 2:
-                        Decode(buffer[0], buffer[1]);
-                        break;
-                    case 3:
-                        Decode(buffer[0], buffer[1], buffer[2]);
-                        break;
-                }
-            }
+            internal Decoder(CodecOptions options)
+                : base(options) { }
 
             protected override ICodecTextReader WrapReader(TextReader reader) =>
                 new CodecFilterableTextReader(reader, Options, DecodeHelper.IsValidChar);
 
-
-            void Decode(string line)
+            protected override void Decode(Stream output, ICodecTextReader codecReader)
             {
-                // 本方法的详细注释参考 `Encoder.Encode(byte[])`
+                this.output = output;
+                var reader = new BufferedReader(codecReader);
 
-                if (string.IsNullOrEmpty(line))
+                int count;
+                while ((count = reader.Read(buffer, offset, rest)) > 0)
                 {
-                    return;
+                    DecodeBuffer(count);
                 }
 
-                foreach (var ch in line)
+                switch (offset)
                 {
-                    if (!IsValidChar(ch))
-                    {
-                        continue;
-                    }
-
-                    buffer[bufferIndex++] = ch;
-                    if (bufferIndex >= bufferSize)
-                    {
-                        DecodeBuffer();
-                        bufferIndex = 0;
-                    }
+                    case 3:
+                        DecodeLast3();
+                        break;
+                    case 2:
+                        DecodeLast2();
+                        break;
+                    default:
+                        throw new InvalidDataException("invalid base64 data length");
                 }
             }
 
-            void DecodeBuffer()
+            void DecodeBuffer(int count)
             {
-                int v = reverseBase64Code[buffer[0] - reverseBase64CodeOffset] << 18
-                    | reverseBase64Code[buffer[1] - reverseBase64CodeOffset] << 12
-                    | reverseBase64Code[buffer[2] - reverseBase64CodeOffset] << 6
-                    | reverseBase64Code[buffer[3] - reverseBase64CodeOffset];
-                stream.WriteByte((byte)(v >> 16));
-                stream.WriteByte((byte)(v >> 8 & 0xff));
-                stream.WriteByte((byte)(v & 0xff));
+                var length = offset + count;
+                if (length < 4) { return; }
+                var rest = length % 4;
+
+                for (var i = 0; i < length; i += 4)
+                {
+                    Decode(i);
+                }
+
+                if (rest > 0)
+                {
+                    Array.Copy(buffer, length - rest, buffer, 0, rest);
+                    offset = rest;
+                }
             }
 
-            void Decode(char ch1, char ch2)
+            void Decode(int start)
             {
-                stream.WriteByte((byte)
-                    (reverseBase64Code[ch1 - reverseBase64CodeOffset] << 2
-                    | reverseBase64Code[ch2 - reverseBase64CodeOffset] >> 4));
+                int v = DecodeHelper.CharToInt(buffer[start]) << 18
+                    | DecodeHelper.CharToInt(buffer[start + 1]) << 12
+                    | DecodeHelper.CharToInt(buffer[start + 2]) << 6
+                    | DecodeHelper.CharToInt(buffer[start + 3]);
+
+                output!.WriteByte((byte)(v >> 16));
+                output.WriteByte((byte)(v >> 8 & 0xff));
+                output.WriteByte((byte)(v & 0xff));
             }
 
-            void Decode(char ch1, char ch2, char ch3)
+            void DecodeLast2()
             {
-                int v = reverseBase64Code[ch1 - reverseBase64CodeOffset] << 10
-                    | reverseBase64Code[ch2 - reverseBase64CodeOffset] << 4
-                    | reverseBase64Code[ch3 - reverseBase64CodeOffset] >> 2;
-                stream.WriteByte((byte)(v >> 8));
-                stream.WriteByte((byte)(v & 0xff));
+                output!.WriteByte((byte)(
+                    DecodeHelper.CharToInt(this.buffer[0]) << 2
+                    | DecodeHelper.CharToInt(this.buffer[1]) >> 4
+                ));
             }
 
-            protected override void Decode(Stream output, ICodecTextReader reader)
+            void DecodeLast3()
             {
-                //reader.ReadLine
+                int v = DecodeHelper.CharToInt(buffer[0]) << 10
+                    | DecodeHelper.CharToInt(buffer[1]) << 4
+                    | DecodeHelper.CharToInt(buffer[2]) >> 2;
+                output!.WriteByte((byte)(v >> 8));
+                output.WriteByte((byte)(v & 0xff));
             }
         }
     }

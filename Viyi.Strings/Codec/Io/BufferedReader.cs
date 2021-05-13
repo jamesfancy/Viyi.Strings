@@ -11,46 +11,6 @@ namespace Viyi.Strings.Codec.Io
         int cacheOffset = 0;
         int cacheCount = 0;
 
-        sealed class BufferWriter
-        {
-            int start;
-            int count;
-            char[] buffer;
-            int offset;
-            int rest;
-
-            public int Rest => rest;
-            public bool Full => rest == 0;
-
-            public BufferWriter(char[] buffer, int start, int count)
-            {
-                this.buffer = buffer;
-                offset = this.start = start;
-                rest = this.count = count;
-            }
-
-            public int WriteBy(Func<char[], int, int, int> fn)
-            {
-                int count = fn(buffer, offset, rest);
-                Forward(count);
-                return count;
-            }
-
-            public int WriteFromCache(char[] cache, int start, int count)
-            {
-                var writeCount = Math.Min(rest, count);
-                Array.Copy(cache, start, buffer, offset, writeCount);
-                Forward(writeCount);
-                return writeCount;
-            }
-
-            void Forward(int count)
-            {
-                offset += count;
-                rest -= count;
-            }
-        }
-
         public BufferedReader(ICodecTextReader reader, int bufferSize = 1024)
         {
             if (reader == null)
@@ -127,6 +87,44 @@ namespace Viyi.Strings.Codec.Io
             if (start + count > bufferSize)
             {
                 throw new ArgumentException("buffer length is not enought to 'count'");
+            }
+        }
+
+        sealed class BufferWriter
+        {
+            readonly char[] buffer;
+            int offset;
+            int rest;
+
+            public int Rest => rest;
+            public bool Full => rest == 0;
+
+            public BufferWriter(char[] buffer, int start, int count)
+            {
+                this.buffer = buffer;
+                offset = start;
+                rest = count;
+            }
+
+            public int WriteBy(Func<char[], int, int, int> fn)
+            {
+                int count = fn(buffer, offset, rest);
+                Forward(count);
+                return count;
+            }
+
+            public int WriteFromCache(char[] cache, int start, int count)
+            {
+                var writeCount = Math.Min(rest, count);
+                Array.Copy(cache, start, buffer, offset, writeCount);
+                Forward(writeCount);
+                return writeCount;
+            }
+
+            void Forward(int count)
+            {
+                offset += count;
+                rest -= count;
             }
         }
     }

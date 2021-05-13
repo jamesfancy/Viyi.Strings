@@ -33,10 +33,15 @@ namespace Viyi.Strings.Codec
 
             if (factory == null)
             {
-                throw new NotSupportedException($"not suport text codec algorithm named {name}");
+                throw new NotSupportedException($"not support text codec algorithm named '{name}'");
             }
 
             return factory();
+        }
+
+        public static ITextCodec? Find(string name)
+        {
+            return factories.TryGetValue(name, out var factory) ? factory() : null;
         }
 
         public static bool IsRegistered(string name) => factories.ContainsKey(name);

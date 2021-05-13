@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Abstract
 {
