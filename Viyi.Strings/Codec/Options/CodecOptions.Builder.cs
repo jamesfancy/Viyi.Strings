@@ -1,6 +1,6 @@
 namespace Viyi.Strings.Codec.Options
 {
-    public partial class CodecOptions
+    partial class CodecOptions
     {
         public class Builder
         {
@@ -11,7 +11,7 @@ namespace Viyi.Strings.Codec.Options
                 return new CodecOptions
                 {
                     LineWidth = proto.LineWidth,
-                    EndOfLine = proto.EndOfLine,
+                    LineEnding = proto.LineEnding,
                 };
             }
 
@@ -22,8 +22,17 @@ namespace Viyi.Strings.Codec.Options
                      : Clone(proto);
             }
 
-            public int LineWidth { set { CodecOptions.LineWidth = value; } }
-            public EndOfLines EndOfLine { set { CodecOptions.EndOfLine = value; } }
+            public Builder SetLineWidth(int value)
+            {
+                CodecOptions.LineWidth = value;
+                return this;
+            }
+
+            public Builder SetLineEnding(LineEndings value)
+            {
+                CodecOptions.LineEnding = value;
+                return this;
+            }
         }
     }
 }

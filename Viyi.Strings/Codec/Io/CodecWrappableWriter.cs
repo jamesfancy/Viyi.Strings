@@ -23,7 +23,7 @@ namespace Viyi.Strings.Codec.Io
             : base(writer, options)
         {
             restWidth = lineWidth = options.LineWidth;
-            endOfLine = EndOfLines[(int)options.EndOfLine];
+            endOfLine = EndOfLines[(int)options.LineEnding];
         }
 
         public override void Write(char[] buffer) => Write(buffer, 0, buffer.Length);

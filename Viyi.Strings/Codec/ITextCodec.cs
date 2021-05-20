@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-using System.IO;
+using Viyi.Strings.Codec.Abstract;
+using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec
 {
@@ -8,46 +8,24 @@ namespace Viyi.Strings.Codec
         /// <summary>
         /// 一次性编码所有 data，得到编码结果，适用于内容不是很多的情况
         /// </summary>
-        string Encode(byte[] data);
+        string Encode(byte[] data, CodecOptions? options = null);
 
         /// <summary>
-        /// 一次性编码 data 中指定的段，得到编码结果，适用于内容不是很多的情况
+        /// 编码 data 中指定的内容
         /// </summary>
-        string Encode(byte[] data, int start, int length);
-
-        /// <summary>
-        /// 从 data 依次取出 byte[] 数据进行编码。同样只适用于 data 不是特别大的情况
-        /// </summary>
-        string Encode(IEnumerable<byte[]> data);
-
-        /// <summary>
-        /// 如果数据较大，可以通过 Stream 传入，一次性得到所有结果。适用于编码结果不是特别大的情况
-        /// </summary>
-        string Encode(Stream inStream);
-
-        /// <summary>
-        /// 如果输入输出内容都较多的情况，使用这个方法比较适合
-        /// <summary>
-        void Encode(TextWriter writer, IEnumerable<byte[]> data);
-
-        /// <summary>
-        /// 如果输入输出内容都较多的情况，使用这个方法比较适合
-        /// <summary>
-        void Encode(TextWriter writer, Stream inStream);
+        /// <param name="data">数据源</param>
+        /// <param name="start">起始位置（索引号）</param>
+        /// <param name="count">长度</param>
+        /// <param name="options">配置项，可选</param>
+        string Encode(byte[] data, int start, int count, CodecOptions? options = null);
 
         /// <summary>
         /// 一次解码所有数据，适用于数据量不是特别大的情况
         /// <summary>
-        byte[] Decode(string code);
+        byte[] Decode(string code, CodecOptions? options = null);
 
-        /// <summary>
-        /// 如果输入输出内容都较多的情况，使用这个方法比较适合
-        /// <summary>
-        void Decode(Stream outStream, IEnumerable<string> lines);
+        ITextEncoder CreateEncoder(CodecOptions? options = null);
 
-        /// <summary>
-        /// 如果输入输出内容都较多的情况，使用这个方法比较适合
-        /// <summary>
-        void Decode(Stream outStream, TextReader inStream);
+        ITextDecoder CreateDecoder(CodecOptions? options = null);
     }
 }

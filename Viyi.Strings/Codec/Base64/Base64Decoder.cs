@@ -1,0 +1,97 @@
+using System;
+using System.IO;
+using Viyi.Strings.Codec.Io;
+using Viyi.Strings.Codec.Options;
+
+namespace Viyi.Strings.Codec.Base64
+{
+
+    sealed class Base64Decoder : TextDecoder
+    {
+        const int BufferLength = 1024;
+
+        readonly char[] buffer = new char[BufferLength];
+        int offset = 0;
+        private int rest => BufferLength - offset;
+
+        Stream? output;
+
+        internal Base64Decoder(CodecOptions options)
+            : base(options) { }
+
+        protected override ICodecTextReader WrapReader(TextReader reader) =>
+            new CodecFilterableTextReader(reader, Options, ReverseCharset.IsValid);
+
+        protected override void Decode(Stream output, ICodecTextReader codecReader)
+        {
+            this.output = output;
+            var reader = new BufferedReader(codecReader);
+
+            int count;
+            while ((count = reader.Read(buffer, offset, rest)) > 0)
+            {
+                DecodeBuffer(count);
+            }
+
+            switch (offset)
+            {
+                case 3:
+                    DecodeLast3();
+                    break;
+                case 2:
+                    DecodeLast2();
+                    break;
+                default:
+                    throw new InvalidDataException("invalid base64 data length");
+            }
+        }
+
+        void DecodeBuffer(int count)
+        {
+            var length = offset + count;
+            if (length < 4) { return; }
+            var rest = length % 4;
+
+            for (var i = 0; i < length; i += 4)
+            {
+                Decode(i);
+            }
+
+            if (rest > 0)
+            {
+                Array.Copy(buffer, length - rest, buffer, 0, rest);
+                offset = rest;
+            }
+        }
+
+        void Decode(int start)
+        {
+            int v = ReverseCharset.ToInt(buffer[start]) << 18
+                | ReverseCharset.ToInt(buffer[start + 1]) << 12
+                | ReverseCharset.ToInt(buffer[start + 2]) << 6
+                | ReverseCharset.ToInt(buffer[start + 3]);
+
+            output!.WriteByte((byte)(v >> 16));
+            output.WriteByte((byte)(v >> 8 & 0xff));
+            output.WriteByte((byte)(v & 0xff));
+        }
+
+        void DecodeLast2()
+        {
+            output!.WriteByte((byte)(
+                ReverseCharset.ToInt(this.buffer[0]) << 2
+                | ReverseCharset.ToInt(this.buffer[1]) >> 4
+            ));
+        }
+
+        void DecodeLast3()
+        {
+            int v = ReverseCharset.ToInt(buffer[0]) << 10
+                | ReverseCharset.ToInt(buffer[1]) << 4
+                | ReverseCharset.ToInt(buffer[2]) >> 2;
+            output!.WriteByte((byte)(v >> 8));
+            output.WriteByte((byte)(v & 0xff));
+        }
+    }
+}
+

@@ -2,7 +2,7 @@ using System;
 
 namespace Viyi.Strings.Codec.Options
 {
-    public enum EndOfLines
+    public enum LineEndings
     {
         ByEnvironment,
         Lf,
@@ -17,10 +17,10 @@ namespace Viyi.Strings.Codec.Options
 
         private CodecOptions() { }
 
-        public Builder Create() => new();
-        public Builder From(CodecOptions prototype) => new(prototype);
+        public static Builder Create() => new();
+        public static Builder From(CodecOptions prototype) => new(prototype);
 
         public int LineWidth { get; private set; }
-        public EndOfLines EndOfLine { get; private set; }
+        public LineEndings LineEnding { get; private set; }
     }
 }

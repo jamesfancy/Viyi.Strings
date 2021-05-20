@@ -1,10 +1,11 @@
+using System;
 using System.IO;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Abstract
+namespace Viyi.Strings.Codec
 {
-    public abstract class TextEncoder
+    public abstract class TextEncoder : ITextEncoder
     {
         protected CodecOptions Options { get; }
 
@@ -34,5 +35,10 @@ namespace Viyi.Strings.Codec.Abstract
         }
 
         protected abstract void Encode(ICodecTextWriter writer, Stream input);
+
+        public string Encode(byte[] data, int start, int count)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

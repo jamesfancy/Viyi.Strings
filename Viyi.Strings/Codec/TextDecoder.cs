@@ -2,9 +2,9 @@ using System.IO;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Abstract
+namespace Viyi.Strings.Codec
 {
-    public abstract class TextDecoder
+    public abstract class TextDecoder : ITextDecoder
     {
         protected CodecOptions Options { get; }
 
