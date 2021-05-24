@@ -19,9 +19,8 @@ namespace Viyi.Strings.Codec.Base64
             46, 47, 48, 49, 50, 51,                     // [u~z] 117~122 (count 6) 
         };
 
-        public static bool IsValid(char ch) => ch < 43 || ch > 122
-            ? false
-            : ToInt(ch) != 0xff;
+        public static bool IsValid(char ch) =>
+            ch >= 43 && ch <= 122 && Codes[ch] != 0xff;
 
         public static int ToInt(char ch) => Codes[ch - Offset];
     }

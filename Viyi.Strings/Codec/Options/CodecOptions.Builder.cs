@@ -33,6 +33,18 @@ namespace Viyi.Strings.Codec.Options
                 CodecOptions.LineEnding = value;
                 return this;
             }
+
+            public Builder UseUpperCase(bool upperCase = true)
+            {
+                CodecOptions.UpperCase = upperCase;
+                return this;
+            }
+
+            public Builder UseLowerCase()
+            {
+                CodecOptions.UpperCase = true;
+                return this;
+            }
         }
     }
 }
