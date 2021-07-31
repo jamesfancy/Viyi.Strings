@@ -51,7 +51,7 @@ namespace Viyi.Strings.Codec.Base64
                 }
 
                 // writing here
-                writer.Write(chars, 0, readCount);
+                writer.Write(chars);
             }
 
             void encodeLast2(char[] chars, byte b1, byte b2)

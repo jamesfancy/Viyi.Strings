@@ -20,7 +20,7 @@ namespace Viyi.Strings.Codec.Base64
         };
 
         public static bool IsValid(char ch) =>
-            ch >= 43 && ch <= 122 && Codes[ch] != 0xff;
+            ch >= 43 && ch <= 122 && Codes[ch - Offset] != 0xff;
 
         public static int ToInt(char ch) => Codes[ch - Offset];
     }

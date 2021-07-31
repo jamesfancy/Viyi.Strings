@@ -35,6 +35,8 @@ namespace Viyi.Strings.Codec.Base64
 
             switch (offset)
             {
+                case 0:
+                    return;
                 case 3:
                     DecodeLast3();
                     break;
@@ -52,7 +54,7 @@ namespace Viyi.Strings.Codec.Base64
             if (length < 4) { return; }
             var rest = length % 4;
 
-            for (var i = 0; i < length; i += 4)
+            for (var i = 0; i < length - rest; i += 4)
             {
                 Decode(i);
             }
