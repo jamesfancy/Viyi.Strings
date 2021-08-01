@@ -8,7 +8,7 @@ namespace Viyi.Strings.Codec.Io
 {
     public class CodecFilterableTextReader : CodecTextReader
     {
-        Func<char, bool> filter;
+        readonly Func<char, bool> filter;
 
         public CodecFilterableTextReader(
             TextReader reader,

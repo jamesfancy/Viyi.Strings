@@ -35,8 +35,7 @@ namespace Viyi.Strings.Codec
             var writer = new BufferedStream(output);
             var chars = new char[2];
 
-            int readCount;
-            while ((readCount = reader.Read(chars)) == 2)
+            while (reader.Read(chars) == 2)
             {
                 writer.WriteByte(
                     (byte)((ReverseHexCodes[chars[0] - HexCodesOffset] << 4)

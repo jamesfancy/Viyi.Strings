@@ -17,9 +17,13 @@ namespace Viyi.Strings.Codec
         public virtual string Encode(byte[] data)
         {
             using var stream = new MemoryStream(data);
-            using var writer = new StringWriter();
-            Encode(writer, stream);
-            return writer.ToString();
+            return Encode(stream);
+        }
+
+        public string Encode(byte[] data, int start, int count)
+        {
+            using var stream = new MemoryStream(data, start, count);
+            return Encode(stream);
         }
 
         public virtual void Encode(TextWriter output, Stream input)
@@ -36,9 +40,11 @@ namespace Viyi.Strings.Codec
 
         protected abstract void Encode(ICodecTextWriter writer, Stream input);
 
-        public string Encode(byte[] data, int start, int count)
+        string Encode(Stream stream)
         {
-            throw new NotImplementedException();
+            using var writer = new StringWriter();
+            Encode(writer, stream);
+            return writer.ToString();
         }
     }
 }

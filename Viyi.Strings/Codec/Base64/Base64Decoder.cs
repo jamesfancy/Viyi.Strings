@@ -51,17 +51,23 @@ namespace Viyi.Strings.Codec.Base64
         void DecodeBuffer(int count)
         {
             var length = offset + count;
-            if (length < 4) { return; }
-            var rest = length % 4;
+            if (length < 4)
+            {
+                // FIXME 应该需要改变 offset
+                return;
+            }
 
-            for (var i = 0; i < length - rest; i += 4)
+            var rest = length % 4;
+            int fixedLength = length - rest;
+
+            for (var i = 0; i < fixedLength; i += 4)
             {
                 Decode(i);
             }
 
             if (rest > 0)
             {
-                Array.Copy(buffer, length - rest, buffer, 0, rest);
+                Array.Copy(buffer, fixedLength, buffer, 0, rest);
                 offset = rest;
             }
         }

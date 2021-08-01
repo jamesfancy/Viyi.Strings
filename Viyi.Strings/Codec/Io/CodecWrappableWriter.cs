@@ -7,6 +7,7 @@ namespace Viyi.Strings.Codec.Io
 {
     public class CodecWrappableWriter : CodecTextWriter
     {
+        // 该数组元素（数量及顺序）与 LineEndings 枚举保持一致
         static readonly string[] EndOfLines = new[]
         {
             Environment.NewLine,

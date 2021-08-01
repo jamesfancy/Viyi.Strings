@@ -13,19 +13,11 @@ namespace Viyi.Strings.Codec.Io
             this.Writer = writer;
         }
 
-        public virtual void Write(char[] buffer)
-        {
-            Writer.Write(buffer);
-        }
+        public virtual void Write(char[] buffer) => Writer.Write(buffer);
 
-        public virtual void Write(char[] buffer, int start, int length)
-        {
+        public virtual void Write(char[] buffer, int start, int length) =>
             Writer.Write(buffer, start, length);
-        }
 
-        public virtual void Write(string segment)
-        {
-            Writer.Write(segment);
-        }
+        public virtual void Write(string segment) => Writer.Write(segment);
     }
 }

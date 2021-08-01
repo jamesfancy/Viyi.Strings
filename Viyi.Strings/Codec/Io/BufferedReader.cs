@@ -12,22 +12,19 @@ namespace Viyi.Strings.Codec.Io
         int cacheOffset = 0;
         int cacheCount = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="bufferSize">指定缓冲区大小。可选，默认大小为 4K</param>
         public BufferedReader(ICodecTextReader reader, int bufferSize = DefaultCapacity)
         {
-            if (reader == null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            this.reader = reader;
+            this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
             capacity = bufferSize;
             cache = new char[capacity];
         }
 
-        public int Read(char[] buffer)
-        {
-            return Read(buffer, 0, buffer.Length);
-        }
+        public int Read(char[] buffer) => Read(buffer, 0, buffer.Length);
 
         public int Read(char[] buffer, int start, int count)
         {
@@ -107,9 +104,9 @@ namespace Viyi.Strings.Codec.Io
                 rest = count;
             }
 
-            public int WriteBy(Func<char[], int, int, int> fn)
+            public int WriteBy(Func<char[], int, int, int> read)
             {
-                int count = fn(buffer, offset, rest);
+                int count = read(buffer, offset, rest);
                 Forward(count);
                 return count;
             }
