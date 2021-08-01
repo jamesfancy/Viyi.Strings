@@ -7,7 +7,7 @@ namespace Viyi.Strings.Codec.Io
     {
         protected TextWriter Writer { get; }
 
-        public CodecTextWriter(TextWriter writer, CodecOptions options)
+        public CodecTextWriter(TextWriter writer, CodecOptions? options = null)
             : base(options)
         {
             this.Writer = writer;

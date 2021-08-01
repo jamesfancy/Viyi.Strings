@@ -1,18 +1,20 @@
 using System;
-using System.Diagnostics;
+using System.IO;
 
 namespace Viyi.Strings.Codec.Io
 {
-    partial class BufferedReader
+    /// <summary>
+    /// 内建缓存，保证在调用 Read 方法时每次都能把传入的缓冲区写满（按指定的有效空间），
+    /// 除非数据中的数据已经被读完。
+    /// </summary>
+    public partial class BufferedReader
     {
         const int DefaultCapacity = 4096;
         readonly ICodecTextReader reader;
 
         readonly CacheManager cache;
 
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <summary></summary>
         /// <param name="reader"></param>
         /// <param name="capacity">指定缓冲区大小。可选，默认大小为 4KB</param>
         public BufferedReader(ICodecTextReader reader, int capacity = DefaultCapacity)
@@ -20,6 +22,12 @@ namespace Viyi.Strings.Codec.Io
             this.reader = reader ?? throw new ArgumentNullException(nameof(reader));
             cache = new CacheManager(capacity);
         }
+
+        /// <summary></summary>
+        /// <param name="reader"></param>
+        /// <param name="capacity">指定缓冲区大小。可选，默认大小为 4KB</param>
+        public BufferedReader(TextReader reader, int capacity = DefaultCapacity)
+            : this(new CodecTextReader(reader), capacity) { }
 
         public int Read(char[] buffer) => Read(buffer, 0, buffer.Length);
 

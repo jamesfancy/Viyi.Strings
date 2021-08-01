@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec
 {
-    internal class HexEncoder : TextEncoder
+    class HexEncoder : TextEncoder
     {
         static readonly char[] UpperHexChars =
         {

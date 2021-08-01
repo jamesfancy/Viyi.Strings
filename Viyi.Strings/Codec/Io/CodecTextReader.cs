@@ -7,7 +7,7 @@ namespace Viyi.Strings.Codec.Io
     {
         protected TextReader Reader { get; }
 
-        public CodecTextReader(TextReader reader, CodecOptions options)
+        public CodecTextReader(TextReader reader, CodecOptions? options = null)
             : base(options)
         {
             this.Reader = reader;

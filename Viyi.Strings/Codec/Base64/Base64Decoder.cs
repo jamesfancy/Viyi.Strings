@@ -44,7 +44,7 @@ namespace Viyi.Strings.Codec.Base64
                     DecodeLast2();
                     break;
                 default:
-                    throw new InvalidDataException("invalid base64 data length");
+                    throw new CodecException("invalid base64 data length");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Viyi.Strings.Codec.Base64
             var length = offset + count;
             if (length < 4)
             {
-                // FIXME 应该需要改变 offset
+                offset += length;
                 return;
             }
 
