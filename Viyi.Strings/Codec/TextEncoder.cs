@@ -34,7 +34,7 @@ namespace Viyi.Strings.Codec
         protected virtual ICodecTextWriter WrapWriter(TextWriter writer)
         {
             return this.Options.LineWidth > 0
-                ? new CodecWrappableWriter(writer, this.Options)
+                ? new CodecWrappingWriter(writer, this.Options)
                 : new CodecTextWriter(writer, this.Options);
         }
 

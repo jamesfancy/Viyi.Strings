@@ -5,7 +5,7 @@ using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Io
 {
-    public class CodecWrappableWriter : CodecTextWriter
+    public class CodecWrappingWriter : CodecTextWriter
     {
         // 该数组元素（数量及顺序）与 LineEndings 枚举保持一致
         static readonly string[] EndOfLines = new[]
@@ -20,7 +20,7 @@ namespace Viyi.Strings.Codec.Io
         readonly string endOfLine;
         int restWidth;
 
-        public CodecWrappableWriter(TextWriter writer, CodecOptions options)
+        public CodecWrappingWriter(TextWriter writer, CodecOptions options)
             : base(writer, options)
         {
             restWidth = lineWidth = options.LineWidth;
