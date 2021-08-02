@@ -1,17 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-
+    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
-
-    <OutputType>Library</OutputType>
-
     <Nullable>enable</Nullable>
-
-    <SignAssembly>False</SignAssembly>
-
-    <AssemblyOriginatorKeyFile>..\keypair.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" />
+    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj"  />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Io\" />
-  </ItemGroup>
-
 </Project>
