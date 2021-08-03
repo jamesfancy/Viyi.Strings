@@ -12,7 +12,7 @@ namespace Viyi.Strings.Test.Toolkit
         static readonly char[] BASE64_CHARS = BASE62_CHARS.Union(new[] { '/', '+' }).ToArray();
         static readonly char[] HEX_CHARS = NUMBERS
             .Union("abcdef".ToCharArray())
-            .Union("ABCDEG".ToCharArray())
+            .Union("ABCDEF".ToCharArray())
             .ToArray();
 
         public static string RandomString(this Random random, int length, char[]? charset = null)

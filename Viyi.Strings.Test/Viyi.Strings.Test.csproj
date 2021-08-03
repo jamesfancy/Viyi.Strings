@@ -14,7 +14,13 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj"  />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj"
+                      Properties="TargetFramework=net5.0"/>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj"
+                      Properties="TargetFramework=netstandard2.0"/>
   </ItemGroup>
 </Project>

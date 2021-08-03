@@ -1,8 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Viyi.Strings.Codec;
 using Viyi.Strings.Codec.Base64;
+using Viyi.Strings.Codec.Extensions;
 using Viyi.Strings.Test.Toolkit;
 
 namespace Viyi.Strings.Test.Codec.Base64
@@ -21,7 +23,7 @@ namespace Viyi.Strings.Test.Codec.Base64
         [TestMethod]
         public void TestBase64Decode()
         {
-            int[] counts = new[] { 0, 0, 1, 2 };
+            int[] restCounts = new[] { 0, 0, 1, 2 };
 
             cases.ForEach(n =>
             {
@@ -41,7 +43,7 @@ namespace Viyi.Strings.Test.Codec.Base64
                 var base64 = random.RandomBase64(length);
 
                 byte[] data = base64.DecodeBase64();
-                Assert.AreEqual(length / 4 * 3 + counts[length % 4], data.Length);
+                Assert.AreEqual(length / 4 * 3 + restCounts[length % 4], data.Length);
             }
         }
 
@@ -69,6 +71,8 @@ namespace Viyi.Strings.Test.Codec.Base64
                         Assert.IsTrue(base64.Length == 0 || base64[^1] != '=');
                         break;
                 }
+
+                CollectionAssert.AreEqual(data, base64.DecodeBase64());
             }
         }
 
@@ -90,7 +94,8 @@ namespace Viyi.Strings.Test.Codec.Base64
 
                 int base64Length = (length / 3 + (length % 3 == 0 ? 0 : 1)) * 4;
                 int lines = base64Length / 76 + (base64Length % 76 == 0 ? 0 : 1);
-                int expectLength = base64Length + lines - (base64[^1] == '\n' ? 0 : 1);
+
+                int expectLength = base64Length + lines - 1;
                 Assert.AreEqual(expectLength, base64.Length);
 
                 var sections = base64.Split("\n");
@@ -103,6 +108,24 @@ namespace Viyi.Strings.Test.Codec.Base64
                     Assert.IsTrue(sections[^1].Length <= 76);
                 }
             }
+        }
+
+        [TestMethod]
+        public void TestSpecialCases()
+        {
+            new[]
+            {
+                (new byte[] { 0, 0 ,0, 0 }, "AAAAAA=="),
+                ("administrator".DecodeUtf8(), "YWRtaW5pc3RyYXRvcg=="),
+                (
+                    Enumerable.Range(0, 256).Select(n => (byte) n).ToArray(),
+                    "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/w=="
+                )
+            }.ForEach(tuple =>
+            {
+                var (bytes, base64) = tuple;
+                Assert.AreEqual(base64, bytes.EncodeBase64());
+            });
         }
     }
 }
