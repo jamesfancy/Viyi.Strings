@@ -1,11 +1,10 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Io
 {
-    public class CodecWrappingWriter : CodecTextWriter
+    public partial class CodecWrappingWriter : CodecTextWriter
     {
         // 该数组元素（数量及顺序）与 LineEndings 枚举保持一致
         static readonly string[] EndOfLines = new[]
@@ -16,83 +15,35 @@ namespace Viyi.Strings.Codec.Io
             "\r",
         };
 
+        readonly string lineEnding;
         readonly int lineWidth;
-        readonly string endOfLine;
-        int restWidth;
+        int restOfLine;
 
         public CodecWrappingWriter(TextWriter writer, CodecOptions options)
             : base(writer, options)
         {
-            restWidth = lineWidth = options.LineWidth;
-            endOfLine = EndOfLines[(int)options.LineEnding];
+            restOfLine = lineWidth = options.LineWidth;
+            lineEnding = EndOfLines[(int)options.LineEnding];
         }
 
-        public override void Write(char[] buffer) => Write(buffer, 0, buffer.Length);
+        public override void Write(char[] data) => Write(data, 0, data.Length);
 
-        public override void Write(char[] buffer, int start, int length)
+        public override void Write(char[] data, int offset, int length) =>
+            Write(new ArrayCharSequence(data, offset, length));
+
+        public override void Write(string segment) => Write(new StringCharSequence(segment));
+
+        protected void Write(ICharSequence sequence)
         {
-            if (restWidth >= length)
+            while (sequence.HasMore)
             {
-                Writer.Write(buffer, start, length);
-                OccupyRestWidth(length);
-            }
-            else
-            {
-                writeSegments();
-            }
-
-            void writeSegments()
-            {
-                int restLength = length;
-                int position = start;
-                while (restLength > 0)
+                if (restOfLine == 0)
                 {
-                    int count = Math.Min(restWidth, restLength);
-                    Writer.Write(buffer, position, count);
-                    position += count;
-                    restLength -= count;
-                    OccupyRestWidth(count);
+                    Writer.Write(lineEnding);
+                    restOfLine = lineWidth;
                 }
-            }
-        }
-
-        public override void Write(string segment)
-        {
-            if (restWidth >= segment.Length)
-            {
-                Writer.Write(segment);
-                OccupyRestWidth(segment.Length);
-            }
-            else
-            {
-                writeSegments();
-            }
-
-            void writeSegments()
-            {
-                char[] buffer = new char[lineWidth];
-                int restLength = segment.Length;
-                int position = 0;
-                while (restLength > 0)
-                {
-                    int count = Math.Min(restWidth, restLength);
-                    segment.CopyTo(position, buffer, 0, count);
-                    Writer.Write(buffer, 0, count);
-                    position += count;
-                    restLength -= count;
-                    OccupyRestWidth(count);
-                }
-            }
-        }
-
-        private void OccupyRestWidth(int count)
-        {
-            Debug.Assert(count <= restWidth);
-            restWidth -= count;
-            if (restWidth == 0)
-            {
-                Writer.Write(endOfLine);
-                restWidth = lineWidth;
+                int count = sequence.ToWriter(Writer, restOfLine);
+                restOfLine -= count;
             }
         }
     }
