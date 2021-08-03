@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Viyi.Strings.Codec.Base64;
 
-namespace Viyi.Strings.Codec
+namespace Viyi.Strings.Codec.Abstract
 {
     public static class TextCodec
     {

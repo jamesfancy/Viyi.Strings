@@ -1,4 +1,5 @@
 using System.Text;
+using Viyi.Strings.Codec.Abstract;
 
 namespace Viyi.Strings.Codec.Extensions
 {

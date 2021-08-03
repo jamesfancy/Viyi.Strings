@@ -1,7 +1,6 @@
-using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec
+namespace Viyi.Strings.Codec.Abstract
 {
     public interface ITextCodec
     {
