@@ -22,6 +22,14 @@ namespace Viyi.Strings.Codec.Io
         public CodecWrappingWriter(TextWriter writer, CodecOptions options)
             : base(writer, options)
         {
+            if (options.LineWidth <= 0)
+            {
+                throw new ArgumentException(
+                    "options.LineWidth should be positive number.",
+                    nameof(options)
+                );
+            }
+
             restOfLine = lineWidth = options.LineWidth;
             lineEnding = EndOfLines[(int)options.LineEnding];
         }
