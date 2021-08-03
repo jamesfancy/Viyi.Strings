@@ -21,7 +21,7 @@ namespace Viyi.Strings.Codec
         const int HexCodesOffset = 48;
 
         static bool IsValidChar(char ch) =>
-            ch >= 48 && ch <= 102 && ReverseHexCodes[ch] != -1;
+            ch >= 48 && ch <= 102 && ReverseHexCodes[ch - HexCodesOffset] != -1;
 
         public HexDecoder(CodecOptions options) : base(options) { }
 
