@@ -12,7 +12,7 @@ namespace Viyi.Strings.Codec.Io
         /// <param name="options"></param>
         protected CodecAccessor(CodecOptions? options)
         {
-            this.Options = options ?? CodecOptions.Default;
+            this.Options = options ?? CodecOptions.CreateDefault();
         }
     }
 }

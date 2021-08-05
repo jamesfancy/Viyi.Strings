@@ -7,12 +7,12 @@ namespace Viyi.Strings.Codec
     {
         public override ITextDecoder CreateDecoder(CodecOptions? options = null)
         {
-            return new HexDecoder(options ?? CodecOptions.Default);
+            return new HexDecoder(options ?? CodecOptions.CreateDefault());
         }
 
         public override ITextEncoder CreateEncoder(CodecOptions? options = null)
         {
-            return new HexEncoder(options ?? CodecOptions.Default);
+            return new HexEncoder(options ?? CodecOptions.CreateDefault());
         }
     }
 }

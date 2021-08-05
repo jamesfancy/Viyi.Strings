@@ -35,7 +35,7 @@ namespace Viyi.Strings.Codec.Hex
                 CodecOptions.Create()
                     .UseUpperCase(upperCase)
                     .SetLineWidth(lineWidth)
-                    .CodecOptions
+                    .Build()
             );
         }
 
