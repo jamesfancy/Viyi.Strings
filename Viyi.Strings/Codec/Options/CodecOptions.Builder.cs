@@ -24,7 +24,7 @@ namespace Viyi.Strings.Codec.Options
 
             public Builder SetLineWidth(int value)
             {
-                CodecOptions.LineWidth = value;
+                CodecOptions.LineWidth = value < 0 ? NoLineWidth : value;
                 return this;
             }
 
@@ -42,7 +42,7 @@ namespace Viyi.Strings.Codec.Options
 
             public Builder UseLowerCase()
             {
-                CodecOptions.UpperCase = true;
+                CodecOptions.UpperCase = false;
                 return this;
             }
         }

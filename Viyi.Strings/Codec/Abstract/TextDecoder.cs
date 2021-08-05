@@ -2,7 +2,7 @@ using System.IO;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec
+namespace Viyi.Strings.Codec.Abstract
 {
     public abstract class TextDecoder : ITextDecoder
     {

@@ -1,7 +1,6 @@
-using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec
+namespace Viyi.Strings.Codec.Abstract
 {
     public interface ITextCodec
     {
@@ -24,8 +23,18 @@ namespace Viyi.Strings.Codec
         /// <summary>
         byte[] Decode(string code, CodecOptions? options = null);
 
+        /// <summary>
+        /// 创建 Encoder 用于更灵活的编码方式。
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         ITextEncoder CreateEncoder(CodecOptions? options = null);
 
+        /// <summary>
+        /// 创建 Decoder 用于更灵活的解码方式。
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         ITextDecoder CreateDecoder(CodecOptions? options = null);
     }
 }

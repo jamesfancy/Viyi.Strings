@@ -8,7 +8,7 @@ namespace Viyi.Strings.Codec.Io
 {
     public class CodecFilterableTextReader : CodecTextReader
     {
-        Func<char, bool> filter;
+        readonly Func<char, bool> filter;
 
         public CodecFilterableTextReader(
             TextReader reader,
@@ -19,6 +19,18 @@ namespace Viyi.Strings.Codec.Io
             this.filter = filter;
         }
 
+        /// <summary>
+        /// 从源 TextReader 读取数据，并由构造时传入的 filter 进行过滤。
+        /// 由于需要过滤数据，并不能保证每次读取都能把 buffer 的可用区域写满。
+        /// 如果需要简化对 buffer 的处理，可以使用 BufferedReader 进行一层封装。
+        /// </summary>
+        /// <param name="buffer">接收数据的缓冲区</param>
+        /// <param name="start">buffer 可用起始位置</param>
+        /// <param name="count">buffer 可用大小</param>
+        /// <returns>
+        /// 返回读得的字符数。返回值为 0 表示读完，非 0 表示可能还有数据。
+        /// 注意：返回值很多时候可能会小于 count，但这并不表示已经读完所有数据。
+        /// </returns>
         public override int Read(char[] buffer, int start, int count)
         {
             int validCount = 0;

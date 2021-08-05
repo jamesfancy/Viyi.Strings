@@ -1,9 +1,8 @@
-using System;
 using System.IO;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec
+namespace Viyi.Strings.Codec.Abstract
 {
     public abstract class TextEncoder : ITextEncoder
     {
@@ -17,9 +16,13 @@ namespace Viyi.Strings.Codec
         public virtual string Encode(byte[] data)
         {
             using var stream = new MemoryStream(data);
-            using var writer = new StringWriter();
-            Encode(writer, stream);
-            return writer.ToString();
+            return Encode(stream);
+        }
+
+        public string Encode(byte[] data, int start, int count)
+        {
+            using var stream = new MemoryStream(data, start, count);
+            return Encode(stream);
         }
 
         public virtual void Encode(TextWriter output, Stream input)
@@ -30,15 +33,17 @@ namespace Viyi.Strings.Codec
         protected virtual ICodecTextWriter WrapWriter(TextWriter writer)
         {
             return this.Options.LineWidth > 0
-                ? new CodecWrappableWriter(writer, this.Options)
+                ? new CodecWrappingWriter(writer, this.Options)
                 : new CodecTextWriter(writer, this.Options);
         }
 
         protected abstract void Encode(ICodecTextWriter writer, Stream input);
 
-        public string Encode(byte[] data, int start, int count)
+        string Encode(Stream stream)
         {
-            throw new NotImplementedException();
+            using var writer = new StringWriter();
+            Encode(writer, stream);
+            return writer.ToString();
         }
     }
 }

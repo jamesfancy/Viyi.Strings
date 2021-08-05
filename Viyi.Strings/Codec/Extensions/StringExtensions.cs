@@ -1,27 +1,29 @@
+using System;
 using System.Text;
+using Viyi.Strings.Codec.Abstract;
 
 namespace Viyi.Strings.Codec.Extensions
 {
     public static class StringExtensions
     {
-        public static byte[] DecodeUtf8(this string? @this)
+        public static byte[] DecodeUtf8(this string? str)
         {
-            return @this == null
-                ? new byte[0]
-                : Encoding.UTF8.GetBytes(@this);
+            return str == null
+                ? Array.Empty<byte>()
+                : Encoding.UTF8.GetBytes(str);
         }
 
-        public static byte[] Decode(this string? @this, string encoding)
+        public static byte[] Decode(this string? str, string encoding)
         {
-            if (@this == null) { return new byte[0]; }
+            if (str == null) { return Array.Empty<byte>(); }
 
             var codec = TextCodec.Find(encoding);
             if (codec != null)
             {
-                return codec.Decode(@this);
+                return codec.Decode(str);
             }
 
-            return Encoding.GetEncoding(encoding).GetBytes(@this);
+            return Encoding.GetEncoding(encoding).GetBytes(str);
         }
     }
 }

@@ -12,15 +12,10 @@ namespace Viyi.Strings.Codec.Base64
             return new Base64Codec().Decode(base64);
         }
 
-        public static string EncodeBase64(this string source, int lineWidth = 0)
-        {
-            return source.DecodeUtf8().EncodeBase64(lineWidth);
-        }
-
         public static string EncodeBase64(this byte[] bytes, CodecOptions? options = null)
         {
             return bytes.IsEmpty()
-                ? ""
+                ? string.Empty
                 : new Base64Codec().Encode(bytes, options);
         }
 

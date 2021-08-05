@@ -3,7 +3,7 @@ using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Base64
 {
-    public partial class Base64Codec : CodecBase
+    public class Base64Codec : CodecBase
     {
         public override ITextDecoder CreateDecoder(CodecOptions? options = null)
         {

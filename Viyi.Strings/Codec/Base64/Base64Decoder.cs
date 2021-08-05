@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
@@ -44,24 +45,30 @@ namespace Viyi.Strings.Codec.Base64
                     DecodeLast2();
                     break;
                 default:
-                    throw new InvalidDataException("invalid base64 data length");
+                    throw new CodecException("invalid base64 data length");
             }
         }
 
         void DecodeBuffer(int count)
         {
             var length = offset + count;
-            if (length < 4) { return; }
-            var rest = length % 4;
+            if (length < 4)
+            {
+                offset += length;
+                return;
+            }
 
-            for (var i = 0; i < length - rest; i += 4)
+            var rest = length % 4;
+            int fixedLength = length - rest;
+
+            for (var i = 0; i < fixedLength; i += 4)
             {
                 Decode(i);
             }
 
             if (rest > 0)
             {
-                Array.Copy(buffer, length - rest, buffer, 0, rest);
+                Array.Copy(buffer, fixedLength, buffer, 0, rest);
                 offset = rest;
             }
         }

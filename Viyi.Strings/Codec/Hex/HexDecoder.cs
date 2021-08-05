@@ -1,4 +1,5 @@
 using System.IO;
+using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
@@ -20,7 +21,7 @@ namespace Viyi.Strings.Codec
         const int HexCodesOffset = 48;
 
         static bool IsValidChar(char ch) =>
-            ch >= 48 && ch <= 102 && ReverseHexCodes[ch] != -1;
+            ch >= 48 && ch <= 102 && ReverseHexCodes[ch - HexCodesOffset] != -1;
 
         public HexDecoder(CodecOptions options) : base(options) { }
 
@@ -35,8 +36,7 @@ namespace Viyi.Strings.Codec
             var writer = new BufferedStream(output);
             var chars = new char[2];
 
-            int readCount;
-            while ((readCount = reader.Read(chars)) == 2)
+            while (reader.Read(chars) == 2)
             {
                 writer.WriteByte(
                     (byte)((ReverseHexCodes[chars[0] - HexCodesOffset] << 4)
