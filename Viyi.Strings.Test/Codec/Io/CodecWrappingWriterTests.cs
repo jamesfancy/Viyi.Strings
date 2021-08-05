@@ -73,7 +73,7 @@ namespace Viyi.Strings.Test.Codec.Io
                     CodecOptions.Create()
                         .SetLineWidth(64)
                         .SetLineEnding(lineEnding)
-                        .CodecOptions
+                        .Build()
                 );
                 writer.Write(s1024);
                 var result = sWriter.ToString();
@@ -93,7 +93,7 @@ namespace Viyi.Strings.Test.Codec.Io
             using var sWriter = new StringWriter();
             CodecWrappingWriter writer = new(
                 sWriter,
-                CodecOptions.Create().SetLineWidth(wrapWidth).CodecOptions
+                CodecOptions.Create().SetLineWidth(wrapWidth).Build()
             );
             writer.Write(s10);
 

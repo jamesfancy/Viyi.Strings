@@ -4,7 +4,12 @@ namespace Viyi.Strings.Codec.Options
     {
         public class Builder
         {
-            public CodecOptions CodecOptions { get; }
+            private readonly CodecOptions codecOptions;
+
+            public CodecOptions Build()
+            {
+                return Clone(this.codecOptions);
+            }
 
             private static CodecOptions Clone(CodecOptions proto)
             {
@@ -12,37 +17,47 @@ namespace Viyi.Strings.Codec.Options
                 {
                     LineWidth = proto.LineWidth,
                     LineEnding = proto.LineEnding,
+                    UpperCase = proto.UpperCase,
                 };
             }
 
             internal Builder(CodecOptions? proto = null)
             {
-                CodecOptions = proto == null
-                     ? Default
+                codecOptions = proto == null
+                     ? createDefaultOptions()
                      : Clone(proto);
+
+                // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
+                // 没有 `DefaultCreator` 的时候，
+                // createDefaultOptioss() 始终产生新的对象，
+                // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
+                static CodecOptions createDefaultOptions()
+                {
+                    return DefaultCreator?.Invoke() ?? new CodecOptions();
+                }
             }
 
             public Builder SetLineWidth(int value)
             {
-                CodecOptions.LineWidth = value < 0 ? NoLineWidth : value;
+                codecOptions.LineWidth = value < 0 ? NoLineWidth : value;
                 return this;
             }
 
             public Builder SetLineEnding(LineEndings value)
             {
-                CodecOptions.LineEnding = value;
+                codecOptions.LineEnding = value;
                 return this;
             }
 
             public Builder UseUpperCase(bool upperCase = true)
             {
-                CodecOptions.UpperCase = upperCase;
+                codecOptions.UpperCase = upperCase;
                 return this;
             }
 
             public Builder UseLowerCase()
             {
-                CodecOptions.UpperCase = false;
+                codecOptions.UpperCase = false;
                 return this;
             }
         }

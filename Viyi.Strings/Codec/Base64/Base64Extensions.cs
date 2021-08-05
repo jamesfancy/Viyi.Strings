@@ -23,7 +23,7 @@ namespace Viyi.Strings.Codec.Base64
         {
             return EncodeBase64(
                 bytes,
-                CodecOptions.Create().SetLineWidth(lineWidth).CodecOptions
+                CodecOptions.Create().SetLineWidth(lineWidth).Build()
             );
         }
 

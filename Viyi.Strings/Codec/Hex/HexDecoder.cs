@@ -5,7 +5,6 @@ using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec
 {
-
     internal class HexDecoder : TextDecoder
     {
         static readonly int[] ReverseHexCodes =

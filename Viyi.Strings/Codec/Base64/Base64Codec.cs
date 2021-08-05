@@ -7,12 +7,12 @@ namespace Viyi.Strings.Codec.Base64
     {
         public override ITextDecoder CreateDecoder(CodecOptions? options = null)
         {
-            return new Base64Decoder(options ?? CodecOptions.Default);
+            return new Base64Decoder(options ?? CodecOptions.CreateDefault());
         }
 
         public override ITextEncoder CreateEncoder(CodecOptions? options = null)
         {
-            return new Base64Encoder(options ?? CodecOptions.Default);
+            return new Base64Encoder(options ?? CodecOptions.CreateDefault());
         }
     }
 }
