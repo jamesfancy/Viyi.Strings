@@ -5,20 +5,12 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <FileVersion>1.0.0</FileVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
     <Authors>James Fan</Authors>
-    <Version>1.0.0-alpha1</Version>
+    <Version>1.0.1</Version>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <SignAssembly>False</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\keypair.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
