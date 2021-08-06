@@ -108,7 +108,7 @@ public sealed class CodecOptions {
 > - `string EncodeHex(this byte[] bytes, bool upperCase)`
 > - `string EncodeHex(this byte[] bytes, bool upperCase, bool lineBreak)`
 
-将字符串数组编码为十六进制字符串，`lineBreak` 为 `true` 时字符串会按每行 `76` 个字符进行折行处理，行结束符是默认的 `Lf`。不管最后一行是否满行，末尾均不会添加行结束符。`upperCase` 可以指定是否使用大写的  `A~F`。
+将字符串数组编码为十六进制字符串，`lineBreak` 为 `true` 时字符串会按每行 `64` 个字符进行折行处理，行结束符是默认的 `Lf`。不管最后一行是否满行，末尾均不会添加行结束符。`upperCase` 可以指定是否使用大写的  `A~F`。
 
 #### 2.4.3. `string EncodeHex(this byte[] bytes, bool upperCase, int lineWidth)`
 
@@ -165,13 +165,15 @@ public interface ITextDecoder
 - `void Register(string name, Func<ITextCodec> factory)`
 - `void Unregister(string name)`
 - `bool IsRegistered(string name)`
-- `ITextCodec? Create(string name)`
+- `IEnumerable<string> GetRegistered()`，获取所有已注册编/解码器的名称
+- `ITextCodec? CreateOrNull(string name)`，`name` 无效时返回 `null`
+- `ITextCodec Create(string name)`，`name` 无效时抛出 [`ArgumentNullException`][argumentnullexception]或 [`NotSupportedException`](notsupportedexception)。
 
 注册中心不区分名称的大小写。若对同一个名称（不区分大小写）注册多个 `ITextCodec`，最后一个覆盖掉之前的注册，成为该名称在册的唯一编/解码器。
 
 #### 2.5.5. 通用编/解码扩展方法
 
-通用编/解码扩展方法会根据名称在注册中心查找对应名称的编/解码器 (`ITextCodec`)，创建其实例来进行编/解码。如果没找到注册的 `ITextCodec`，会尝试通过 [`System.Text.Encoding.GetEncoding(name)`](https://docs.microsoft.com/dotnet/api/system.text.encoding.getencoding) 来获取基于 Code Page 的 `Encoding` 对象来进行编/解码。如果仍然未找到，则抛出 [`ArgumentException`](https://docs.microsoft.com/dotnet/api/system.argumentexception) 或 [`NotSupportedException`](https://docs.microsoft.com/dotnet/api/system.notsupportedexception)
+通用编/解码扩展方法会根据名称在注册中心查找对应名称的编/解码器 (`ITextCodec`)，创建其实例来进行编/解码。如果没找到注册的 `ITextCodec`，会尝试通过 [`System.Text.Encoding.GetEncoding(name)`](https://docs.microsoft.com/dotnet/api/system.text.encoding.getencoding) 来获取基于 Code Page 的 `Encoding` 对象来进行编/解码。如果仍然未找到，则抛出 [`ArgumentException`][argumentexception] 或 [`NotSupportedException`][notsupportedexception]
 
 - `string Encode(this byte[] bytes, string encoding)`
 - `byte[] Decode(this string? str, string encoding)`
@@ -183,10 +185,16 @@ public interface ITextDecoder
 - `string EncodeUtf8(this byte[] bytes)`
 - `byte[] DecodeUtf8(this string? str)`
 
-## 支持和贡献
+## 3. 支持和贡献
 
 如果您有新的想法或者发现 BUG，请在 [Issue](https://gitee.com/jamesfancy/viyi-strings/issues) 系统中提出来，经过讨论之后确定是否添加/修改，以及如何进行。
 
 如果您愿意贡献代码，请 Fork 本库，从 `develop` 分支创建功能/BUG/任务分支，根据 Issue 修改之后，向 `develop` 分支提起 PR。
 
 非常感谢各位的支持和贡献！
+
+
+
+[argumentnullexception]: https://docs.microsoft.com/dotnet/api/system.argumentnullexception "ArgumentNullException"
+[argumentexception]: https://docs.microsoft.com/dotnet/api/system.argumentexception	" ArgumentException"
+[notsupportedexception]: https://docs.microsoft.com/dotnet/api/system.notsupportedexception	"NotSupportedException"
