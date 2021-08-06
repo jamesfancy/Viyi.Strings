@@ -1,5 +1,4 @@
 using System.Text;
-using Viyi.Strings.Codec.Abstract;
 
 namespace Viyi.Strings.Codec.Extensions
 {
@@ -12,7 +11,7 @@ namespace Viyi.Strings.Codec.Extensions
         {
             if (IsEmpty(bytes)) { return string.Empty; }
 
-            var codec = TextCodec.Find(encoding);
+            var codec = TextCodec.CreateOrNull(encoding);
             if (codec != null)
             {
                 return codec.Encode(bytes);
