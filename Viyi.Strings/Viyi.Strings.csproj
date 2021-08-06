@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
+    <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
+    <Authors>James Fan</Authors>
+    <Version>1.0.1</Version>
+    <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>
