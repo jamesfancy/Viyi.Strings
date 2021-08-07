@@ -6,27 +6,22 @@ using System.Text;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Test.Toolkit;
 
-namespace Viyi.Strings.Test.Codec.Io
-{
+namespace Viyi.Strings.Test.Codec.Io {
     [TestClass]
-    public class BufferedReaderTests
-    {
+    public class BufferedReaderTests {
         readonly Random random = new();
 
-        readonly int[] cases = new[]
-            {
-                0, 1,
-                63, 64, 65,
-                4095, 4096, 4097,
-            };
+        readonly int[] cases = new[] {
+            0, 1,
+            63, 64, 65,
+            4095, 4096, 4097,
+        };
 
         [TestMethod]
-        public void TestReadJustBufferSize()
-        {
+        public void TestReadJustBufferSize() {
             cases.ForEach(n => test(n));
 
-            void test(int length)
-            {
+            void test(int length) {
                 Trace.WriteLine($"[TestReadJustBufferSize] with length {length}");
                 var buffer = new char[64];
 
@@ -37,8 +32,7 @@ namespace Viyi.Strings.Test.Codec.Io
 
                 int count;
                 var builder = new StringBuilder();
-                while ((count = reader.Read(buffer)) > 0)
-                {
+                while ((count = reader.Read(buffer)) > 0) {
                     builder.Append(buffer, 0, count);
                 }
 
@@ -47,10 +41,8 @@ namespace Viyi.Strings.Test.Codec.Io
         }
 
         [TestMethod]
-        public void TestSmallBufferSize()
-        {
-            cases.ForEach(length =>
-            {
+        public void TestSmallBufferSize() {
+            cases.ForEach(length => {
                 var expect = random.RandomString(length);
                 using var sReader = new StringReader(expect);
                 var reader = new BufferedReader(sReader, 64);
@@ -58,8 +50,7 @@ namespace Viyi.Strings.Test.Codec.Io
                 int count;
                 var buffer = new char[1024];
                 var builder = new StringBuilder();
-                while ((count = reader.Read(buffer)) > 0)
-                {
+                while ((count = reader.Read(buffer)) > 0) {
                     builder.Append(buffer, 0, count);
                 }
 
@@ -68,10 +59,8 @@ namespace Viyi.Strings.Test.Codec.Io
         }
 
         [TestMethod]
-        public void TestLargeBufferSize()
-        {
-            cases.ForEach(length =>
-            {
+        public void TestLargeBufferSize() {
+            cases.ForEach(length => {
                 var expect = random.RandomString(length);
                 using var sReader = new StringReader(expect);
                 var reader = new BufferedReader(sReader);
@@ -79,8 +68,7 @@ namespace Viyi.Strings.Test.Codec.Io
                 int count;
                 var buffer = new char[24];
                 var builder = new StringBuilder();
-                while ((count = reader.Read(buffer)) > 0)
-                {
+                while ((count = reader.Read(buffer)) > 0) {
                     builder.Append(buffer, 0, count);
                 }
 

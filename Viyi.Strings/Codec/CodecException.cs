@@ -1,9 +1,7 @@
 using System;
 
-namespace Viyi.Strings.Codec
-{
-    public class CodecException : Exception
-    {
+namespace Viyi.Strings.Codec {
+    public class CodecException : Exception {
         public CodecException() { }
 
         public CodecException(string message) : base(message) { }

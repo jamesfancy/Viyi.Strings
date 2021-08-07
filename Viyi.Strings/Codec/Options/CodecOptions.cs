@@ -1,17 +1,14 @@
 using System;
 
-namespace Viyi.Strings.Codec.Options
-{
-    public enum LineEndings
-    {
+namespace Viyi.Strings.Codec.Options {
+    public enum LineEndings {
         ByEnvironment,
         Lf,
         Crlf,
         Cr,
     }
 
-    public sealed partial class CodecOptions : IEquatable<CodecOptions>
-    {
+    public sealed partial class CodecOptions : IEquatable<CodecOptions> {
         public const int NoLineWidth = 0;
 
         public static Func<CodecOptions>? DefaultCreator { get; set; }
@@ -25,8 +22,7 @@ namespace Viyi.Strings.Codec.Options
         /// 由 DefaultCreator 创建的默认配置。
         /// 如果没有指定 DefaultCreator，会使用预定义的默认配置。
         /// </summary>
-        public static CodecOptions CreateDefault()
-        {
+        public static CodecOptions CreateDefault() {
             return DefaultCreator?.Invoke() ?? Default;
         }
 
@@ -35,10 +31,8 @@ namespace Viyi.Strings.Codec.Options
         public static Builder Create() => new();
         public static Builder Create(CodecOptions prototype) => new(prototype);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
+        public override int GetHashCode() {
+            unchecked {
                 int hash = 19;
                 hash = hash * 113 + LineWidth;
                 hash = hash * 113 + (int)LineEnding;
@@ -47,16 +41,14 @@ namespace Viyi.Strings.Codec.Options
             }
         }
 
-        public override bool Equals(object? obj)
-        {
+        public override bool Equals(object? obj) {
             if (ReferenceEquals(obj, this)) { return true; }
 
             var opts = obj as CodecOptions;
             return Equals(opts);
         }
 
-        public bool Equals(CodecOptions? other)
-        {
+        public bool Equals(CodecOptions? other) {
             if (other == null) { return false; }
             return LineWidth == other.LineWidth
                 && LineEnding == other.LineEnding

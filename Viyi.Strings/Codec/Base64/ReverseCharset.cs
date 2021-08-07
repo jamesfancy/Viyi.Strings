@@ -1,10 +1,8 @@
-namespace Viyi.Strings.Codec.Base64
-{
-    static class ReverseCharset
-    {
+namespace Viyi.Strings.Codec.Base64 {
+    static class ReverseCharset {
         public const int Offset = 43;
-        public static readonly int[] Codes =
-        {                                               // ASCII offset 43
+        public static readonly int[] Codes = {
+                                                        // ASCII offset 43
             62, 0xff, 0xff, 0xff, 63,                   // [+~/] 43~47 (count 5)
             52, 53, 54, 55, 56, 57, 58, 59, 60, 61,     // [0~9] 48~57 (count 10)
             0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,   // ASCII 58~64 (count 7)

@@ -2,16 +2,12 @@ using System;
 using System.IO;
 
 #if NET5_0_OR_GREATER
-namespace Viyi.Strings.Codec.Io
-{
-    public partial class CodecWrappingWriter
-    {
-        class StringCharSequence : CharSequance
-        {
+namespace Viyi.Strings.Codec.Io {
+    public partial class CodecWrappingWriter {
+        class StringCharSequence : CharSequance {
             readonly string source;
 
-            public StringCharSequence(string data) : base(0, data.Length)
-            {
+            public StringCharSequence(string data) : base(0, data.Length) {
                 source = data;
             }
 

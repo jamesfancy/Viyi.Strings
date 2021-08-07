@@ -15,6 +15,9 @@ indent_size = 2
 trim_trailing_whitespace = false
 
 [*.cs]
+csharp_new_line_before_open_brace = none
+csharp_new_line_before_else = true
+
 dotnet_style_qualification_for_field = true
 dotnet_style_qualification_for_property = true
 dotnet_style_qualification_for_method = true
@@ -22,3 +25,6 @@ dotnet_style_qualification_for_event = true
 
 # RCS1018: Add accessibility modifiers (or vice versa).
 dotnet_diagnostic.RCS1018.severity = none
+
+# RCS1123: Add parentheses when necessary.
+dotnet_diagnostic.RCS1123.severity = none

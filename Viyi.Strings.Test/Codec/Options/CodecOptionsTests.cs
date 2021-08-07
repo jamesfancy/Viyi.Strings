@@ -1,14 +1,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Test.Codec.Options
-{
+namespace Viyi.Strings.Test.Codec.Options {
     [TestClass]
-    public class CodecOptionsTests
-    {
+    public class CodecOptionsTests {
         [TestMethod]
-        public void TestCloneDefault()
-        {
+        public void TestCloneDefault() {
             areNotEqual(
                 CodecOptions.Default,
                 CodecOptions.Create()
@@ -27,19 +24,17 @@ namespace Viyi.Strings.Test.Codec.Options
                     .Build()
             );
 
-            static void areNotEqual(CodecOptions source, CodecOptions target)
-            {
+            static void areNotEqual(CodecOptions source, CodecOptions target) {
                 Assert.AreNotEqual(source, target);
             }
         }
 
         [TestMethod]
-        public void TestCreateMore()
-        {
+        public void TestCreateMore() {
             var bulder = CodecOptions.Create()
-                    .SetLineWidth(99)
-                    .SetLineEnding(LineEndings.Cr)
-                    .UseUpperCase();
+                .SetLineWidth(99)
+                .SetLineEnding(LineEndings.Cr)
+                .UseUpperCase();
 
             var opts1 = bulder.Build();
             var opts2 = bulder.Build();
@@ -49,8 +44,7 @@ namespace Viyi.Strings.Test.Codec.Options
         }
 
         [TestMethod]
-        public void TestNonNegativeLineWidth()
-        {
+        public void TestNonNegativeLineWidth() {
             var opts = CodecOptions.Create().SetLineWidth(-1).Build();
             Assert.AreEqual(0, opts.LineWidth);
         }

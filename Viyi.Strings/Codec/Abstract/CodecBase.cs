@@ -1,9 +1,7 @@
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Abstract
-{
-    public abstract class CodecBase : ITextCodec
-    {
+namespace Viyi.Strings.Codec.Abstract {
+    public abstract class CodecBase : ITextCodec {
         public abstract ITextDecoder CreateDecoder(CodecOptions? options = null);
         public abstract ITextEncoder CreateEncoder(CodecOptions? options = null);
 
