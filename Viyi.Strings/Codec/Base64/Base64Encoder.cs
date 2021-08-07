@@ -2,10 +2,8 @@ using System.IO;
 using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 
-namespace Viyi.Strings.Codec.Base64
-{
-    sealed class Base64Encoder : TextEncoder
-    {
+namespace Viyi.Strings.Codec.Base64 {
+    sealed class Base64Encoder : TextEncoder {
         static readonly char[] Base64Chars = {
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
             'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -16,14 +14,12 @@ namespace Viyi.Strings.Codec.Base64
 
         public Base64Encoder(Options.CodecOptions options) : base(options) { }
 
-        protected override void Encode(ICodecTextWriter writer, Stream input)
-        {
+        protected override void Encode(ICodecTextWriter writer, Stream input) {
             byte[] buffer = new byte[3];
             char[] chars = new char[4];
 
             int readCount;
-            while ((readCount = input.Read(buffer, 0, 3)) == 3)
-            {
+            while ((readCount = input.Read(buffer, 0, 3)) == 3) {
                 int combo = buffer[0] << 16 | buffer[1] << 8 | buffer[2];
                 chars[0] = Base64Chars[combo >> 18];
                 chars[1] = Base64Chars[combo >> 12 & 0x3f];
@@ -34,10 +30,8 @@ namespace Viyi.Strings.Codec.Base64
 
             writeRest();
 
-            void writeRest()
-            {
-                switch (readCount)
-                {
+            void writeRest() {
+                switch (readCount) {
                     case 2:
                         encodeLast2(chars, buffer[0], buffer[1]);
                         // should write later
@@ -55,8 +49,7 @@ namespace Viyi.Strings.Codec.Base64
                 writer.Write(chars);
             }
 
-            void encodeLast2(char[] chars, byte b1, byte b2)
-            {
+            void encodeLast2(char[] chars, byte b1, byte b2) {
                 int combo = b1 << 8 | b2;
                 chars[0] = Base64Chars[combo >> 10];
                 chars[1] = Base64Chars[combo >> 4 & 0x3f];
@@ -64,8 +57,7 @@ namespace Viyi.Strings.Codec.Base64
                 chars[3] = Base64Chars[64];
             }
 
-            void encodeLast1(char[] chars, byte b1)
-            {
+            void encodeLast1(char[] chars, byte b1) {
                 chars[0] = Base64Chars[b1 >> 2];
                 chars[1] = Base64Chars[b1 << 4 & 0x3f];
                 chars[2] = Base64Chars[64];

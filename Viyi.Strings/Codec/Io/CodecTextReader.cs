@@ -1,15 +1,12 @@
 using System.IO;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Io
-{
-    public class CodecTextReader : CodecAccessor, ICodecTextReader
-    {
+namespace Viyi.Strings.Codec.Io {
+    public class CodecTextReader : CodecAccessor, ICodecTextReader {
         protected TextReader Reader { get; }
 
         public CodecTextReader(TextReader reader, CodecOptions? options = null)
-            : base(options)
-        {
+            : base(options) {
             this.Reader = reader;
         }
 

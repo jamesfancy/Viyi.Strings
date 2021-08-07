@@ -1,15 +1,12 @@
 using System.IO;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Io
-{
-    public class CodecTextWriter : CodecAccessor, ICodecTextWriter
-    {
+namespace Viyi.Strings.Codec.Io {
+    public class CodecTextWriter : CodecAccessor, ICodecTextWriter {
         protected TextWriter Writer { get; }
 
         public CodecTextWriter(TextWriter writer, CodecOptions? options = null)
-            : base(options)
-        {
+            : base(options) {
             this.Writer = writer;
         }
 

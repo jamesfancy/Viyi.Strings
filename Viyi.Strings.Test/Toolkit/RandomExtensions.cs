@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
 
-namespace Viyi.Strings.Test.Toolkit
-{
-    static class RandomExtensions
-    {
+namespace Viyi.Strings.Test.Toolkit {
+    static class RandomExtensions {
         static readonly char[] LOWER_LETTERS = Enumerable.Range('a', 26).Select(n => (char)n).ToArray();
         static readonly char[] UPPER_LETTERS = Enumerable.Range('A', 26).Select(n => (char)n).ToArray();
         static readonly char[] NUMBERS = Enumerable.Range('0', 10).Select(n => (char)n).ToArray();
@@ -15,13 +13,11 @@ namespace Viyi.Strings.Test.Toolkit
             .Union("ABCDEF".ToCharArray())
             .ToArray();
 
-        public static string RandomString(this Random random, int length, char[]? charset = null)
-        {
+        public static string RandomString(this Random random, int length, char[]? charset = null) {
             charset ??= BASE62_CHARS;
             int count = charset.Length;
             char[] buffer = new char[length];
-            for (int i = 0; i < length; i++)
-            {
+            for (int i = 0; i < length; i++) {
                 buffer[i] = charset[random.Next(count)];
             }
 
@@ -34,8 +30,7 @@ namespace Viyi.Strings.Test.Toolkit
         public static string RandomHex(this Random random, int length) =>
             RandomString(random, length, HEX_CHARS);
 
-        public static byte[] RandomBytes(this Random random, int length)
-        {
+        public static byte[] RandomBytes(this Random random, int length) {
             byte[] buffer = new byte[length];
             random.NextBytes(buffer);
             return buffer;

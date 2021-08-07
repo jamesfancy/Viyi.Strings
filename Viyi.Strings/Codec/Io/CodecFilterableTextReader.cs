@@ -4,18 +4,15 @@ using System.Text;
 using System.Linq;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Io
-{
-    public class CodecFilterableTextReader : CodecTextReader
-    {
+namespace Viyi.Strings.Codec.Io {
+    public class CodecFilterableTextReader : CodecTextReader {
         readonly Func<char, bool> filter;
 
         public CodecFilterableTextReader(
             TextReader reader,
             CodecOptions options,
             Func<char, bool> filter)
-            : base(reader, options)
-        {
+            : base(reader, options) {
             this.filter = filter;
         }
 
@@ -31,11 +28,9 @@ namespace Viyi.Strings.Codec.Io
         /// 返回读得的字符数。返回值为 0 表示读完，非 0 表示可能还有数据。
         /// 注意：返回值很多时候可能会小于 count，但这并不表示已经读完所有数据。
         /// </returns>
-        public override int Read(char[] buffer, int start, int count)
-        {
+        public override int Read(char[] buffer, int start, int count) {
             int validCount = 0;
-            while (validCount == 0)
-            {
+            while (validCount == 0) {
                 var readCount = Reader.Read(buffer, start, count);
                 if (readCount == 0) { return 0; }
 
@@ -45,41 +40,34 @@ namespace Viyi.Strings.Codec.Io
             return validCount;
         }
 
-        public override int Read(char[] buffer)
-        {
+        public override int Read(char[] buffer) {
             return Read(buffer, 0, buffer.Length);
         }
 
-        public override string? ReadLine()
-        {
+        public override string? ReadLine() {
             var line = Reader.ReadLine();
             if (line == null) { return null; }
             return FilterCharsInString(filter, line);
         }
 
-        public override string ReadAll()
-        {
+        public override string ReadAll() {
             return FilterCharsInString(filter, Reader.ReadToEnd())!;
         }
 
-        private static string FilterCharsInString(Func<char, bool> filter, string s)
-        {
+        private static string FilterCharsInString(Func<char, bool> filter, string s) {
             if (s.All(filter)) { return s; }
 
             const int THRESHOLD = 1024;
 
-            if (s.Length < THRESHOLD)
-            {
+            if (s.Length < THRESHOLD) {
                 char[] buffer = s.ToCharArray();
                 int count = FilterCharsBuffer(filter, buffer, 0, buffer.Length);
                 return new string(buffer, 0, count);
             }
-            else
-            {
+            else {
                 StringBuilder builder = new StringBuilder(THRESHOLD);
                 char[] buffer = new char[THRESHOLD];
-                for (int i = 0; i < s.Length; i += THRESHOLD)
-                {
+                for (int i = 0; i < s.Length; i += THRESHOLD) {
                     var length = Math.Min(THRESHOLD, s.Length - i);
                     s.CopyTo(i, buffer, 0, length);
                     var count = FilterCharsBuffer(filter, buffer, 0, length);
@@ -91,8 +79,7 @@ namespace Viyi.Strings.Codec.Io
 
         private static int FilterCharsBuffer(
             Func<char, bool> filter,
-            char[] buffer, int start, int length)
-        {
+            char[] buffer, int start, int length) {
             // 记录已经越过的连续有效字符数
             int validCount = 0;
             // 记录已经越过的连续无效字符数
@@ -100,19 +87,15 @@ namespace Viyi.Strings.Codec.Io
             // 已核对指针，在此之前的所有缓存区数据均为有效
             int finishIndex = start;
 
-            for (var i = start; i < length; i++)
-            {
-                if (filter(buffer[i]))
-                {
+            for (var i = start; i < length; i++) {
+                if (filter(buffer[i])) {
                     // 有效字符只需要计数
                     validCount++;
                 }
-                else
-                {
+                else {
                     // 遇到无效字符需要判断是否需要核实越过的有效字符，
                     // 根据情况往前挪
-                    if (validCount > 0)
-                    {
+                    if (validCount > 0) {
                         collateValidChars();
                     }
                     invalidCount++;
@@ -123,8 +106,7 @@ namespace Viyi.Strings.Codec.Io
             if (validCount > 0) { collateValidChars(); }
             return finishIndex - start;
 
-            void collateValidChars()
-            {
+            void collateValidChars() {
                 // 只有在遇到无效字符的时候才需要对之前的区域进行处理。
                 // 此时 validCount 记录了之前的有效字符区域大小。
                 // 检查，❶ 如果存在无效区域记录，说明需要移动，
@@ -135,16 +117,14 @@ namespace Viyi.Strings.Codec.Io
                 // 直接改变已核对指针 finishCount
 
                 // 如果有无效区域，进行移动。移动会改变已完成指针
-                if (invalidCount > 0)
-                {
+                if (invalidCount > 0) {
                     Array.Copy(
                         buffer, finishIndex + invalidCount,
                         buffer, finishIndex,
                         validCount);
                     finishIndex += validCount;
                 }
-                else
-                {
+                else {
                     finishIndex = validCount;
                 }
 
