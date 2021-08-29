@@ -6,6 +6,10 @@ using Viyi.Strings.Codec.Base64;
 namespace Viyi.Strings.Codec {
     public static class TextCodec {
         static readonly Dictionary<string, Func<ITextCodec>> factories;
+        static readonly LazyStorage storage = new();
+
+        public static Base64Codec Base64 => storage.base64 ??= new();
+        public static HexCodec Hex => storage.hex ??= new();
 
         static TextCodec() {
             factories = new(StringComparer.OrdinalIgnoreCase) {
@@ -56,5 +60,11 @@ namespace Viyi.Strings.Codec {
             factories[name] = factory;
 
         public static void Unregister(string name) => factories.Remove(name);
+
+        class LazyStorage {
+            internal Base64Codec? base64;
+            internal HexCodec? hex;
+        }
+
     }
 }
