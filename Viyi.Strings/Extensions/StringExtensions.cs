@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Viyi.Strings.Extensions {
-    public static class StringExtensions {
+    public static partial class StringExtensions {
         /// <summary>
         /// 扩展方法。将一个字符串重复 count 次组成的新字符串。
         /// 如果当前字符串是 null，不管重复多少次都将得到 ""。
