@@ -3,13 +3,19 @@ using System.Linq;
 
 namespace Viyi.Strings.Extensions {
     public static class StringExtensions {
-        public static string Repeat(this string str, int count) {
+        /// <summary>
+        /// 扩展方法。将一个字符串重复 count 次组成的新字符串。
+        /// 如果当前字符串是 null，不管重复多少次都将得到 ""。
+        /// 需要在输入字符串是 null 的时候得到 null，请使用可空链调用运算符 (?.)
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static string Repeat(this string? str, int count) {
             return Enumerable.Repeat(str, count).ConcatString();
         }
 
-        public static string Repeat(this char ch, int count) {
-            return new string(ch, count);
-        }
+        public static string Repeat(this char ch, int count) => new(ch, count);
 
         /// <summary>
         /// 扩展方法。如果当前字符串是 null 或者空字符串 ("")，则返回指定值；

@@ -28,5 +28,14 @@ namespace Viyi.Strings.Extensions.Tests {
             Assert.AreEqual(specifiedValue, SpacesWithTabs.SpacesAs(specifiedValue));
             Assert.AreEqual(specifiedValue, SpacesWithLineBreaks.SpacesAs(specifiedValue));
         }
+
+        [TestMethod()]
+        public void RepeatTest() {
+            Assert.AreEqual("aaaaaa", "a".Repeat(6));
+            Assert.AreEqual("aaaaaa", 'a'.Repeat(6));
+            Assert.AreEqual("HelloHelloHello", "Hello".Repeat(3));
+            Assert.AreEqual("", (null as string).Repeat(6));
+            Assert.IsNull((null as string)?.Repeat(3));
+        }
     }
 }
