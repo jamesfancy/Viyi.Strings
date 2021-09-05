@@ -12,7 +12,7 @@ namespace Viyi.Strings.Extensions {
         /// <param name="str"></param>
         /// <returns></returns>
         public static bool ToBoolean(this string? str) {
-            return !str.EmptyAs("false").Equals("false", BoolComparison);
+            return !str.EmptyAs("false")!.Equals("false", BoolComparison);
         }
 
         /// <summary>

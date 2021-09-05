@@ -9,7 +9,9 @@ namespace Viyi.Strings.CaseConverters {
             this.convert = convert ?? throw new ArgumentNullException(nameof(convert));
         }
 
+#if NET5_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
+#endif
         public string? Convert(string? value) => convert(value);
     }
 }

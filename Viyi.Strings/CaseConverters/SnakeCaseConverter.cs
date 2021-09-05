@@ -8,7 +8,7 @@ namespace Viyi.Strings.CaseConverters {
         public string? Convert(string? value) {
             if (string.IsNullOrEmpty(value)) { return value; }
 
-            return value.ToTransitionString("_")
+            return value!.ToTransitionString("_")
                 .ReduceSpliters("_")
                 .TrimStart('_');
         }

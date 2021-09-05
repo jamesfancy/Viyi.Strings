@@ -33,7 +33,7 @@ namespace Viyi.Strings.CaseConverters {
             if (string.IsNullOrEmpty(value)) { return value; }
 
             return WordStartWithPrefix.Replace(
-                value.ToTransitionString(),
+                value!.ToTransitionString(),
                 m => m.Groups[1].Value.ToUpper()
             );
         }
@@ -44,7 +44,7 @@ namespace Viyi.Strings.CaseConverters {
         public static string? ToKebabCase(string? value) {
             if (string.IsNullOrEmpty(value)) { return value; }
 
-            return value.ToTransitionString("-")
+            return value!.ToTransitionString("-")
                 .ReduceSpliters("-")
                 .TrimStart('-');
         }
