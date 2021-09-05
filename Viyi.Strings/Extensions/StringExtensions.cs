@@ -42,5 +42,25 @@ namespace Viyi.Strings.Extensions {
         public static string? SpacesAs(this string? str, string? value) {
             return string.IsNullOrWhiteSpace(str) ? value : str;
         }
+
+        /// <summary>
+        /// 判断是否空字符串，根据 strict 的值来决定判空时是否包括 null。
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="strict">是否严格判断。严格判断时，null 不被认为是空字符串。</param>
+        public static bool IsEmpty([NotNullWhen(false)] this string? str, bool strict = false) =>
+            strict ? str?.Length == 0 : string.IsNullOrEmpty(str);
+
+        /// <summary>
+        /// 判断是否空白字符串，根据 strict 的值来决定判定时是否包含 null 和 string.Empty.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="strict">是否严格判断。严格判断时 null 和 string.Empty 不被认为是空白字符串</param>
+        public static bool IsSpaces([NotNullWhen(false)] this string? str, bool strict = false) {
+            bool isNullOrSpaces = string.IsNullOrWhiteSpace(str);
+            return isNullOrSpaces && strict
+                ? !string.IsNullOrEmpty(str)
+                : isNullOrSpaces;
+        }
     }
 }
