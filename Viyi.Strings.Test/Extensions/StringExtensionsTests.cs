@@ -1,3 +1,4 @@
+using Viyi.Strings.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Viyi.Strings.Test.Toolkit;
 
@@ -107,6 +108,31 @@ namespace Viyi.Strings.Extensions.Tests {
             var valueStringsPredicator = Booleans.CreatePredicator(false, StringsContainsNull);
             StringsContainsNull.ForEach(str => Assert.IsFalse(str.ToBoolean(valueStringsPredicator)));
             TrueStrings.ForEach(str => Assert.IsTrue(str.ToBoolean(valueStringsPredicator)));
+        }
+
+        [TestMethod()]
+        public void IsEmptyAndIsSpacesTest() {
+            // orders
+            // case string,
+            var cases = new (
+                string? value,
+                bool isEmpty, bool isStrictEmpty,
+                bool isSpaces, bool isStrictSpaces
+            )[] {
+                (null, true, false, true, false),
+                ("", true, true, true, false),
+                ("    ", false, false, true, true),
+                ("  a ", false, false, false, false)
+            };
+
+            cases.ForEach(c => {
+                Assert.AreEqual(c.isEmpty, c.value.IsEmpty());
+                Assert.AreEqual(c.isEmpty, c.value.IsEmpty(false));
+                Assert.AreEqual(c.isStrictEmpty, c.value.IsEmpty(true));
+                Assert.AreEqual(c.isSpaces, c.value.IsSpaces());
+                Assert.AreEqual(c.isSpaces, c.value.IsSpaces(false));
+                Assert.AreEqual(c.isStrictSpaces, c.value.IsSpaces(true));
+            });
         }
     }
 }
