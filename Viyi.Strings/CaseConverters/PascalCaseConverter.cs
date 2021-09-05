@@ -1,10 +1,15 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Viyi.Strings.CaseConverters {
     internal sealed class PascalCaseConverter : ICaseConverter {
-        public string Convert(string name) {
-            if (string.IsNullOrWhiteSpace(name)) { return name; }
+#if NET5_0_OR_GREATER
+        [return: NotNullIfNotNull("value")]
+#endif
+        public string? Convert(string? value) {
+            if (string.IsNullOrEmpty(value)) { return value; }
 
-            return RegularExpressions.SplitingRegex.Replace(
-                RegularExpressions.LowerRegex.IsMatch(name) ? name : name.ToLower(),
+            return Toolkit.WordStartWithPrefix.Replace(
+                value.ToTransitionString(),
                 m => m.Groups[1].Value.ToUpper()
             );
         }

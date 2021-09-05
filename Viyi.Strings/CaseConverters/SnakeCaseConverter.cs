@@ -1,12 +1,16 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Viyi.Strings.CaseConverters {
     internal sealed class SnakeCaseConverter : ICaseConverter {
-        public string Convert(string name) {
-            if (string.IsNullOrWhiteSpace(name)) { return name; }
+#if NET5_0_OR_GREATER
+        [return: NotNullIfNotNull("value")]
+#endif
+        public string? Convert(string? value) {
+            if (string.IsNullOrEmpty(value)) { return value; }
 
-            return RegularExpressions.UpperRegex.Replace(
-                RegularExpressions.LowerRegex.IsMatch(name) ? name : name.ToLower(),
-                m => "_" + m.Value
-            ).Replace('-', '_').ToLower();
+            return value.ToTransitionString("_")
+                .ReduceSpliters("_")
+                .TrimStart('_');
         }
     }
 }
