@@ -9,7 +9,7 @@ namespace Viyi.Strings.CaseConverters {
             if (string.IsNullOrEmpty(value)) { return value; }
 
             return Toolkit.WordStartWithPrefix.Replace(
-                value.ToTransitionString(),
+                value!.ToTransitionString(),
                 m => m.Index == 0
                     ? m.Groups[1].Value.ToLower()
                     : m.Groups[1].Value.ToUpper());
