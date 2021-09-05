@@ -12,6 +12,7 @@
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <SignAssembly>True</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
