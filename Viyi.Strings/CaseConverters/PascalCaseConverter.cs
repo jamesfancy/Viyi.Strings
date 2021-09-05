@@ -5,13 +5,6 @@ namespace Viyi.Strings.CaseConverters {
 #if NET5_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
-        public string? Convert(string? value) {
-            if (string.IsNullOrEmpty(value)) { return value; }
-
-            return Toolkit.WordStartWithPrefix.Replace(
-                value.ToTransitionString(),
-                m => m.Groups[1].Value.ToUpper()
-            );
-        }
+        public string? Convert(string? value) => Toolkit.ToPascalCase(value);
     }
 }
