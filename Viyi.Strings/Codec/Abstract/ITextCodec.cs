@@ -1,9 +1,7 @@
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Abstract
-{
-    public interface ITextCodec
-    {
+namespace Viyi.Strings.Codec.Abstract {
+    public interface ITextCodec {
         /// <summary>
         /// 一次性编码所有 data，得到编码结果，适用于内容不是很多的情况
         /// </summary>

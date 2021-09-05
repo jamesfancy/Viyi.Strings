@@ -1,19 +1,15 @@
 using Viyi.Strings.Codec.Extensions;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Hex
-{
-    public static class HexExtensions
-    {
+namespace Viyi.Strings.Codec.Hex {
+    public static class HexExtensions {
         const int DefaultHexLineWidth = 64;
 
-        public static byte[] DecodeHex(this string hex)
-        {
+        public static byte[] DecodeHex(this string hex) {
             return new HexCodec().Decode(hex);
         }
 
-        public static string EncodeHex(this byte[] bytes, CodecOptions? options)
-        {
+        public static string EncodeHex(this byte[] bytes, CodecOptions? options) {
             return bytes.IsEmpty()
                 ? string.Empty
                 : new HexCodec().Encode(bytes, options);
@@ -28,8 +24,7 @@ namespace Viyi.Strings.Codec.Hex
         /// <param name="upperCase">是否以大写字母输出。默认为 false，即小写字母输出。</param>
         /// <param name="lineWidth">默认的换行符是 LF，如果需要使用其他换行符，使用自定义的 CodecOptions。</param>
         /// <returns></returns>
-        public static string EncodeHex(this byte[] bytes, bool upperCase, int lineWidth)
-        {
+        public static string EncodeHex(this byte[] bytes, bool upperCase, int lineWidth) {
             return EncodeHex(
                 bytes,
                 CodecOptions.Create()
@@ -49,8 +44,7 @@ namespace Viyi.Strings.Codec.Hex
         /// 默认换行符为 LF，如果需要使用其他换行符，使用自定义的 CodecOptions。
         /// </param>
         /// <returns></returns>
-        public static string EncodeHex(this byte[] bytes, bool upperCase, bool lineBreak = false)
-        {
+        public static string EncodeHex(this byte[] bytes, bool upperCase, bool lineBreak = false) {
             return EncodeHex(
                 bytes,
                 upperCase,

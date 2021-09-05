@@ -1,12 +1,9 @@
 using System.Diagnostics;
 
-namespace Viyi.Strings.Codec.Io
-{
-    partial class BufferedReader
-    {
+namespace Viyi.Strings.Codec.Io {
+    partial class BufferedReader {
         // 管理 BufferedReader 的内部缓存区
-        sealed class CacheManager
-        {
+        sealed class CacheManager {
             // 缓存空间
             readonly char[] cache;
 
@@ -17,13 +14,11 @@ namespace Viyi.Strings.Codec.Io
 
             public bool HasMore => cacheCount > 0;
 
-            public CacheManager(int capacity = DefaultCapacity)
-            {
+            public CacheManager(int capacity = DefaultCapacity) {
                 cache = new char[capacity];
             }
 
-            public int FromReader(ICodecTextReader reader)
-            {
+            public int FromReader(ICodecTextReader reader) {
                 // 每次从 reader 读取数据都应该是缓冲区空的时候（外部逻辑保证）
                 Debug.Assert(cacheCount == 0 && cacheOffset == 0);
                 int count = reader.Read(cache);
@@ -31,20 +26,17 @@ namespace Viyi.Strings.Codec.Io
                 return count;
             }
 
-            public int ToWriter(BufferWriter writer)
-            {
+            public int ToWriter(BufferWriter writer) {
                 int writeCount = writer.WriteFromCache(cache, cacheOffset, cacheCount);
                 UseChars(writeCount);
                 return writeCount;
             }
 
-            void AddChars(int count)
-            {
+            void AddChars(int count) {
                 cacheCount += count;
             }
 
-            void UseChars(int count)
-            {
+            void UseChars(int count) {
                 cacheCount -= count;
                 cacheOffset = cacheCount <= 0 ? 0 : cacheOffset + count;
             }
