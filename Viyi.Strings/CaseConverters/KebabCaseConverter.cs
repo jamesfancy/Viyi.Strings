@@ -5,12 +5,6 @@ namespace Viyi.Strings.CaseConverters {
 #if NET5_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
-        public string? Convert(string? value) {
-            if (string.IsNullOrEmpty(value)) { return value; }
-
-            return value.ToTransitionString("-")
-                .ReduceSpliters("-")
-                .TrimStart('-');
-        }
+        public string? Convert(string? value) => Toolkit.ToKebabCase(value);
     }
 }

@@ -1,7 +1,9 @@
+using Viyi.Strings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Viyi.Strings.CaseConverters;
 using Viyi.Strings.Test.Toolkit;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Viyi.Strings.Tests {
     [TestClass()]
@@ -83,6 +85,30 @@ namespace Viyi.Strings.Tests {
                 Assert.AreEqual(expect, converter.Convert(origin));
                 Assert.AreEqual(expect, convert(origin));
             });
+        }
+
+        [TestMethod()]
+        public void RegisterTest() {
+            Assert.ThrowsException<InvalidOperationException>(() => {
+                CaseConvert.Register("camel", s => s?.ToLower());
+            });
+            Assert.IsFalse(CaseConvert.Register("camel", s => s?.ToLower(), false, true));
+            CaseConvert.Register("camel", s => s?.ToLower(), true);
+            const string? theCase = "HTTPClient";
+            Assert.AreEqual("httpClient", theCase.CamelCase());
+            Assert.AreEqual("httpclient", theCase.CaseTo("camel"));
+
+            Assert.ThrowsException<NotSupportedException>(() => theCase.CaseTo("unknown"));
+
+            CaseConvert.Register("sentence", new MyCaseConverter());
+            Assert.AreEqual("hello world", "HelloWorld".CaseTo("sentence"));
+        }
+
+        class MyCaseConverter : ICaseConverter {
+            [return: NotNullIfNotNull("value")]
+            public string? Convert(string? value) {
+                return Toolkit.ToKebabCase(value)?.Replace("-", " ");
+            }
         }
     }
 }

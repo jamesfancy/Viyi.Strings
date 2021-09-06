@@ -1,28 +1,52 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Viyi.Strings.CaseConverters {
-    static class Toolkit {
-        public static readonly Regex SplitingRegex = new(
+    public static class Toolkit {
+        internal static readonly Regex SplitingRegex = new(
             @"[-_\s]+",
             RegexOptions.ECMAScript
         );
 
-        public static readonly Regex WordStartRegex = new(
+        internal static readonly Regex WordStartRegex = new(
             "[A-Z][a-z]|[A-Z]+(?![a-z])",
             RegexOptions.ECMAScript
         );
 
-        public static readonly Regex WordStartWithPrefix = new(
+        internal static readonly Regex WordStartWithPrefix = new(
             @"(?:^|[-_\s])+([a-z])",
             RegexOptions.ECMAScript
         );
 
-        public static string ToTransitionString(this string str, string prefix = "-") {
+        internal static string ToTransitionString(this string str, string prefix = "-") {
             return WordStartRegex.Replace(str, m => $"{prefix}{m.Groups[0]}").ToLower();
         }
 
-        public static string ReduceSpliters(this string str, string spliter = "-") {
+        internal static string ReduceSpliters(this string str, string spliter = "-") {
             return SplitingRegex.Replace(str, spliter);
+        }
+
+#if NET5_0_OR_GREATER
+        [return: NotNullIfNotNull("value")]
+#endif
+        public static string? ToPascalCase(string? value) {
+            if (string.IsNullOrEmpty(value)) { return value; }
+
+            return WordStartWithPrefix.Replace(
+                value!.ToTransitionString(),
+                m => m.Groups[1].Value.ToUpper()
+            );
+        }
+
+#if NET5_0_OR_GREATER
+        [return: NotNullIfNotNull("value")]
+#endif
+        public static string? ToKebabCase(string? value) {
+            if (string.IsNullOrEmpty(value)) { return value; }
+
+            return value!.ToTransitionString("-")
+                .ReduceSpliters("-")
+                .TrimStart('-');
         }
     }
 }
