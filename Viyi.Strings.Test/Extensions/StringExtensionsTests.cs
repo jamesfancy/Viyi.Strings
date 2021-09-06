@@ -1,5 +1,5 @@
-using Viyi.Strings.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using Viyi.Strings.Test.Toolkit;
 
 namespace Viyi.Strings.Extensions.Tests {
@@ -66,7 +66,7 @@ namespace Viyi.Strings.Extensions.Tests {
             Assert.IsTrue("abce".ToBoolean("abce", "efgh"));
             Assert.IsFalse("efgh".ToBoolean("abce", "efgh"));
             Assert.IsTrue(NullString.ToBoolean(null, ""));
-            Assert.IsFalse(NullString.ToBoolean((string?)null, null));
+            Assert.IsFalse(NullString.ToBoolean((string?) null, null));
             Assert.IsTrue("xyz".ToBoolean("xyz", "xyz"));
 
             // 真假字符串数组
@@ -133,6 +133,30 @@ namespace Viyi.Strings.Extensions.Tests {
                 Assert.AreEqual(c.isSpaces, c.value.IsSpaces(false));
                 Assert.AreEqual(c.isStrictSpaces, c.value.IsSpaces(true));
             });
+        }
+
+        [TestMethod()]
+        public void ToStringTest() {
+            Assert.AreEqual("0", 0.ToString(3));
+            Assert.AreEqual("a83", 2691u.ToString(16));
+            Assert.AreEqual("-a83", (-2691).ToString(16));
+            Assert.AreEqual(new string('1', 32), uint.MaxValue.ToString(2));
+            Assert.AreEqual(new string('1', 64), ulong.MaxValue.ToString(2));
+            Assert.AreEqual($"-1{new string('0', 31)}", int.MinValue.ToString(2));
+            Assert.AreEqual("7fffffff", int.MaxValue.ToString(16));
+        }
+
+        [TestMethod]
+        public void ToIntTypesTest() {
+#pragma warning disable CS8604 // Possible null reference argument.
+            Assert.ThrowsException<NullReferenceException>(() => (null as string).ToInt32(8));
+#pragma warning restore CS8604 // Possible null reference argument.
+            Assert.AreEqual(0, "".ToInt32(8));
+            Assert.AreEqual(0, "0".ToInt32(7));
+            Assert.AreEqual(2691u, "a83".ToUInt32(16));
+            Assert.AreEqual(-2691, "-a83".ToInt32(16));
+            Assert.AreEqual(uint.MaxValue, new string('F', 8).ToUInt32(16));
+            Assert.AreEqual(int.MinValue, "-80000000".ToInt32(16));
         }
     }
 }
