@@ -8,7 +8,7 @@
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
     <Authors>James Fan</Authors>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
