@@ -12,10 +12,10 @@ namespace Viyi.Strings {
         /// 根据 casing 的值来决定是抛出异常还是返回 null。
         /// </summary>
         /// <param name="casing"></param>
-        /// <param name="holdUpException">true，不抛异常；false 可能抛异常</param>
+        /// <param name="holdException">true，不抛异常；false 可能抛异常</param>
         /// <returns></returns>
-        public static ICaseConverter? Get(string casing, bool holdUpException) {
-            return holdUpException ? Converters[casing] : Get(casing);
+        public static ICaseConverter? Get(string casing, bool holdException) {
+            return holdException ? Converters[casing] : Get(casing);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Viyi.Strings {
         /// <param name="casing"></param>
         /// <param name="converter"></param>
         /// <param name="force"></param>
-        /// <param name="holdUpExceptoin"></param>
+        /// <param name="hodeException"></param>
         /// <remark>
         /// 注意：强制注册名为 "pascal", "camel", "kebab", "snake" 的转换器并不能改变由 CaseConvert
         /// 属性提供的预置同名转换器，但可以使用 Get(string casing) 取得。
@@ -62,8 +62,8 @@ namespace Viyi.Strings {
         /// 但可以扩展方法 CaseTo(string casing) 会使用注册的同名转换器。
         /// </remark>
         public static bool Register(string casing, ICaseConverter converter,
-            bool force, bool holdUpExceptoin) {
-            if (force || !holdUpExceptoin) {
+            bool force, bool hodeException) {
+            if (force || !hodeException) {
                 Register(casing, converter, force);
                 return true;
             }
