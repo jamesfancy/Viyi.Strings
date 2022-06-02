@@ -26,7 +26,7 @@ namespace Viyi.Strings.CaseConverters {
             return SplitingRegex.Replace(str, spliter);
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? ToPascalCase(string? value) {
@@ -38,7 +38,7 @@ namespace Viyi.Strings.CaseConverters {
             );
         }
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? ToKebabCase(string? value) {

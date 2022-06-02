@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <LangVersion>9.0</LangVersion>
@@ -14,8 +14,8 @@
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" Properties="TargetFramework=net5.0" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" Properties="TargetFramework=net6.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
