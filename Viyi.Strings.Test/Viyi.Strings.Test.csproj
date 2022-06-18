@@ -4,7 +4,8 @@
     <TargetFrameworks>net6.0;netcoreapp3.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,13 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+    <Using Include="System.Diagnostics" />
+    <Using Include="Viyi.Strings.Codec" />
+    <Using Include="Viyi.Strings.Test.Toolkit" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
