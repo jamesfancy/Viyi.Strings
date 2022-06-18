@@ -23,7 +23,7 @@ namespace Viyi.Strings.Extensions {
         /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.EmptyAs()`。
         /// </summary>
         /// <param name="value">指定用于代替空串的值</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? EmptyAs(this string? str, string? value) {
@@ -36,7 +36,7 @@ namespace Viyi.Strings.Extensions {
         /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.SpacesAs()`。
         /// </summary>
         /// <param name="value">指定用于代替空白字符串的值</param>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? SpacesAs(this string? str, string? value) {
@@ -49,7 +49,7 @@ namespace Viyi.Strings.Extensions {
         /// <param name="str"></param>
         /// <param name="strict">是否严格判断。严格判断时，null 不被认为是空字符串。</param>
         public static bool IsEmpty(
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [NotNullWhen(false)] this string? str,
 #else
             this string? str,
@@ -63,7 +63,7 @@ namespace Viyi.Strings.Extensions {
         /// <param name="str"></param>
         /// <param name="strict">是否严格判断。严格判断时 null 和 string.Empty 不被认为是空白字符串</param>
         public static bool IsSpaces(
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
             [NotNullWhen(false)] this string? str,
 #else
             this string? str,

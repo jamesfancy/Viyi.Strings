@@ -3,8 +3,8 @@ using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec {
-    internal class HexDecoder : TextDecoder {
+namespace Viyi.Strings.Codec.Base16 {
+    internal class Base16Decoder : TextDecoder {
         static readonly int[] ReverseHexCodes = {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -21,7 +21,7 @@ namespace Viyi.Strings.Codec {
         static bool IsValidChar(char ch) =>
             ch >= 48 && ch <= 102 && ReverseHexCodes[ch] != -1;
 
-        public HexDecoder(CodecOptions options) : base(options) { }
+        public Base16Decoder(CodecOptions options) : base(options) { }
 
         protected override ICodecTextReader WrapReader(TextReader reader) {
             return new CodecFilterableTextReader(reader, Options, IsValidChar);
@@ -34,8 +34,8 @@ namespace Viyi.Strings.Codec {
 
             while (reader.Read(chars) == 2) {
                 writer.WriteByte(
-                    (byte)((ReverseHexCodes[chars[0]] << 4)
-                    | (ReverseHexCodes[chars[1]]))
+                    (byte) (ReverseHexCodes[chars[0]] << 4
+                    | ReverseHexCodes[chars[1]])
                 );
             }
             writer.Flush();

@@ -1,4 +1,3 @@
-#if !NET5_0_OR_GREATER
 namespace Viyi.Strings.Extensions {
     public static partial class StringExtensions {
         public static int ToInt32(this string s, int radix = 10) {
@@ -16,4 +15,3 @@ namespace Viyi.Strings.Extensions {
         }
     }
 }
-#endif
