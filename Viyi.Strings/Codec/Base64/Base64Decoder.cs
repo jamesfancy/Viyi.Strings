@@ -44,16 +44,18 @@ namespace Viyi.Strings.Codec.Base64 {
         }
 
         void DecodeBuffer(int count) {
+            const int groupLength = 4;
+
             var length = offset + count;
-            if (length < 4) {
+            if (length < groupLength) {
                 offset += length;
                 return;
             }
 
-            var rest = length % 4;
+            var rest = length % groupLength;
             int fixedLength = length - rest;
 
-            for (var i = 0; i < fixedLength; i += 4) {
+            for (var i = 0; i < fixedLength; i += groupLength) {
                 Decode(i);
             }
 
@@ -69,13 +71,13 @@ namespace Viyi.Strings.Codec.Base64 {
                 | ReverseCharset.ToInt(buffer[start + 2]) << 6
                 | ReverseCharset.ToInt(buffer[start + 3]);
 
-            output!.WriteByte((byte)(v >> 16));
-            output.WriteByte((byte)(v >> 8 & 0xff));
-            output.WriteByte((byte)(v & 0xff));
+            output!.WriteByte((byte) (v >> 16));
+            output.WriteByte((byte) (v >> 8 & 0xff));
+            output.WriteByte((byte) (v & 0xff));
         }
 
         void DecodeLast2() {
-            output!.WriteByte((byte)(
+            output!.WriteByte((byte) (
                 ReverseCharset.ToInt(this.buffer[0]) << 2
                 | ReverseCharset.ToInt(this.buffer[1]) >> 4
             ));
@@ -85,8 +87,8 @@ namespace Viyi.Strings.Codec.Base64 {
             int v = ReverseCharset.ToInt(buffer[0]) << 10
                 | ReverseCharset.ToInt(buffer[1]) << 4
                 | ReverseCharset.ToInt(buffer[2]) >> 2;
-            output!.WriteByte((byte)(v >> 8));
-            output.WriteByte((byte)(v & 0xff));
+            output!.WriteByte((byte) (v >> 8));
+            output.WriteByte((byte) (v & 0xff));
         }
     }
 }

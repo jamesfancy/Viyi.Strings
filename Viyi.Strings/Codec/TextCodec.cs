@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Viyi.Strings.Codec.Abstract;
+using Viyi.Strings.Codec.Base16;
 using Viyi.Strings.Codec.Base64;
 
 namespace Viyi.Strings.Codec {
@@ -9,12 +10,14 @@ namespace Viyi.Strings.Codec {
         static readonly LazyStorage storage = new();
 
         public static Base64Codec Base64 => storage.base64 ??= new();
-        public static HexCodec Hex => storage.hex ??= new();
+        public static Base16Codec Base16 => storage.base16 ??= new();
+        public static Base16Codec Hex => storage.hex ??= new();
 
         static TextCodec() {
             factories = new(StringComparer.OrdinalIgnoreCase) {
                 ["base64"] = () => new Base64Codec(),
-                ["hex"] = () => new HexCodec()
+                ["base16"] = () => new Base16Codec(),
+                ["hex"] = () => new HexCodec(),
             };
         }
 
@@ -63,6 +66,7 @@ namespace Viyi.Strings.Codec {
 
         class LazyStorage {
             internal Base64Codec? base64;
+            internal Base16Codec? base16;
             internal HexCodec? hex;
         }
 

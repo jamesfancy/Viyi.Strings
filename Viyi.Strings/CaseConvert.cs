@@ -90,14 +90,14 @@ namespace Viyi.Strings {
         public static ICaseConverter Kebab => Predefined.Kebab;
         public static ICaseConverter Snake => Predefined.Snake;
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         [Obsolete("在 v1.1 删除。使用 CaseTo(this string? value, string casing) 代替")]
         public static string? SpecifiedCase(string? value, string casing) =>
             Converters.Get(casing).Convert(value);
 
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? CaseTo(this string? value, string casing) =>
@@ -108,7 +108,7 @@ namespace Viyi.Strings {
         /// 即使用 "pascal" 覆盖注册了新的 Converter 也不会影响结果。
         /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
         /// </summary>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? PascalCase(this string? value) => Pascal.Convert(value);
@@ -118,7 +118,7 @@ namespace Viyi.Strings {
         /// 即使用 "camel" 覆盖注册了新的 Converter 也不会影响结果。
         /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
         /// </summary>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? CamelCase(this string? value) => Camel.Convert(value);
@@ -128,7 +128,7 @@ namespace Viyi.Strings {
         /// 即使用 "snake" 覆盖注册了新的 Converter 也不会影响结果。
         /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
         /// </summary>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? SnakeCase(this string? value) => Snake.Convert(value);
@@ -138,7 +138,7 @@ namespace Viyi.Strings {
         /// 即使用 "kebab" 覆盖注册了新的 Converter 也不会影响结果。
         /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
         /// </summary>
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
 #endif
         public static string? KebabCase(this string? value) => Kebab.Convert(value);

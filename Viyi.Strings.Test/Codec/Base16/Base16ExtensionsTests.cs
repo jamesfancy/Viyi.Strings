@@ -5,9 +5,9 @@ using System.Linq;
 using Viyi.Strings.Codec.Hex;
 using Viyi.Strings.Test.Toolkit;
 
-namespace Viyi.Strings.Test.Codec.Hex {
+namespace Viyi.Strings.Test.Codec.Base16 {
     [TestClass]
-    public class HexExtensionsTests {
+    public class Base16ExtensionsTests {
         readonly Random random = new();
 
         readonly int[] cases = new[] {
@@ -16,11 +16,11 @@ namespace Viyi.Strings.Test.Codec.Hex {
         };
 
         [TestMethod]
-        public void TestHexDecode() {
+        public void TestBase16Decode() {
             cases.ForEach(n => test(n));
 
             void test(int length) {
-                Trace.WriteLine($"[TestHexDecode] with length {length}");
+                Trace.WriteLine($"[TestBase16Decode] with length {length}");
                 var hex = random.RandomHex(length);
 
                 byte[] data = hex.DecodeHex();
@@ -29,11 +29,11 @@ namespace Viyi.Strings.Test.Codec.Hex {
         }
 
         [TestMethod]
-        public void TestHexEncode() {
+        public void TestBase16Encode() {
             cases.ForEach(n => test(n));
 
             void test(int length) {
-                Trace.WriteLine($"[TestHexEncode] with length {length}");
+                Trace.WriteLine($"[TestBase16Encode] with length {length}");
                 var data = random.RandomBytes(length);
                 var hex = data.EncodeHex();
                 Assert.AreEqual(length * 2, hex.Length);
@@ -44,7 +44,7 @@ namespace Viyi.Strings.Test.Codec.Hex {
         [TestMethod]
         public void TestAllBytes() {
             byte[] all = Enumerable.Range(0, 256)
-                .Select((_, i) => (byte)i)
+                .Select((_, i) => (byte) i)
                 .ToArray();
 
             var expect = string.Concat(
