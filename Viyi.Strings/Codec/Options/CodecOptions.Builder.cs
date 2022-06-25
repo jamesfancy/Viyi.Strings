@@ -20,7 +20,7 @@ namespace Viyi.Strings.Codec.Options {
             // createDefaultOptioss() 始终产生新的对象，
             // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
             private static CodecOptions CreateDefaultOptions() {
-                return DefaultCreator?.Invoke() ?? new CodecOptions();
+                return defaultCreator?.Invoke() ?? new CodecOptions();
             }
 
             internal Builder() {
