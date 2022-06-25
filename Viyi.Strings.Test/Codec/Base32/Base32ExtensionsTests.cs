@@ -111,7 +111,7 @@ public class Base32ExtensionsTests {
 
             var validCodeLength = (data.Length * byteBits + charBits - 1) / charBits;
             var paddingLength = base32.Length - validCodeLength;
-            Assert.IsTrue(base32.EndsWith(new String('=', paddingLength)));
+            Assert.IsTrue(base32.EndsWith(new string('=', paddingLength)));
             Assert.IsTrue(base32[^(paddingLength + 1)] != '=');
 
             CollectionAssert.AreEqual(data, base32.DecodeBase32());
@@ -129,7 +129,7 @@ public class Base32ExtensionsTests {
         void test(int size) {
             // 随机产生 size 个字节的数据用于测试
             byte[] data = random.RandomBytes(size);
-            string base32 = data.EncodeBase32(true);
+            string base32 = data.EncodeBase32(true, true);
 
             if (size == 0) {
                 Assert.AreEqual(0, base32.Length);

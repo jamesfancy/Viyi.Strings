@@ -8,7 +8,7 @@
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
     <Authors>James Fan</Authors>
-    <VersionPrefix>1.1.0</VersionPrefix>
+    <VersionPrefix>1.1.1</VersionPrefix>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -30,5 +30,24 @@
     <Compile Remove="Viyi.Strings %28net6.0%29\**" />
     <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
     <None Remove="Viyi.Strings %28net6.0%29\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Codec\Extensions\@\CaseInsensitiveCodecs.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CaseInsensitiveCodecs.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Codec\Extensions\@\CaseInsensitiveCodecs.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CaseInsensitiveCodecs.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
