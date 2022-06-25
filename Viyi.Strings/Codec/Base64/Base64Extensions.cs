@@ -1,3 +1,4 @@
+using System;
 using Viyi.Strings.Codec.Extensions;
 using Viyi.Strings.Codec.Options;
 
@@ -13,6 +14,15 @@ namespace Viyi.Strings.Codec.Base64 {
             return bytes.IsEmpty()
                 ? string.Empty
                 : new Base64Codec().Encode(bytes, options);
+        }
+
+        public static string EncodeBase64(
+            this byte[] bytes,
+            Action<CodecOptions.Builder> building
+        ) {
+            var optionsBuilder = CodecOptions.Create();
+            building?.Invoke(optionsBuilder);
+            return EncodeBase64(bytes, optionsBuilder.Build());
         }
 
         public static string EncodeBase64(this byte[] bytes, int lineWidth) {

@@ -1,3 +1,4 @@
+using System;
 using Viyi.Strings.Codec.Base16;
 using Viyi.Strings.Codec.Options;
 
@@ -8,6 +9,10 @@ namespace Viyi.Strings.Codec.Hex {
 
         /// <summary>参阅 EncodeBase16()</summary>
         public static string EncodeHex(this byte[] bytes, CodecOptions? options) => bytes.EncodeBase16(options);
+
+        /// <summary>参阅 EncodeBase16()</summary>
+        public static string EncodenHex(this byte[] bytes, Action<CodecOptions.Builder> building) =>
+            bytes.EncodeBase16(building);
 
         /// <summary>参阅 EncodeBase16()</summary>
         public static string EncodeHex(this byte[] bytes) => EncodeHex(bytes, null);
