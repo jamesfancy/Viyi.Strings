@@ -7,7 +7,7 @@ namespace Viyi.Strings.Codec.Options {
                 return Clone(this.codecOptions);
             }
 
-            private static CodecOptions Clone(CodecOptions proto) {
+            static CodecOptions Clone(CodecOptions proto) {
                 return new CodecOptions {
                     LineWidth = proto.LineWidth,
                     LineEnding = proto.LineEnding,
@@ -15,18 +15,20 @@ namespace Viyi.Strings.Codec.Options {
                 };
             }
 
-            internal Builder(CodecOptions? proto = null) {
-                codecOptions = proto == null
-                     ? createDefaultOptions()
-                     : Clone(proto);
+            // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
+            // 没有 `DefaultCreator` 的时候，
+            // createDefaultOptioss() 始终产生新的对象，
+            // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
+            private static CodecOptions CreateDefaultOptions() {
+                return DefaultCreator?.Invoke() ?? new CodecOptions();
+            }
 
-                // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
-                // 没有 `DefaultCreator` 的时候，
-                // createDefaultOptioss() 始终产生新的对象，
-                // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
-                static CodecOptions createDefaultOptions() {
-                    return DefaultCreator?.Invoke() ?? new CodecOptions();
-                }
+            internal Builder() {
+                this.codecOptions = CreateDefaultOptions();
+            }
+
+            internal Builder(CodecOptions proto, bool needClone = true) {
+                codecOptions = needClone ? Clone(proto) : proto;
             }
 
             public Builder SetLineWidth(int value) {
