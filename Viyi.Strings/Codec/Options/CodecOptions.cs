@@ -11,6 +11,13 @@ namespace Viyi.Strings.Codec.Options {
     public sealed partial class CodecOptions : IEquatable<CodecOptions> {
         public const int NoLineWidth = 0;
 
+        /// <summary>
+        /// 默认配置创建程序。
+        /// </summary>
+        /// <remarks>
+        /// 由于 DefaultCreator 的创建结果有可能会用于 Builder 加工，
+        /// 所以对 DefaultCreator 的每次调用都应该产生新的 CodecOptions
+        /// </remarks>
         public static Func<CodecOptions>? DefaultCreator { get; set; }
 
         /// <summary>
@@ -28,14 +35,31 @@ namespace Viyi.Strings.Codec.Options {
 
         private CodecOptions() { }
 
+        /// <summary>
+        /// 以默认配置为基础创建一个配置构造器。
+        /// </summary>
+        /// <remarks>
+        /// 默认通过 DefaultCreator() 创建而来，
+        /// 若没有配置 DefaultCreator()，则构建器会创建一个新的 CodecOptions 对象，并在此基础上进行配置。
+        /// </remarks>
         public static Builder Create() => new();
+
+        /// <summary>
+        /// 创建一个新的 CodecOptions 作为构建器配置的基础对象。
+        /// </summary>
+        public static Builder CreatePure() => new(new(), false);
+
+        /// <summary>
+        /// 把 prototype 作为原型，创建一个新的 CodecOptions 作为构建器配置的基础对象。
+        /// </summary>
+        /// <param name="prototype">配置原型</param>
         public static Builder Create(CodecOptions prototype) => new(prototype);
 
         public override int GetHashCode() {
             unchecked {
                 int hash = 19;
                 hash = hash * 113 + LineWidth;
-                hash = hash * 113 + (int)LineEnding;
+                hash = hash * 113 + (int) LineEnding;
                 hash = hash * 113 + (UpperCase ? 37 : 73);
                 return hash;
             }

@@ -1,3 +1,4 @@
+using System;
 using Viyi.Strings.Codec.Extensions;
 using Viyi.Strings.Codec.Options;
 
@@ -9,13 +10,20 @@ namespace Viyi.Strings.Codec.Base16 {
             return new Base16Codec().Decode(base16);
         }
 
-        public static string EncodeBase16(this byte[] bytes, CodecOptions? options) {
+        public static string EncodeBase16(this byte[] bytes, CodecOptions? options = null) {
             return bytes.IsEmpty()
                 ? string.Empty
                 : new Base16Codec().Encode(bytes, options);
         }
 
-        public static string EncodeBase16(this byte[] bytes) => EncodeBase16(bytes, null);
+        public static string EncodeBase16(
+            this byte[] bytes,
+            Action<CodecOptions.Builder> building
+        ) {
+            var optionsBuilder = CodecOptions.Create();
+            building?.Invoke(optionsBuilder);
+            return EncodeBase16(bytes, optionsBuilder.Build());
+        }
 
         /// <summary>
         /// 把二进制数据转换成十六进制文本，可以指定字母大小写，以及折行位置。
