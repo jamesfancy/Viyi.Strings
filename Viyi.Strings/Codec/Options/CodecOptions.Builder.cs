@@ -1,18 +1,19 @@
 namespace Viyi.Strings.Codec.Options {
     partial class CodecOptions {
         public class Builder {
-            private readonly CodecOptions codecOptions;
+            protected readonly CodecOptions codecOptions;
 
-            public CodecOptions Build() {
-                return Clone(this.codecOptions);
+            static CodecOptions Clone(CodecOptions proto) => Clone(new CodecOptions(), proto);
+
+            protected static CodecOptions Clone(CodecOptions target, CodecOptions proto) {
+                target.LineWidth = proto.LineWidth;
+                target.LineEnding = proto.LineEnding;
+                target.UpperCase = proto.UpperCase;
+                return target;
             }
 
-            static CodecOptions Clone(CodecOptions proto) {
-                return new CodecOptions {
-                    LineWidth = proto.LineWidth,
-                    LineEnding = proto.LineEnding,
-                    UpperCase = proto.UpperCase,
-                };
+            public virtual CodecOptions Build() {
+                return Clone(this.codecOptions);
             }
 
             // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：

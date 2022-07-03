@@ -16,9 +16,9 @@ namespace Viyi.Strings.Codec.Base64 {
 
         public static string EncodeBase64Url(
             this byte[] bytes,
-            Action<CodecOptions.Builder> building
+            Action<Base64CodecOptions.Builder> building
         ) {
-            var optionsBuilder = CodecOptions.Create();
+            var optionsBuilder = Base64CodecOptions.Create();
             building?.Invoke(optionsBuilder);
             return EncodeBase64Url(bytes, optionsBuilder.Build());
         }
@@ -26,7 +26,7 @@ namespace Viyi.Strings.Codec.Base64 {
         public static string EncodeBase64Url(this byte[] bytes, int lineWidth) {
             return EncodeBase64Url(
                 bytes,
-                CodecOptions.Create().SetLineWidth(lineWidth).Build()
+                Base64CodecOptions.Create().SetLineWidth(lineWidth).Build()
             );
         }
 
