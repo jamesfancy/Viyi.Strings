@@ -9,7 +9,7 @@ public enum LineEndings {
     Cr,
 }
 
-public sealed partial class CodecOptions : IEquatable<CodecOptions> {
+public partial class CodecOptions : IEquatable<CodecOptions> {
     public const int NoLineWidth = 0;
 
     /// <summary>
@@ -34,17 +34,17 @@ public sealed partial class CodecOptions : IEquatable<CodecOptions> {
     /// 除非使用 CodecOptions.CreatePure() 开始创建配置，
     /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
     /// </remarks>
-    /// <param name="buidling"></param>
+    /// <param name="building"></param>
     /// <param name="prototype">指定配置所基于的原型配置对象</param>
     public static void SetDefaultCreator(
-        Action<Builder>? buidling,
+        Action<Builder>? building,
         CodecOptions? prototype = null
     ) {
-        defaultCreator = buidling == null
+        defaultCreator = building == null
             ? null
             : () => {
                 var builder = prototype == null ? CreatePure() : Create(prototype);
-                buidling?.Invoke(builder);
+                building?.Invoke(builder);
                 return builder.Build();
             };
     }
@@ -62,8 +62,6 @@ public sealed partial class CodecOptions : IEquatable<CodecOptions> {
     public static CodecOptions CreateDefault() {
         return defaultCreator?.Invoke() ?? Default;
     }
-
-    private CodecOptions() { }
 
     /// <summary>
     /// 以默认配置为基础创建一个配置构造器。
@@ -125,4 +123,6 @@ public sealed partial class CodecOptions : IEquatable<CodecOptions> {
     /// 对大小写敏感的编码方式无效，比如 Base64。
     /// </summary>
     public bool UpperCase { get; private set; } = false;
+
+    protected CodecOptions() { }
 }
