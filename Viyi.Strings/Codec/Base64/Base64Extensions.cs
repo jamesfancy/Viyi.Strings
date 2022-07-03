@@ -3,7 +3,7 @@ using Viyi.Strings.Codec.Extensions;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Base64 {
-    public static class Base64Extensions {
+    public static partial class Base64Extensions {
         const int DefaultBaes64LineWidth = 76;
 
         public static byte[] DecodeBase64(this string base64) {
