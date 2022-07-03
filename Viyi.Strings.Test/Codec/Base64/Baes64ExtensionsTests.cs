@@ -1,5 +1,6 @@
 using Viyi.Strings.Codec.Base64;
 using Viyi.Strings.Codec.Extensions;
+using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Test.Codec.Base64;
 
@@ -107,5 +108,37 @@ public class Baes64ExtensionsTests {
             var (bytes, base64) = tuple;
             Assert.AreEqual(base64, bytes.EncodeBase64());
         });
+    }
+
+    [TestMethod]
+    public void TestEncodeByBuilder() {
+        var bytes = Enumerable.Range(0, 256).Select(n => (byte) n).ToArray();
+        const string expect = "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gISIjJCUmJygpKissLS4vMDEyMzQ1Njc4OTo7PD0+P0BBQkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWltcXV5fYGFiY2RlZmdoaWprbG1ub3BxcnN0dXZ3eHl6e3x9fn+AgYKDhIWGh4iJiouMjY6PkJGSk5SVlpeYmZqbnJ2en6ChoqOkpaanqKmqq6ytrq+wsbKztLW2t7i5uru8vb6/wMHCw8TFxsfIycrLzM3Oz9DR0tPU1dbX2Nna29zd3t/g4eLj5OXm5+jp6uvs7e7v8PHy8/T19vf4+fr7/P3+/w==";
+
+        var codes = bytes.EncodeBase64(builder => builder.UseScheme(Schemes.Compatible).SetLineWidth(80));
+        var lines = codes.Split('\n');
+        var expectLines = Chunk(expect.Replace("+", "-").Replace("/", "_"), 80);
+        CollectionAssert.AreEqual(expectLines, lines);
+
+        // 测试接口兼容性
+        var lines2 = bytes.EncodeBase64(build).Split('\n');
+        var expectLines2 = Chunk(expect, 64);
+        CollectionAssert.AreEqual(expectLines2, lines2);
+
+        void build(CodecOptions.Builder builder) {
+            builder.SetLineWidth(64);
+        }
+    }
+
+    string[] Chunk(string all, int size) {
+#if NET6_0_OR_GREATER
+        return all.Chunk(size).Select(chs => new string(chs)).ToArray();
+#else
+        string[] result = new string[(all.Length + size - 1) / size];
+        for (int i = 0, s = 0, e = size; i < result.Length; i++, s += size, e += size) {
+            result[i] = all[s..Math.Min(e, all.Length)];
+        }
+        return result;
+#endif
     }
 }
