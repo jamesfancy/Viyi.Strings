@@ -2,6 +2,7 @@ using System;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Base64;
+
 public partial class Base64CodecOptions {
     new public class Builder : CodecOptions.Builder {
         readonly Base64CodecOptions base64CodecOptions;

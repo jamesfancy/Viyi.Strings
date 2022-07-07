@@ -5,100 +5,100 @@ using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 using static Viyi.Strings.Codec.Base32.ReverseCharset;
 
-namespace Viyi.Strings.Codec.Base32 {
-    sealed class Base32Decoder : TextDecoder {
-        const int BufferLength = 1024;
+namespace Viyi.Strings.Codec.Base32;
 
-        // Base32 编码 8 个字符为 1 组
-        const int GroupLength = 8;
+sealed class Base32Decoder : TextDecoder {
+    const int BufferLength = 1024;
 
-        // Base32 每个编码表示 5 位
-        const int CharBits = 5;
-        const int ByteBits = 8;
+    // Base32 编码 8 个字符为 1 组
+    const int GroupLength = 8;
 
-        readonly char[] buffer = new char[BufferLength];
-        int offset = 0;
-        int Rest => BufferLength - offset;
+    // Base32 每个编码表示 5 位
+    const int CharBits = 5;
+    const int ByteBits = 8;
 
-        Stream? output;
+    readonly char[] buffer = new char[BufferLength];
+    int offset = 0;
+    int Rest => BufferLength - offset;
 
-        internal Base32Decoder(CodecOptions options)
-            : base(options) { }
+    Stream? output;
 
-        protected override ICodecTextReader WrapReader(TextReader reader) =>
-            new CodecFilterableTextReader(reader, Options, ReverseCharset.IsValid);
+    internal Base32Decoder(CodecOptions options)
+        : base(options) { }
 
-        protected override void Decode(Stream output, ICodecTextReader codecReader) {
-            this.output = output;
-            var reader = new BufferedReader(codecReader);
+    protected override ICodecTextReader WrapReader(TextReader reader) =>
+        new CodecFilterableTextReader(reader, Options, ReverseCharset.IsValid);
 
-            int count;
-            while ((count = reader.Read(buffer, offset, Rest)) > 0) {
-                DecodeBuffer(count);
-            }
+    protected override void Decode(Stream output, ICodecTextReader codecReader) {
+        this.output = output;
+        var reader = new BufferedReader(codecReader);
 
-            switch (offset) {
-                case 0: return;
-                case 2:
-                case 4:
-                case 5:
-                case 7:
-                    DecodeLast(offset);
-                    break;
-                default:
-                    throw new CodecException("invalid Base32 data length");
-            }
+        int count;
+        while ((count = reader.Read(buffer, offset, Rest)) > 0) {
+            DecodeBuffer(count);
         }
 
-        void DecodeBuffer(int count) {
+        switch (offset) {
+            case 0: return;
+            case 2:
+            case 4:
+            case 5:
+            case 7:
+                DecodeLast(offset);
+                break;
+            default:
+                throw new CodecException("invalid Base32 data length");
+        }
+    }
 
-            var length = offset + count;
-            if (length < GroupLength) {
-                offset += length;
-                return;
-            }
+    void DecodeBuffer(int count) {
 
-            var rest = length % GroupLength;
-            int fixedLength = length - rest;
-
-            for (var i = 0; i < fixedLength; i += GroupLength) {
-                Decode(i);
-            }
-
-            if (rest > 0) {
-                Array.Copy(buffer, fixedLength, buffer, 0, rest);
-                offset = rest;
-            }
+        var length = offset + count;
+        if (length < GroupLength) {
+            offset += length;
+            return;
         }
 
-        void Decode(int start) {
-            long n = 0L;
-            for (int i = start; i < start + 8; i++) {
-                n <<= CharBits;
-                n |= Codes[buffer[i]];
-            }
+        var rest = length % GroupLength;
+        int fixedLength = length - rest;
 
-            const int firstOffset = CharBits * ByteBits - ByteBits;
-            for (int i = firstOffset; i >= 0; i -= ByteBits) {
-                output!.WriteByte((byte) (n >> i & 0xffL));
-            }
+        for (var i = 0; i < fixedLength; i += GroupLength) {
+            Decode(i);
         }
 
-        // count 只可能是 2、4、5、7（调用前逻辑保证）
-        // 对应解码结果是 1, 2, 3, 4 字节
-        void DecodeLast(int count) {
-            long n = 0L;
-            for (int i = 0; i < count; i++) {
-                n <<= CharBits;
-                n |= Codes[buffer[i]];
-            }
+        if (rest > 0) {
+            Array.Copy(buffer, fixedLength, buffer, 0, rest);
+            offset = rest;
+        }
+    }
 
-            int byteCount = count * CharBits / ByteBits;
-            int restBits = count * CharBits % ByteBits;
-            int firstOffset = byteCount * ByteBits - ByteBits + restBits;
-            for (int i = firstOffset; i >= 0; i -= ByteBits) {
-                output!.WriteByte((byte) (n >> i & 0xffL));
-            }
+    void Decode(int start) {
+        long n = 0L;
+        for (int i = start; i < start + 8; i++) {
+            n <<= CharBits;
+            n |= Codes[buffer[i]];
+        }
+
+        const int firstOffset = CharBits * ByteBits - ByteBits;
+        for (int i = firstOffset; i >= 0; i -= ByteBits) {
+            output!.WriteByte((byte) (n >> i & 0xffL));
+        }
+    }
+
+    // count 只可能是 2、4、5、7（调用前逻辑保证）
+    // 对应解码结果是 1, 2, 3, 4 字节
+    void DecodeLast(int count) {
+        long n = 0L;
+        for (int i = 0; i < count; i++) {
+            n <<= CharBits;
+            n |= Codes[buffer[i]];
+        }
+
+        int byteCount = count * CharBits / ByteBits;
+        int restBits = count * CharBits % ByteBits;
+        int firstOffset = byteCount * ByteBits - ByteBits + restBits;
+        for (int i = firstOffset; i >= 0; i -= ByteBits) {
+            output!.WriteByte((byte) (n >> i & 0xffL));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// 通过 CaseSensitiveCodecs.tt 自动生成的代码，请勿手工修改
 
 namespace Viyi.Strings.Codec.Base32 {
+
     using System;
     using Viyi.Strings.Codec.Extensions;
     using Viyi.Strings.Codec.Options;
@@ -66,8 +67,8 @@ namespace Viyi.Strings.Codec.Base32 {
     }
 }
 
-
 namespace Viyi.Strings.Codec.Base16 {
+
     using System;
     using Viyi.Strings.Codec.Extensions;
     using Viyi.Strings.Codec.Options;
@@ -132,5 +133,4 @@ namespace Viyi.Strings.Codec.Base16 {
             EncodeBase16(bytes, false, lineWidth);
     }
 }
-
 

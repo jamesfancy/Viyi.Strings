@@ -2,40 +2,40 @@ using System.IO;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Abstract {
-    public abstract class TextEncoder : ITextEncoder {
-        protected CodecOptions Options { get; }
+namespace Viyi.Strings.Codec.Abstract;
 
-        protected TextEncoder(CodecOptions options) {
-            this.Options = options;
-        }
+public abstract class TextEncoder : ITextEncoder {
+    protected CodecOptions Options { get; }
 
-        public virtual string Encode(byte[] data) {
-            using var stream = new MemoryStream(data);
-            return Encode(stream);
-        }
+    protected TextEncoder(CodecOptions options) {
+        this.Options = options;
+    }
 
-        public string Encode(byte[] data, int start, int count) {
-            using var stream = new MemoryStream(data, start, count);
-            return Encode(stream);
-        }
+    public virtual string Encode(byte[] data) {
+        using var stream = new MemoryStream(data);
+        return Encode(stream);
+    }
 
-        public virtual void Encode(TextWriter output, Stream input) {
-            Encode(WrapWriter(output), input);
-        }
+    public string Encode(byte[] data, int start, int count) {
+        using var stream = new MemoryStream(data, start, count);
+        return Encode(stream);
+    }
 
-        protected virtual ICodecTextWriter WrapWriter(TextWriter writer) {
-            return this.Options.LineWidth > 0
-                ? new CodecWrappingWriter(writer, this.Options)
-                : new CodecTextWriter(writer, this.Options);
-        }
+    public virtual void Encode(TextWriter output, Stream input) {
+        Encode(WrapWriter(output), input);
+    }
 
-        protected abstract void Encode(ICodecTextWriter writer, Stream input);
+    protected virtual ICodecTextWriter WrapWriter(TextWriter writer) {
+        return this.Options.LineWidth > 0
+            ? new CodecWrappingWriter(writer, this.Options)
+            : new CodecTextWriter(writer, this.Options);
+    }
 
-        string Encode(Stream stream) {
-            using var writer = new StringWriter();
-            Encode(writer, stream);
-            return writer.ToString();
-        }
+    protected abstract void Encode(ICodecTextWriter writer, Stream input);
+
+    string Encode(Stream stream) {
+        using var writer = new StringWriter();
+        Encode(writer, stream);
+        return writer.ToString();
     }
 }
