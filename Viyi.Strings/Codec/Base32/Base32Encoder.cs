@@ -3,6 +3,7 @@ using System.IO;
 using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Io;
 using Viyi.Strings.Extensions;
+using Viyi.Strings.Extensions.Internal;
 
 namespace Viyi.Strings.Codec.Base32 {
     sealed class Base32Encoder : TextEncoder {
