@@ -51,13 +51,13 @@ public class Baes64ExtensionsTests {
 
             switch (rest) {
                 case 1:
-                    Assert.IsTrue(base64.EndsWith("==") && base64[^3] != '=');
+                    Assert.IsTrue(base64.EndsWith("==") && base64[base64.Length - 3] != '=');
                     break;
                 case 2:
-                    Assert.IsTrue(base64.EndsWith("=") && base64[^2] != '=');
+                    Assert.IsTrue(base64.EndsWith("=") && base64[base64.Length - 2] != '=');
                     break;
                 default:
-                    Assert.IsTrue(base64.Length == 0 || base64[^1] != '=');
+                    Assert.IsTrue(base64.Length == 0 || base64[base64.Length - 1] != '=');
                     break;
             }
 
@@ -84,12 +84,16 @@ public class Baes64ExtensionsTests {
             int expectLength = base64Length + lines - 1;
             Assert.AreEqual(expectLength, base64.Length);
 
-            var sections = base64.Split("\n");
+            var sections = base64.Split('\n');
             if (sections.Length > 1) {
                 for (int i = 0; i < sections.Length - 1; i++) {
                     Assert.AreEqual(76, sections[i].Length);
                 }
+#if NET48
+                Assert.IsTrue(sections[sections.Length - 1].Length <= 76);
+#else
                 Assert.IsTrue(sections[^1].Length <= 76);
+#endif
             }
         }
     }
@@ -136,7 +140,7 @@ public class Baes64ExtensionsTests {
 #else
         string[] result = new string[(all.Length + size - 1) / size];
         for (int i = 0, s = 0, e = size; i < result.Length; i++, s += size, e += size) {
-            result[i] = all[s..Math.Min(e, all.Length)];
+            result[i] = all.Substring(s, Math.Min(e, all.Length) - s);
         }
         return result;
 #endif

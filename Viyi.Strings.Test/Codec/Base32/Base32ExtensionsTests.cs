@@ -112,7 +112,11 @@ public class Base32ExtensionsTests {
             var validCodeLength = (data.Length * byteBits + charBits - 1) / charBits;
             var paddingLength = base32.Length - validCodeLength;
             Assert.IsTrue(base32.EndsWith(new string('=', paddingLength)));
+#if NET48
+            Assert.IsTrue(base32[base32.Length - paddingLength - 1] != '=');
+#else
             Assert.IsTrue(base32[^(paddingLength + 1)] != '=');
+#endif
 
             CollectionAssert.AreEqual(data, base32.DecodeBase32());
         }
@@ -139,7 +143,7 @@ public class Base32ExtensionsTests {
             CollectionAssert.AreEqual(data, base32.DecodeBase32());
 
             int codeLength = (size * byteBits + groupBits - 1) / groupBits * groupBits / charBits;
-            Assert.AreEqual((codeLength + 63) / 64, base32.Split("\n").Length);
+            Assert.AreEqual((codeLength + 63) / 64, base32.Split('\n').Length);
         }
     }
 }

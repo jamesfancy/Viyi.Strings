@@ -23,9 +23,7 @@ namespace Viyi.Strings.Extensions {
         /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.EmptyAs()`。
         /// </summary>
         /// <param name="value">指定用于代替空串的值</param>
-#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
-#endif
         public static string? EmptyAs(this string? str, string? value) {
             return string.IsNullOrEmpty(str) ? value : str;
         }
@@ -36,9 +34,7 @@ namespace Viyi.Strings.Extensions {
         /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.SpacesAs()`。
         /// </summary>
         /// <param name="value">指定用于代替空白字符串的值</param>
-#if NET6_0_OR_GREATER
         [return: NotNullIfNotNull("value")]
-#endif
         public static string? SpacesAs(this string? str, string? value) {
             return string.IsNullOrWhiteSpace(str) ? value : str;
         }
