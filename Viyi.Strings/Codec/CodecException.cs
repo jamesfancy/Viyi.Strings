@@ -1,12 +1,12 @@
 using System;
 
-namespace Viyi.Strings.Codec {
-    public class CodecException : Exception {
-        public CodecException() { }
+namespace Viyi.Strings.Codec;
 
-        public CodecException(string message) : base(message) { }
+public class CodecException : Exception {
+    public CodecException() { }
 
-        public CodecException(string message, Exception innerException)
-            : base(message, innerException) { }
-    }
+    public CodecException(string message) : base(message) { }
+
+    public CodecException(string message, Exception innerException)
+        : base(message, innerException) { }
 }

@@ -1,18 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <VersionPrefix>1.2.0</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
     <Authors>James Fan</Authors>
-    <VersionPrefix>1.1.2</VersionPrefix>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>True</SignAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,16 +21,16 @@
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="Viyi.Strings %28net6.0%29\**" />
+    <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
+    <None Remove="Viyi.Strings %28net6.0%29\**" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
     <Compile Remove="Viyi.Strings %28netstandard2.0%29\**" />
     <EmbeddedResource Remove="Viyi.Strings %28netstandard2.0%29\**" />
     <None Remove="Viyi.Strings %28netstandard2.0%29\**" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'net6.0'">
-    <Compile Remove="Viyi.Strings %28net6.0%29\**" />
-    <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
-    <None Remove="Viyi.Strings %28net6.0%29\**" />
   </ItemGroup>
 
   <ItemGroup>
