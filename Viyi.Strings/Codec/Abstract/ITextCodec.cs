@@ -19,7 +19,7 @@ public interface ITextCodec {
 
     /// <summary>
     /// 一次解码所有数据，适用于数据量不是特别大的情况
-    /// <summary>
+    /// </summary>
     byte[] Decode(string code, CodecOptions? options = null);
 
     /// <summary>

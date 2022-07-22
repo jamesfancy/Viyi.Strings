@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Base64;
@@ -101,7 +102,7 @@ public partial class Base64CodecOptions : CodecOptions, IEquatable<Base64CodecOp
     }
     Schemes? encodingScheme;
 
-    public bool Equals(Base64CodecOptions other) {
+    public bool Equals([NotNullWhen(true)] Base64CodecOptions? other) {
         if (other == null) { return false; }
         if (!base.Equals(other)) { return false; }
         return Scheme == other.Scheme
