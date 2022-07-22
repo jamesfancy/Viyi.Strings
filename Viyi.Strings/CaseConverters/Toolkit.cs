@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Viyi.Strings.CaseConverters;
 
 public static class Toolkit {
-    internal static readonly Regex SplitingRegex = new(
+    internal static readonly Regex SplittingRegex = new(
         @"[-_\s]+",
         RegexOptions.ECMAScript
     );
@@ -23,8 +23,8 @@ public static class Toolkit {
         return WordStartRegex.Replace(str, m => $"{prefix}{m.Groups[0]}").ToLower();
     }
 
-    internal static string ReduceSpliters(this string str, string spliter = "-") {
-        return SplitingRegex.Replace(str, spliter);
+    internal static string ReduceSplitters(this string str, string splitter = "-") {
+        return SplittingRegex.Replace(str, splitter);
     }
 
     [return: NotNullIfNotNull("value")]
@@ -42,7 +42,7 @@ public static class Toolkit {
         if (string.IsNullOrEmpty(value)) { return value; }
 
         return value!.ToTransitionString("-")
-            .ReduceSpliters("-")
+            .ReduceSplitters("-")
             .TrimStart('-');
     }
 }

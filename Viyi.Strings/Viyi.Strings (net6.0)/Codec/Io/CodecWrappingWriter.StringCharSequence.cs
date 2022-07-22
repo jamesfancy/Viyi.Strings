@@ -4,7 +4,7 @@ using System.IO;
 namespace Viyi.Strings.Codec.Io;
 
 public partial class CodecWrappingWriter {
-    class StringCharSequence : CharSequance {
+    class StringCharSequence : CharSequence {
         readonly string source;
 
         public StringCharSequence(string data) : base(0, data.Length) {

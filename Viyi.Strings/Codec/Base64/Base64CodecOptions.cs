@@ -86,7 +86,7 @@ public partial class Base64CodecOptions : CodecOptions, IEquatable<Base64CodecOp
     /// 默认值是 Base64
     /// </summary>
     /// <remarks>
-    /// 如果指定为 Compatiable，在编码时将使用 Base 64 Url 方案编码，
+    /// 如果指定为 Compatible，在编码时将使用 Base 64 Url 方案编码，
     /// 除非指定 EncodingSchema 为 Base64。
     /// </remarks>
     public Schemes Scheme { get; private set; }

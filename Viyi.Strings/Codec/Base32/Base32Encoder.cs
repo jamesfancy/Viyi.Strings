@@ -12,13 +12,13 @@ sealed class Base32Encoder : TextEncoder {
     const int CharBits = 5;
     const int ByteBits = 8;
 
-    static readonly char[] Upperb32Chars = {
+    static readonly char[] UpperB32Chars = {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
         'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
         '2', '3', '4', '5', '6', '7', '='
     };
 
-    static readonly char[] Lowerb32Chars = {
+    static readonly char[] LowerB32Chars = {
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
         'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         '2', '3', '4', '5', '6', '7', '='
@@ -27,14 +27,14 @@ sealed class Base32Encoder : TextEncoder {
     readonly char[] b32Chars;
 
     public Base32Encoder(Options.CodecOptions options) : base(options) {
-        b32Chars = options.UpperCase ? Upperb32Chars : Lowerb32Chars;
+        b32Chars = options.UpperCase ? UpperB32Chars : LowerB32Chars;
     }
 
     protected override void Encode(ICodecTextWriter writer, Stream input) {
-        const int gropuBytes = 5;
+        const int groupBytes = 5;
         const int groupChars = 8;
 
-        byte[] buffer = new byte[gropuBytes];
+        byte[] buffer = new byte[groupBytes];
         char[] chars = new char[groupChars];
 
         int readCount;

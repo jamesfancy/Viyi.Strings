@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Viyi.Strings.CaseConverters;
 using static Viyi.Strings.CaseConverters.ConverterCollection;
 
-namespace Viyi.Strings; 
+namespace Viyi.Strings;
 public static class CaseConvert {
     static readonly ConverterCollection Converters = new();
 
@@ -28,7 +28,7 @@ public static class CaseConvert {
     public static ICaseConverter Get(string casing) => Converters.Get(casing);
 
     /// <summary>
-    /// 注册一个 ICaseConverter，若 `force` 为 `ture`，可强制覆盖已经注册的同名 converter。
+    /// 注册一个 ICaseConverter，若 `force` 为 `true`，可强制覆盖已经注册的同名 converter。
     /// </summary>
     /// <param name="casing"></param>
     /// <param name="converter"></param>
@@ -46,7 +46,7 @@ public static class CaseConvert {
     }
 
     /// <summary>
-    /// 注册一个 ICaseConverter，注册失败时由 holdUpExceptoin 决定是否引发异常。以下三种情况会引发注册失败
+    /// 注册一个 ICaseConverter，注册失败时由 holdUpException 决定是否引发异常。以下三种情况会引发注册失败
     /// 1. casing 是无效字符串（null, "" 或只包含空白字符）
     /// 2. converter 为 null
     /// 3. 已存在名为 casing（不区分大小写）的注册，且 force 不为 true。
@@ -54,7 +54,7 @@ public static class CaseConvert {
     /// <param name="casing"></param>
     /// <param name="converter"></param>
     /// <param name="force"></param>
-    /// <param name="hodeException"></param>
+    /// <param name="holdException"></param>
     /// <remark>
     /// 注意：强制注册名为 "pascal", "camel", "kebab", "snake" 的转换器并不能改变由 CaseConvert
     /// 属性提供的预置同名转换器，但可以使用 Get(string casing) 取得。
@@ -62,8 +62,8 @@ public static class CaseConvert {
     /// 但可以扩展方法 CaseTo(string casing) 会使用注册的同名转换器。
     /// </remark>
     public static bool Register(string casing, ICaseConverter converter,
-        bool force, bool hodeException) {
-        if (force || !hodeException) {
+        bool force, bool holdException) {
+        if (force || !holdException) {
             Register(casing, converter, force);
             return true;
         }
@@ -82,8 +82,8 @@ public static class CaseConvert {
         Register(casing, new LambdaCaseConverter(convert), force);
 
     public static bool Register(string casing, Func<string?, string?> convert,
-        bool force, bool holdUpExceptoin) =>
-        Register(casing, new LambdaCaseConverter(convert), force, holdUpExceptoin);
+        bool force, bool holdUpException) =>
+        Register(casing, new LambdaCaseConverter(convert), force, holdUpException);
 
     public static ICaseConverter Pascal => Predefined.Pascal;
     public static ICaseConverter Camel => Predefined.Camel;

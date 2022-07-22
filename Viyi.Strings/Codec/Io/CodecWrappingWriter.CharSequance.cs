@@ -9,13 +9,13 @@ public partial class CodecWrappingWriter {
         int ToWriter(TextWriter writer, int limit);
     }
 
-    abstract class CharSequance : ICharSequence {
+    abstract class CharSequence : ICharSequence {
         int offset;
         int restCount;
 
         public bool HasMore => restCount > 0;
 
-        protected CharSequance(int offset, int count) {
+        protected CharSequence(int offset, int count) {
             this.offset = offset;
             restCount = count;
         }
@@ -31,7 +31,7 @@ public partial class CodecWrappingWriter {
         protected abstract void Write(TextWriter writer, int offset, int count);
     }
 
-    class ArrayCharSequence : CharSequance {
+    class ArrayCharSequence : CharSequence {
         readonly char[] source;
 
         public ArrayCharSequence(char[] data) : this(data, 0, data.Length) { }

@@ -4,12 +4,12 @@ partial class CodecOptions {
     public class Builder {
         protected readonly CodecOptions codecOptions;
 
-        static CodecOptions Clone(CodecOptions proto) => Clone(new CodecOptions(), proto);
+        static CodecOptions Clone(CodecOptions prototype) => Clone(new CodecOptions(), prototype);
 
-        protected static CodecOptions Clone(CodecOptions target, CodecOptions proto) {
-            target.LineWidth = proto.LineWidth;
-            target.LineEnding = proto.LineEnding;
-            target.UpperCase = proto.UpperCase;
+        protected static CodecOptions Clone(CodecOptions target, CodecOptions prototype) {
+            target.LineWidth = prototype.LineWidth;
+            target.LineEnding = prototype.LineEnding;
+            target.UpperCase = prototype.UpperCase;
             return target;
         }
 
@@ -19,7 +19,7 @@ partial class CodecOptions {
 
         // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
         // 没有 `DefaultCreator` 的时候，
-        // createDefaultOptioss() 始终产生新的对象，
+        // createDefaultOptions() 始终产生新的对象，
         // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
         private static CodecOptions CreateDefaultOptions() {
             return defaultCreator?.Invoke() ?? new CodecOptions();
@@ -29,8 +29,8 @@ partial class CodecOptions {
             this.codecOptions = CreateDefaultOptions();
         }
 
-        internal Builder(CodecOptions proto, bool needClone = true) {
-            codecOptions = needClone ? Clone(proto) : proto;
+        internal Builder(CodecOptions prototype, bool needClone = true) {
+            codecOptions = needClone ? Clone(prototype) : prototype;
         }
 
         public Builder SetLineWidth(int value) {

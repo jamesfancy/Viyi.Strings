@@ -12,7 +12,7 @@ public static partial class StringExtensions {
             'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'    // 25 ~ 35
         };
 
-        public static readonly int[] RCHARS = new[] {
+        public static readonly int[] R_CHARS = new[] {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 0 ~ 11
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 12 ~ 23
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 24 ~ 31
@@ -77,7 +77,7 @@ public static partial class StringExtensions {
         var factor = 1u;
         var r = (uint) radix;
         return s.Reverse().Aggregate(0u, (n, ch) => {
-            n += (uint) RadixConsts.RCHARS[ch] * factor;
+            n += (uint) RadixConsts.R_CHARS[ch] * factor;
             factor *= r;
             return n;
         });
@@ -89,7 +89,7 @@ public static partial class StringExtensions {
         var factor = 1ul;
         var r = (ulong) radix;
         return s.Reverse().Aggregate(0ul, (n, ch) => {
-            n += (ulong) RadixConsts.RCHARS[ch] * factor;
+            n += (ulong) RadixConsts.R_CHARS[ch] * factor;
             factor *= r;
             return n;
         });
