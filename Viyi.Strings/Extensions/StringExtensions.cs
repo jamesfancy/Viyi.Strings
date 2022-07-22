@@ -23,6 +23,7 @@ public static partial class StringExtensions {
     /// 否则返回当前字符串。
     /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.EmptyAs()`。
     /// </summary>
+    /// <param name="str"></param>
     /// <param name="value">指定用于代替空串的值</param>
     [return: NotNullIfNotNull("value")]
     public static string? EmptyAs(this string? str, string? value) {
@@ -34,6 +35,7 @@ public static partial class StringExtensions {
     /// 否则返回当前字符串。
     /// 如果需要保留 null，应该使用可空链运算符调用，如 `str?.SpacesAs()`。
     /// </summary>
+    /// <param name="str"></param>
     /// <param name="value">指定用于代替空白字符串的值</param>
     [return: NotNullIfNotNull("value")]
     public static string? SpacesAs(this string? str, string? value) {

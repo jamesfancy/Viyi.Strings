@@ -67,6 +67,7 @@ namespace Viyi.Strings.Codec.Base32 {
     }
 }
 
+
 namespace Viyi.Strings.Codec.Base16 {
 
     using System;
@@ -133,4 +134,5 @@ namespace Viyi.Strings.Codec.Base16 {
             EncodeBase16(bytes, false, lineWidth);
     }
 }
+
 

@@ -12,11 +12,15 @@ public static class HexExtensions {
     public static string EncodeHex(this byte[] bytes, CodecOptions? options) => bytes.EncodeBase16(options);
 
     /// <summary>参阅 EncodeBase16()</summary>
-    public static string EncodenHex(this byte[] bytes, Action<CodecOptions.Builder> building) =>
+    public static string EncodeHex(this byte[] bytes, Action<CodecOptions.Builder> building) =>
         bytes.EncodeBase16(building);
 
+    [Obsolete("deprecated since a spell error. use EncodeHex to instead.")]
+    public static string EncodenHex(this byte[] bytes, Action<CodecOptions.Builder> building) =>
+            bytes.EncodeBase16(building);
+
     /// <summary>参阅 EncodeBase16()</summary>
-    public static string EncodeHex(this byte[] bytes) => EncodeHex(bytes, null);
+    public static string EncodeHex(this byte[] bytes) => EncodeHex(bytes, (CodecOptions?) null);
 
     /// <summary>参阅 EncodeBase16()</summary>
     public static string EncodeHex(this byte[] bytes, bool upperCase, int lineWidth) =>

@@ -8,7 +8,7 @@ internal sealed class SnakeCaseConverter : ICaseConverter {
         if (string.IsNullOrEmpty(value)) { return value; }
 
         return value!.ToTransitionString("_")
-            .ReduceSpliters("_")
+            .ReduceSplitters("_")
             .TrimStart('_');
     }
 }

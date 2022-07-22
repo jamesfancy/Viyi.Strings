@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Viyi.Strings.Codec.Io; 
+namespace Viyi.Strings.Codec.Io;
 /// <summary>
 /// 内建缓存，保证在调用 Read 方法时每次都能把传入的缓冲区写满（按指定的有效空间），
 /// 除非数据中的数据已经被读完。
@@ -57,7 +57,7 @@ public partial class BufferedReader {
         }
 
         if (start + count > bufferSize) {
-            throw new ArgumentException("buffer length is not enought to 'count'");
+            throw new ArgumentException("buffer length is not enough for 'count'");
         }
     }
 }

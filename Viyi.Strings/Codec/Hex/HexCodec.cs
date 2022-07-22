@@ -4,7 +4,7 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Codec;
 
 /// <summary>十六进制编解码器</summary>
-/// <remarks>和 Base16 功能一样，应该使用 Baes16 代替</remarks>
+/// <remarks>和 Base16 功能一样，应该使用 Base16 代替</remarks>
 public class HexCodec : Base16Codec { }
 
 internal class HexDecoder : Base16Decoder {

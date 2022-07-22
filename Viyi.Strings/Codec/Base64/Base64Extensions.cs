@@ -5,7 +5,7 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Codec.Base64;
 
 public static partial class Base64Extensions {
-    const int DefaultBaes64LineWidth = 76;
+    const int DefaultBase64LineWidth = 76;
 
     public static byte[] DecodeBase64(this string base64) {
         return new Base64Codec().Decode(base64);
@@ -34,8 +34,13 @@ public static partial class Base64Extensions {
     }
 
     public static string EncodeBase64(this byte[] bytes, bool lineBreak) =>
-        lineBreak ? EncodeBase64(bytes, DefaultBaes64LineWidth) : EncodeBase64(bytes);
+        lineBreak ? EncodeBase64(bytes, DefaultBase64LineWidth) : EncodeBase64(bytes);
 
+    public static string EncodeBase64(this string source, bool lineBreak) {
+        return source.DecodeUtf8().EncodeBase64(lineBreak);
+    }
+
+    [Obsolete("deprecated since a spell error. use EncodeBase64 to instead.")]
     public static string EncodeBaes64(this string source, bool lineBreak) {
         return source.DecodeUtf8().EncodeBase64(lineBreak);
     }
