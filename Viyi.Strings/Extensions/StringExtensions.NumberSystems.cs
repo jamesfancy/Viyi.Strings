@@ -95,6 +95,32 @@ public static partial class StringExtensions {
         });
     }
 
+    public static int ToInt32(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToInt32);
+
+    public static uint ToUInt32(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToUInt32);
+
+    public static long ToInt64(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToInt64);
+
+    public static ulong ToUInt64(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToUInt64);
+
+    // NOTE: T 并不适配所有内容，该接口不可开放
+    static T ParseWithPrefix<T>(string s, bool treadPrefix, Func<string, int, T> parser) {
+        if (!treadPrefix && s.Length <= 2) { return parser(s, 10); }
+        var radix = s[1] switch {
+            'x' => 16,
+            'X' => 16,
+            'b' => 2,
+            'B' => 2,
+            _ => 10,
+        };
+
+        return radix == 10 ? parser(s, 10) : parser(s.Substring(2), radix);
+    }
+
     static void CheckRadix(int radix = 10) {
         if (radix < 2 || radix > 36) {
             throw new ArgumentException($"error radix {radix}, should be in [2, 36]", nameof(radix));
