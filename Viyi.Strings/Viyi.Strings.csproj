@@ -4,7 +4,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <VersionPrefix>1.2.0</VersionPrefix>
-    <VersionSuffix>preview-2</VersionSuffix>
+    <VersionSuffix>preview-3</VersionSuffix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
