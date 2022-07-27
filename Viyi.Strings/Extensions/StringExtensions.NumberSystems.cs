@@ -71,6 +71,11 @@ public static partial class StringExtensions {
             : ToString((ulong) value, radix);
     }
 
+    public static string ToHexLiteral(this int value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
+    public static string ToHexLiteral(this uint value) => $"0x{value:x}";
+    public static string ToHexLiteral(this long value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
+    public static string ToHexLiteral(this ulong value) => $"0x{value:x}";
+
     public static uint ToUInt32(this string s, int radix = 10) {
         CheckRadix(radix);
         if (string.IsNullOrEmpty(s)) { return 0u; }
