@@ -48,11 +48,7 @@ public static partial class StringExtensions {
     /// <param name="str"></param>
     /// <param name="strict">是否严格判断。严格判断时，null 不被认为是空字符串。</param>
     public static bool IsEmpty(
-#if NET6_0_OR_GREATER
         [NotNullWhen(false)] this string? str,
-#else
-        this string? str,
-#endif
         bool strict = false) =>
         strict ? str?.Length == 0 : string.IsNullOrEmpty(str);
 
@@ -62,11 +58,7 @@ public static partial class StringExtensions {
     /// <param name="str"></param>
     /// <param name="strict">是否严格判断。严格判断时 null 和 string.Empty 不被认为是空白字符串</param>
     public static bool IsSpaces(
-#if NET6_0_OR_GREATER
         [NotNullWhen(false)] this string? str,
-#else
-        this string? str,
-#endif
         bool strict = false) {
         bool isNullOrSpaces = string.IsNullOrWhiteSpace(str);
         return isNullOrSpaces && strict

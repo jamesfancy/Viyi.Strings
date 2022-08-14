@@ -71,6 +71,11 @@ public static partial class StringExtensions {
             : ToString((ulong) value, radix);
     }
 
+    public static string ToHexLiteral(this int value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
+    public static string ToHexLiteral(this uint value) => $"0x{value:x}";
+    public static string ToHexLiteral(this long value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
+    public static string ToHexLiteral(this ulong value) => $"0x{value:x}";
+
     public static uint ToUInt32(this string s, int radix = 10) {
         CheckRadix(radix);
         if (string.IsNullOrEmpty(s)) { return 0u; }
@@ -93,6 +98,32 @@ public static partial class StringExtensions {
             factor *= r;
             return n;
         });
+    }
+
+    public static int ToInt32(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToInt32);
+
+    public static uint ToUInt32(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToUInt32);
+
+    public static long ToInt64(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToInt64);
+
+    public static ulong ToUInt64(this string s, bool treatPrefix)
+        => ParseWithPrefix(s, treatPrefix, ToUInt64);
+
+    // NOTE: T 并不适配所有内容，该接口不可开放
+    static T ParseWithPrefix<T>(string s, bool treadPrefix, Func<string, int, T> parser) {
+        if (!treadPrefix && s.Length <= 2) { return parser(s, 10); }
+        var radix = s[1] switch {
+            'x' => 16,
+            'X' => 16,
+            'b' => 2,
+            'B' => 2,
+            _ => 10,
+        };
+
+        return radix == 10 ? parser(s, 10) : parser(s.Substring(2), radix);
     }
 
     static void CheckRadix(int radix = 10) {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace Viyi.Strings.Extensions;
 
@@ -17,5 +18,12 @@ public static class EnumerableExtensions {
 
     public static string ConcatString<T>(this IEnumerable<T> enumerable) {
         return string.Concat(enumerable);
+    }
+
+    public static string MakeString(this IEnumerable<char> chars) {
+        if (chars is char[] array) { return new string(array); }
+        var builder = new StringBuilder();
+        foreach (var ch in chars) { builder.Append(ch); }
+        return builder.ToString();
     }
 }
