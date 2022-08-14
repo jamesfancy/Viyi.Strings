@@ -12,6 +12,11 @@ static class RandomExtensions {
         .Union(LOWER_LETTERS)
         .Union(UPPER_LETTERS).ToArray();
 
+    static readonly char[] BASE32_HEX_CHARS = Enumerable.Range('0', 10)
+        .Select(n => (char) n)
+        .Union(LOWER_LETTERS.Take(22))
+        .Union(UPPER_LETTERS.Take(22)).ToArray();
+
     static readonly char[] HEX_CHARS = NUMBERS
         .Union("abcdef".ToCharArray())
         .Union("ABCDEF".ToCharArray())
@@ -30,6 +35,9 @@ static class RandomExtensions {
 
     public static string RandomBase32(this Random random, int length) =>
         RandomString(random, length, BASE32_CHARS);
+
+    public static string RandomBase32Hex(this Random random, int length) =>
+        RandomString(random, length, BASE32_HEX_CHARS);
 
     public static string RandomBase64(this Random random, int length) =>
         RandomString(random, length, BASE64_CHARS);
