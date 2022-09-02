@@ -1,9 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Viyi.Strings.CaseConverters;
+using CaseToolkit = Viyi.Strings.CaseConverters.Toolkit;
 
-namespace Viyi.Strings.Tests;
+namespace Viyi.Strings.Test;
 
-[TestClass()]
+[TestClass]
 public class CaseConvertTests {
     readonly static string?[][] cases = new[] {
         // original, pascal, camel, kebab, snake
@@ -31,7 +32,7 @@ public class CaseConvertTests {
 
     string[] x = new[] { "asdf", "dasfasdf" };
 
-    [TestMethod()]
+    [TestMethod]
     public void SingleCaseTest() {
         InternalSingleCaseTest(CaseConvert.Pascal, CaseConvert.PascalCase, 1);
         InternalSingleCaseTest(CaseConvert.Camel, CaseConvert.CamelCase, 2);
@@ -39,7 +40,7 @@ public class CaseConvertTests {
         InternalSingleCaseTest(CaseConvert.Snake, CaseConvert.SnakeCase, 4);
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void ConvertToEachOtherTest() {
         var idx = new int[] { 1, 2, 3, 4 };
         var cvts = new Func<string?, string?>[] {
@@ -84,7 +85,7 @@ public class CaseConvertTests {
         });
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void RegisterTest() {
         Assert.ThrowsException<InvalidOperationException>(() => {
             CaseConvert.Register("camel", s => s?.ToLower());
@@ -104,7 +105,7 @@ public class CaseConvertTests {
     class MyCaseConverter : ICaseConverter {
         [return: NotNullIfNotNull("value")]
         public string? Convert(string? value) {
-            return Toolkit.ToKebabCase(value)?.Replace("-", " ");
+            return CaseToolkit.ToKebabCase(value)?.Replace("-", " ");
         }
     }
 }

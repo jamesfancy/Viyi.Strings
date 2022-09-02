@@ -5,6 +5,7 @@
         "CORELIB",
         "cref",
         "netstandard",
+        "nums",
         "Viyi"
     ]
 }
