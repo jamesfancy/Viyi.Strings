@@ -154,5 +154,9 @@ public class StringExtensionsTests {
         Assert.AreEqual(-2691, "-a83".ToInt32(16));
         Assert.AreEqual(uint.MaxValue, new string('F', 8).ToUInt32(16));
         Assert.AreEqual(int.MinValue, "-80000000".ToInt32(16));
+
+        Assert.AreEqual(0x14, "0x14".ToInt32(true));
+        Assert.AreEqual(0x14, "0X14".ToInt32(true));
+        Assert.AreEqual(0xff03ul, "0xff03".ToUInt64(true));
     }
 }

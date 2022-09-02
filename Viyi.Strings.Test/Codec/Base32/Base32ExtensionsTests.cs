@@ -1,5 +1,4 @@
 using Viyi.Strings.Codec.Base32;
-using static Viyi.Strings.Codec.Base32.ReverseCharset;
 
 namespace Viyi.Strings.Test.Codec.Base32;
 
@@ -9,49 +8,6 @@ public class Base32ExtensionsTests {
     readonly int[] cases = Enumerable.Range(0, 10)
         .Union(Enumerable.Range(1020, 10))
         .ToArray();
-
-    [TestMethod]
-    public void TestReverseChars() {
-        var map = Enumerable.Range('a', 26).Select((n, i) => new { code = n, value = i })
-            .Union(Enumerable.Range('A', 26).Select((n, i) => new { code = n, value = i }))
-            .Union(Enumerable.Range('2', 6).Select((n, i) => new { code = n, value = i + 26 }))
-            .ToDictionary(it => it.code, it => it.value);
-        printTable();
-
-        Codes.Select((v, i) => {
-            Assert.AreEqual(map.TryGetValue(i, out int value) ? v : -1, v);
-            return true;
-        });
-
-        map.ForEach(entry => Assert.AreEqual(entry.Value, Codes[entry.Key]));
-
-        void printTable() {
-            print(0, 16);
-            print(16, 32);
-            print(32, 48);
-            print(48, 58);                  // 数字
-            print(58, 65);
-            print(65, 65 + 7);              // 大写字母 4 行
-            print(65 + 7, 65 + 14);
-            print(65 + 14, 65 + 14 + 6);
-            print(65 + 14 + 6, 65 + 26);
-            print(91, 97);
-            print(97, 97 + 7);              // 小写字母 4 行
-            print(97 + 7, 97 + 14);
-            print(97 + 14, 97 + 14 + 6);
-            print(97 + 14 + 6, 97 + 26);
-        }
-
-        // 输出
-        void print(int start, int end) {
-            var line = string.Join(
-                ", ",
-                Enumerable.Range(start, end - start)
-                    .Select(key => map.TryGetValue(key, out var value) ? value : -1)
-            );
-            Trace.WriteLine($"{line},");
-        }
-    }
 
     [TestMethod]
     public void TestBase32Decode() {
@@ -78,9 +34,12 @@ public class Base32ExtensionsTests {
         void test(int length) {
             Trace.WriteLine($"[TestBase32Decode] with length {length}");
             var base32 = random.RandomBase32(length);
+            var base32Hex = random.RandomBase32Hex(length);
 
-            byte[] data = base32.DecodeBase32();
-            Assert.AreEqual(length * charBits / byteBits, data.Length);
+            byte[] base32Data = base32.DecodeBase32();
+            Assert.AreEqual(length * charBits / byteBits, base32Data.Length);
+            byte[] base32HexData = base32Hex.DecodeBase32Hex();
+            Assert.AreEqual(length * charBits / byteBits, base32HexData.Length);
         }
     }
 
@@ -96,6 +55,8 @@ public class Base32ExtensionsTests {
             // 随机产生 size 个 byte 的数据
             byte[] data = random.RandomBytes(size);
             string base32 = data.EncodeBase32();
+            string base32Hex = data.EncodeBase32Hex();
+            Assert.AreEqual(base32.Length, base32Hex.Length);
 
             if (size == 0) {
                 Assert.AreEqual(0, base32.Length);
@@ -112,9 +73,17 @@ public class Base32ExtensionsTests {
             var validCodeLength = (data.Length * byteBits + charBits - 1) / charBits;
             var paddingLength = base32.Length - validCodeLength;
             Assert.IsTrue(base32.EndsWith(new string('=', paddingLength)));
+            Assert.IsTrue(base32Hex.EndsWith(new string('=', paddingLength)));
+#if NET48
+            Assert.IsTrue(base32[base32.Length - paddingLength - 1] != '=');
+            Assert.IsTrue(base32Hex[base32.Length - paddingLength - 1] != '=');
+#else
             Assert.IsTrue(base32[^(paddingLength + 1)] != '=');
+            Assert.IsTrue(base32Hex[^(paddingLength + 1)] != '=');
+#endif
 
             CollectionAssert.AreEqual(data, base32.DecodeBase32());
+            CollectionAssert.AreEqual(data, base32Hex.DecodeBase32Hex());
         }
     }
 
@@ -130,16 +99,20 @@ public class Base32ExtensionsTests {
             // 随机产生 size 个字节的数据用于测试
             byte[] data = random.RandomBytes(size);
             string base32 = data.EncodeBase32(true, true);
+            string base32Hex = data.EncodeBase32(true, true);
+            Assert.AreEqual(base32.Length, base32Hex.Length);
 
             if (size == 0) {
                 Assert.AreEqual(0, base32.Length);
+                Assert.AreEqual(0, base32Hex.Length);
                 return;
             }
 
             CollectionAssert.AreEqual(data, base32.DecodeBase32());
+            CollectionAssert.AreEqual(data, base32Hex.DecodeBase32());
 
             int codeLength = (size * byteBits + groupBits - 1) / groupBits * groupBits / charBits;
-            Assert.AreEqual((codeLength + 63) / 64, base32.Split("\n").Length);
+            Assert.AreEqual((codeLength + 63) / 64, base32.Split('\n').Length);
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Viyi.Strings.Extensions;
+namespace Viyi.Strings.Extensions.Internal;
 
 internal static partial class ArrayExtensions {
     // NOTE netstandard2.0 中没有 Array.Fill 方法，所以封装扩展方法 Fill 作为适配器

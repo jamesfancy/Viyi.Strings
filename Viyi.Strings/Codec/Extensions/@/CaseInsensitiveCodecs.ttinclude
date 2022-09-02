@@ -1,4 +1,5 @@
-namespace Viyi.Strings.Codec.<#= it.Name #> {
+namespace Viyi.Strings.Codec.<#= it.Ns ?? it.Name #> {
+
     using System;
     using Viyi.Strings.Codec.Extensions;
     using Viyi.Strings.Codec.Options;

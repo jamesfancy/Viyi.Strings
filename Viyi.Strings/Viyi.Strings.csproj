@@ -1,23 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>net6.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <VersionPrefix>1.2.1</VersionPrefix>
+    <VersionSuffix>alpha.2</VersionSuffix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
     <Authors>James Fan</Authors>
-    <VersionPrefix>1.1.2</VersionPrefix>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>True</SignAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="" />
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="Viyi.Strings %28net6.0%29\**" />
+    <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
+    <None Remove="Viyi.Strings %28net6.0%29\**" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
@@ -26,28 +33,19 @@
     <None Remove="Viyi.Strings %28netstandard2.0%29\**" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net6.0'">
-    <Compile Remove="Viyi.Strings %28net6.0%29\**" />
-    <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
-    <None Remove="Viyi.Strings %28net6.0%29\**" />
-  </ItemGroup>
-
   <ItemGroup>
     <None Update="Codec\Extensions\@\CaseInsensitiveCodecs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CaseInsensitiveCodecs.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Codec\Extensions\@\CaseInsensitiveCodecs.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CaseInsensitiveCodecs.tt</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 </Project>

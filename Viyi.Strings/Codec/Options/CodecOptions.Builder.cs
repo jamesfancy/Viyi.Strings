@@ -1,56 +1,56 @@
-namespace Viyi.Strings.Codec.Options {
-    partial class CodecOptions {
-        public class Builder {
-            protected readonly CodecOptions codecOptions;
+namespace Viyi.Strings.Codec.Options;
 
-            static CodecOptions Clone(CodecOptions proto) => Clone(new CodecOptions(), proto);
+partial class CodecOptions {
+    public class Builder {
+        protected readonly CodecOptions codecOptions;
 
-            protected static CodecOptions Clone(CodecOptions target, CodecOptions proto) {
-                target.LineWidth = proto.LineWidth;
-                target.LineEnding = proto.LineEnding;
-                target.UpperCase = proto.UpperCase;
-                return target;
-            }
+        static CodecOptions Clone(CodecOptions prototype) => Clone(new CodecOptions(), prototype);
 
-            public virtual CodecOptions Build() {
-                return Clone(this.codecOptions);
-            }
+        protected static CodecOptions Clone(CodecOptions target, CodecOptions prototype) {
+            target.LineWidth = prototype.LineWidth;
+            target.LineEnding = prototype.LineEnding;
+            target.UpperCase = prototype.UpperCase;
+            return target;
+        }
 
-            // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
-            // 没有 `DefaultCreator` 的时候，
-            // createDefaultOptioss() 始终产生新的对象，
-            // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
-            private static CodecOptions CreateDefaultOptions() {
-                return defaultCreator?.Invoke() ?? new CodecOptions();
-            }
+        public virtual CodecOptions Build() {
+            return Clone(this.codecOptions);
+        }
 
-            internal Builder() {
-                this.codecOptions = CreateDefaultOptions();
-            }
+        // createDefaultOptions() 与 CodecOptions.CreateDefault() 的区别在于：
+        // 没有 `DefaultCreator` 的时候，
+        // createDefaultOptions() 始终产生新的对象，
+        // CodecOptions.CreateDefault() 始终返回同一个对象，即 CodecOptions.Default。
+        private static CodecOptions CreateDefaultOptions() {
+            return defaultCreator?.Invoke() ?? new CodecOptions();
+        }
 
-            internal Builder(CodecOptions proto, bool needClone = true) {
-                codecOptions = needClone ? Clone(proto) : proto;
-            }
+        internal Builder() {
+            this.codecOptions = CreateDefaultOptions();
+        }
 
-            public Builder SetLineWidth(int value) {
-                codecOptions.LineWidth = value < 0 ? NoLineWidth : value;
-                return this;
-            }
+        internal Builder(CodecOptions prototype, bool needClone = true) {
+            codecOptions = needClone ? Clone(prototype) : prototype;
+        }
 
-            public Builder SetLineEnding(LineEndings value) {
-                codecOptions.LineEnding = value;
-                return this;
-            }
+        public Builder SetLineWidth(int value) {
+            codecOptions.LineWidth = value < 0 ? NoLineWidth : value;
+            return this;
+        }
 
-            public Builder UseUpperCase(bool upperCase = true) {
-                codecOptions.UpperCase = upperCase;
-                return this;
-            }
+        public Builder SetLineEnding(LineEndings value) {
+            codecOptions.LineEnding = value;
+            return this;
+        }
 
-            public Builder UseLowerCase() {
-                codecOptions.UpperCase = false;
-                return this;
-            }
+        public Builder UseUpperCase(bool upperCase = true) {
+            codecOptions.UpperCase = upperCase;
+            return this;
+        }
+
+        public Builder UseLowerCase() {
+            codecOptions.UpperCase = false;
+            return this;
         }
     }
 }

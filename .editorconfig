@@ -7,7 +7,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
-guidelines = 80, 100, 120
+guidelines = 100, 112, 118, 120
 
 [*.{json,xml,*proj,config}]
 indent_size = 2
@@ -19,6 +19,7 @@ trim_trailing_whitespace = false
 csharp_new_line_before_open_brace = none
 csharp_new_line_before_else = true
 csharp_space_after_cast = true
+csharp_style_namespace_declarations = file_scoped:warning
 
 dotnet_style_qualification_for_field = true
 dotnet_style_qualification_for_property = true
@@ -33,3 +34,6 @@ dotnet_diagnostic.RCS1123.severity = none
 
 # IDE0009: Member access should be qualified.
 dotnet_diagnostic.IDE0009.severity = silent
+
+# CS1591: Missing XML comment for publicly visible type or member
+dotnet_diagnostic.CS1591.severity = silent
