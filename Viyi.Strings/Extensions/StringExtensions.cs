@@ -53,6 +53,15 @@ public static partial class StringExtensions {
         strict ? str?.Length == 0 : string.IsNullOrEmpty(str);
 
     /// <summary>
+    /// 判断是否空字符串，根据 strict 的值来决定判空时是否包括 null。
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="strict">是否严格判断。严格判断时，null 不被认为是空字符串。</param>
+    public static bool IsNotEmpty(
+        [NotNullWhen(true)] this string? str,
+        bool strict = false) => !IsEmpty(str, strict);
+
+    /// <summary>
     /// 判断是否空白字符串，根据 strict 的值来决定判定时是否包含 null 和 string.Empty.
     /// </summary>
     /// <param name="str"></param>
@@ -65,4 +74,13 @@ public static partial class StringExtensions {
             ? !string.IsNullOrEmpty(str)
             : isNullOrSpaces;
     }
+
+    /// <summary>
+    /// 判断是否空白字符串，根据 strict 的值来决定判定时是否包含 null 和 string.Empty.
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="strict">是否严格判断。严格判断时 null 和 string.Empty 不被认为是空白字符串</param>
+    public static bool IsNotSpaces(
+        [NotNullWhen(true)] this string? str,
+        bool strict = false) => !IsSpaces(str, strict);
 }

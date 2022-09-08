@@ -124,11 +124,22 @@ public class StringExtensionsTests {
 
         cases.ForEach(c => {
             Assert.AreEqual(c.isEmpty, c.value.IsEmpty());
+            Assert.AreEqual(!c.isEmpty, c.value.IsNotEmpty());
+
             Assert.AreEqual(c.isEmpty, c.value.IsEmpty(false));
+            Assert.AreEqual(!c.isEmpty, c.value.IsNotEmpty(false));
+
             Assert.AreEqual(c.isStrictEmpty, c.value.IsEmpty(true));
+            Assert.AreEqual(!c.isStrictEmpty, c.value.IsNotEmpty(true));
+
             Assert.AreEqual(c.isSpaces, c.value.IsSpaces());
+            Assert.AreEqual(!c.isSpaces, c.value.IsNotSpaces());
+
             Assert.AreEqual(c.isSpaces, c.value.IsSpaces(false));
+            Assert.AreEqual(!c.isSpaces, c.value.IsNotSpaces(false));
+
             Assert.AreEqual(c.isStrictSpaces, c.value.IsSpaces(true));
+            Assert.AreEqual(!c.isStrictSpaces, c.value.IsNotSpaces(true));
         });
     }
 
