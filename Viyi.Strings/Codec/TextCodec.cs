@@ -12,12 +12,18 @@ public static class TextCodec {
     static readonly LazyStorage storage = new();
 
     public static Base64Codec Base64 => storage.base64 ??= new();
+    public static Base64UrlCodec Base64url => storage.base64Url ??= new();
+    public static Base32Codec Base32 => storage.base32 ??= new();
+    public static Base32HexCodec Base32Hex => storage.base32Hex ??= new();
     public static Base16Codec Base16 => storage.base16 ??= new();
     public static Base16Codec Hex => storage.hex ??= new();
 
     static TextCodec() {
         factories = new(StringComparer.OrdinalIgnoreCase) {
             ["base64"] = () => new Base64Codec(),
+            ["base64url"] = () => new Base64UrlCodec(),
+            ["base32"] = () => new Base32Codec(),
+            ["base32hex"] = () => new Base32HexCodec(),
             ["base16"] = () => new Base16Codec(),
             ["hex"] = () => new HexCodec(),
         };
@@ -68,10 +74,10 @@ public static class TextCodec {
 
     class LazyStorage {
         internal Base64Codec? base64;
-        internal Base64UrlCodec? base64url;
+        internal Base64UrlCodec? base64Url;
         internal Base32Codec? base32;
+        internal Base32HexCodec? base32Hex;
         internal Base16Codec? base16;
         internal HexCodec? hex;
     }
-
 }
