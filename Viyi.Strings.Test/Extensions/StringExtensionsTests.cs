@@ -170,4 +170,14 @@ public class StringExtensionsTests {
         Assert.AreEqual(0x14, "0X14".ToInt32(true));
         Assert.AreEqual(0xff03ul, "0xff03".ToUInt64(true));
     }
+
+    [TestMethod]
+    public void ToTimeSpanTest() {
+        Assert.AreEqual(TimeSpan.FromMinutes(24), "24m".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMinutes(2324), "2324".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMinutes(124), "124 minutes".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMilliseconds(2022), "2022ms".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromSeconds(2022), "2022".ToTimeSpan("s"));
+        Assert.AreEqual(TimeSpan.FromDays(14), "2w".ToTimeSpan("s"));
+    }
 }
