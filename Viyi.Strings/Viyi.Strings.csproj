@@ -21,30 +21,6 @@
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="Viyi.Strings %28net6.0%29\**" />
-    <EmbeddedResource Remove="Viyi.Strings %28net6.0%29\**" />
-    <None Remove="Viyi.Strings %28net6.0%29\**" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
-    <Compile Remove="Viyi.Strings %28netstandard2.0%29\**" />
-    <EmbeddedResource Remove="Viyi.Strings %28netstandard2.0%29\**" />
-    <None Remove="Viyi.Strings %28netstandard2.0%29\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Codec\Extensions\@\CaseInsensitiveCodecs.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CaseInsensitiveCodecs.cs</LastGenOutput>
-    </None>
-    <Compile Update="Codec\Extensions\@\CaseInsensitiveCodecs.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CaseInsensitiveCodecs.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
