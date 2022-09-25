@@ -4,7 +4,7 @@ using Viyi.Strings.Codec.Extensions;
 namespace Viyi.Strings.Test.Codec.Base64;
 
 [TestClass]
-public class Baes64MoreExtensionsTests {
+public class Base64MoreExtensionsTests {
     [TestMethod]
     public void TestBase64Decode() {
         const string base64 = "ab+c/def";

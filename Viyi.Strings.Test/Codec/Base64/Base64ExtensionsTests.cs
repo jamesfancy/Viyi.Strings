@@ -5,7 +5,7 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Test.Codec.Base64;
 
 [TestClass]
-public class Baes64ExtensionsTests {
+public class Base64ExtensionsTests {
     readonly Random random = new();
 
     readonly int[] cases = new[] {

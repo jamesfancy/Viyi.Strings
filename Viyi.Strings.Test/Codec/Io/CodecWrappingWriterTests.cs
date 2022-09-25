@@ -66,11 +66,11 @@ public class CodecWrappingWriterTests {
             assert(result);
         }
 
-        void assert(string s, string spliter) {
+        void assert(string s, string splitter) {
 #if NET48
-            var segments = s.Split(spliter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var segments = s.Split(splitter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 #else
-            var segments = s.Split(spliter);
+            var segments = s.Split(splitter);
 #endif
             Assert.AreEqual(1024 / 64, segments.Length);
             Assert.IsTrue(segments.All(line => line.Length == 64));
