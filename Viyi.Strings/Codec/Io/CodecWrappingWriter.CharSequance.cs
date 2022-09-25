@@ -43,4 +43,22 @@ public partial class CodecWrappingWriter {
         protected override void Write(TextWriter writer, int offset, int count) =>
             writer.Write(source, offset, count);
     }
+
+    class StringCharSequence : CharSequence {
+        readonly string source;
+
+        public StringCharSequence(string data) : base(0, data.Length) {
+            source = data;
+        }
+
+#if NETSTANDARD2_0
+        protected override void Write(TextWriter writer, int offset, int count) {
+            var buffer = source.ToCharArray(offset, count);
+            writer.Write(buffer);
+        }
+#else
+        protected override void Write(TextWriter writer, int offset, int count) =>
+            writer.Write(source.AsSpan(offset, count));
+#endif
+    }
 }
