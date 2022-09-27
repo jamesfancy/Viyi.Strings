@@ -166,9 +166,15 @@ public class StringExtensionsTests {
         Assert.AreEqual(uint.MaxValue, new string('F', 8).ToUInt32(16));
         Assert.AreEqual(int.MinValue, "-80000000".ToInt32(16));
 
-        Assert.AreEqual(0x14, "0x14".ToInt32(true));
-        Assert.AreEqual(0x14, "0X14".ToInt32(true));
+        Assert.AreEqual(0, "".ToInt32(true));
+        Assert.AreEqual(-14, "-14".ToInt32(true));
+        Assert.AreEqual(14, "14".ToInt32(true));
+        Assert.AreEqual(123456789ul, "123456789ul".ToUInt64(true));
+        Assert.AreEqual(-0x14, "-0x14".ToInt32(true));
+        Assert.AreEqual(0x14u, "0X14".ToUInt32(true));
         Assert.AreEqual(0xff03ul, "0xff03".ToUInt64(true));
+        Assert.AreEqual(0b101, "0B101".ToInt32(true));
+        Assert.AreEqual(77, "077".ToInt32(true));
     }
 
     [TestMethod]
