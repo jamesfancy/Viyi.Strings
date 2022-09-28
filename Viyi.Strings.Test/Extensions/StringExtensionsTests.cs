@@ -166,8 +166,24 @@ public class StringExtensionsTests {
         Assert.AreEqual(uint.MaxValue, new string('F', 8).ToUInt32(16));
         Assert.AreEqual(int.MinValue, "-80000000".ToInt32(16));
 
-        Assert.AreEqual(0x14, "0x14".ToInt32(true));
-        Assert.AreEqual(0x14, "0X14".ToInt32(true));
+        Assert.AreEqual(0, "".ToInt32(true));
+        Assert.AreEqual(-14, "-14".ToInt32(true));
+        Assert.AreEqual(14, "14".ToInt32(true));
+        Assert.AreEqual(123456789ul, "123456789ul".ToUInt64(true));
+        Assert.AreEqual(-0x14, "-0x14".ToInt32(true));
+        Assert.AreEqual(0x14u, "0X14".ToUInt32(true));
         Assert.AreEqual(0xff03ul, "0xff03".ToUInt64(true));
+        Assert.AreEqual(0b101, "0B101".ToInt32(true));
+        Assert.AreEqual(77, "077".ToInt32(true));
+    }
+
+    [TestMethod]
+    public void ToTimeSpanTest() {
+        Assert.AreEqual(TimeSpan.FromMinutes(24), "24m".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMinutes(2324), "2324".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMinutes(124), "124 minutes".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromMilliseconds(2022), "2022ms".ToTimeSpan());
+        Assert.AreEqual(TimeSpan.FromSeconds(2022), "2022".ToTimeSpan("s"));
+        Assert.AreEqual(TimeSpan.FromDays(14), "2w".ToTimeSpan("s"));
     }
 }
