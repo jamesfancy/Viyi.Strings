@@ -31,13 +31,13 @@ public class CodecOptionsTests {
 
     [TestMethod]
     public void TestCreateMore() {
-        var bulder = CodecOptions.Create()
+        var builder = CodecOptions.Create()
             .SetLineWidth(99)
             .SetLineEnding(LineEndings.Cr)
             .UseUpperCase();
 
-        var opts1 = bulder.Build();
-        var opts2 = bulder.Build();
+        var opts1 = builder.Build();
+        var opts2 = builder.Build();
 
         Assert.AreNotSame(opts1, opts2);
         Assert.AreEqual(opts1, opts2);

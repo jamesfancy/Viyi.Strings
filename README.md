@@ -6,7 +6,7 @@ Viyi.Strings 是从 [Viyi.Util][viyi_util] 中分离出来的，专注于处理�
 
 > ###### English [en]
 >
-> Viyi.Strings is a library separated from [Viyi.Util][viyi_util], which focuses on processing strings. At present, Viyi.Strings suplies Base64 and Hex encoding/decoding by extension methods, as  well as a text encoding/decoding framework. More string tools will be avaliable in the future.
+> Viyi.Strings is a library separated from [Viyi.Util][viyi_util], which focuses on processing strings. At present, Viyi.Strings supplies Base64 and Hex encoding/decoding by extension methods, as  well as a text encoding/decoding framework. More string tools will be available in the future.
 
 Viyi.Strings 使用木兰宽松许可证第 2 版（Mulan Permissive Software License, Version 2）。
 
@@ -33,18 +33,27 @@ dotnet add package Viyi.Strings
 
 ## 3. 源代码 (Source Codes)
 
-源代码托管在 [gitee.com](https://gitee.com/) 上：[传送门 (Follow this link)](https://gitee.com/jamesfancy/viyi-strings)
+源代码托管在 [gitee.com](https://gitee.com/) 上：[传送门 (Follow this link to source codes)](https://gitee.com/jamesfancy/viyi-strings)
 
 ## 4. 主要功能 (Main Features)
 
 - [x] [基于文本的编/解码](https://gitee.com/jamesfancy/viyi-strings/wikis/%E6%96%87%E6%9C%AC%E7%BC%96%E7%A0%81%E5%92%8C%E8%A7%A3%E7%A0%81%20(Viyi.Strings.Codec))
+  
+    > 基于文本的编/解码主要依据 [RFC-4648 (rfc-editor.org)][rfc_4648]。
+    
     - Base 64 编/解码：`EncodeBase64()`/`DecodeBase64()`
+    
+        - Base 64 Url 编/解码：`EncodeBase64Url()` / `DecodeBase64Url()`
+    
+        - 兼容 Base 64 和 Base 64 Url 的解码：`DecodeBase64Compatible()`
     
     - Base 16（十六进制）编/解码：`EncodeBase16()`/`DecodeBase16()`
     
-        > 别名：`EncodeHex()`/`DecodeHex()`
+        - 别名：`EncodeHex()`/`DecodeHex()`
     
     - Base 32 编/解码：`EncodeBase32()`/`DecodeBase32()`
+    
+        - Base 32 Hex 编/解码：`EncodeBase32Hex()` / `DecodeBase32Hex()`
     
     - Utf8 编/解码：`EncodeUtf8()`/`DecodeUtf8()`
     
@@ -55,8 +64,9 @@ dotnet add package Viyi.Strings
     - `TextCodec` 管理各心及抽象化接口
     
 - [x] [空字符串和空白字符串](https://gitee.com/jamesfancy/viyi-strings/wikis/%E7%A9%BA%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6%E4%B8%B2)
-    
+  
     - `IsEmpty()` 和 `IsSpaces()` 灵活判断
+        - `IsNotEmpty()` 和 `IsNotSpaces()`
     - `EmptyAs()` 和 `SpacesAs()` 灵活赋予默认值
     
 - [x] [命名风格转换（大小规则写转换）](https://gitee.com/jamesfancy/viyi-strings/wikis/%E5%91%BD%E5%90%8D%E9%A3%8E%E6%A0%BC%E8%BD%AC%E6%8D%A2%20CaseConvert)
@@ -68,10 +78,45 @@ dotnet add package Viyi.Strings
     - `ToString(int radix)`
     - `ToInt32(int radix)`/`ToUInt32(int radix)`
     - `ToInt64(int radix)`/`ToUInt64(int radix)`
+    - `ToInt32(true)` / `ToUInt32(true)` / `ToInt64(true)` / `ToUInt64(true)` 解析带 `"0x"` 前缀的十六进制数。
     
 - [x] [解析为布尔值](https://gitee.com/jamesfancy/viyi-strings/wikis/%E8%A7%A3%E6%9E%90%E4%B8%BA%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B%20(bool))，灵活支持 `on/off`、`yes/no` 及其他字符串内容
     - `ToBoolean()` 系列扩展方法
     - `CreatePredicator()` 工具方法创建断言函数
+    
+- [x] 数字范围生成/解析
+
+    在 `#1~10#,#25,#30~#35` 这种形式的范围表示法和 `int[]` 之间进行转换，允许自定义分隔符、连字符和标号前缀。
+
+    - `NumsRange.Parse()` / `new NumsRange().Parse()`
+    - `NumsRange.ToRangeString()`
+
+    > 注意：`ToRangeString()` 不会对数据源进行排序，若有必要请先调用 `OrderBy()` 扩展方法排序。
+
+- [x] Human Readable Size 表示
+
+    将整数表示的存储容量大小（字节/位）处理成对人类友好，易于识别的，带 K、M、G 等单位的格式。
+
+    - `(ulong/long/uint/int).ToReadableSize(Action<Options>? config = null)`
+    - 可以通过 `Options` 或 `Action<Options>` 配置
+        - 基本单位 `B` 或 `b`，或者其他
+        - 计量单位 `K, M, G, ...` 或其他
+        - 计算方式，以 `1024` 或 `1000` 作为除数
+        - 总长度及小数位数
+        - ……
+
+- [x] 解析表示时间长度的字符串，如 `5m`、`2hours` 等
+
+    - `string.ToTimeSpan(string defaultUnit = "m")`
+        - 可以解析分钟 (`m/minutes`)、小时 (`h/hours`)、秒 (`s/seconds`)、天 (`d/days`)、周 (`w/weeks`) 及毫秒 (`ms/milliseconds`) 等
+        - 数值部分目前仅支持整数
+
+
+- [x] [对 FormattableString 预先进行一次格式化处理](https://gitee.com/jamesfancy/viyi-strings/issues/I5HNMY)
+
+    在使用 `ExecuteSqlInterpolated()` 前可以使用 `PreFormat` 预先处理掉不是 SQL 参数的插值（比如表名）。
+
+    - `FormattableString` 的 `PreFormat()` 扩展
 
 ## 5. 支持和贡献
 
@@ -85,8 +130,8 @@ dotnet add package Viyi.Strings
 
 [viyi_util]: https://www.nuget.org/packages/Viyi.Util/	"Viyi.Util"
 [viyi_strings]: https://www.nuget.org/packages/Viyi.Strings/	"Viyi.Strings in NuGet"
+[rfc_4648]: https://www.rfc-editor.org/rfc/inline-errata/rfc4648.html	""RFC-4648""
 [argumentnullexception]: https://docs.microsoft.com/dotnet/api/system.argumentnullexception "ArgumentNullException"
 [argumentexception]: https://docs.microsoft.com/dotnet/api/system.argumentexception	" ArgumentException"
 [notsupportedexception]: https://docs.microsoft.com/dotnet/api/system.notsupportedexception	"NotSupportedException"
 [vs_nuget]: https://docs.microsoft.com/zh-cn/nuget/consume-packages/install-use-packages-visual-studio
-

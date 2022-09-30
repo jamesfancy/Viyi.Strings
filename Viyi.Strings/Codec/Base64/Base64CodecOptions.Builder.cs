@@ -1,10 +1,9 @@
-using System;
 using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Codec.Base64;
 
 public partial class Base64CodecOptions {
-    new public class Builder : CodecOptions.Builder {
+    public new class Builder : CodecOptions.Builder {
         readonly Base64CodecOptions base64CodecOptions;
 
         protected static Base64CodecOptions Clone(Base64CodecOptions target, Base64CodecOptions prototype) {

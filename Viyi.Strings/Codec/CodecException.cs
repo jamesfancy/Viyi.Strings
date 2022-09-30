@@ -1,5 +1,3 @@
-using System;
-
 namespace Viyi.Strings.Codec;
 
 public class CodecException : Exception {

@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Viyi.Strings.Extensions;
 
 public static partial class StringExtensions {
@@ -81,11 +78,13 @@ public static partial class StringExtensions {
         if (string.IsNullOrEmpty(s)) { return 0u; }
         var factor = 1u;
         var r = (uint) radix;
-        return s.Reverse().Aggregate(0u, (n, ch) => {
-            n += (uint) RadixConsts.R_CHARS[ch] * factor;
-            factor *= r;
-            return n;
-        });
+        return EnumerateDigits(s, radix)
+            .Reverse()
+            .Aggregate(0u, (n, digit) => {
+                n += (uint) digit * factor;
+                factor *= r;
+                return n;
+            });
     }
 
     public static ulong ToUInt64(this string s, int radix = 10) {
@@ -93,11 +92,23 @@ public static partial class StringExtensions {
         if (string.IsNullOrEmpty(s)) { return 0u; }
         var factor = 1ul;
         var r = (ulong) radix;
-        return s.Reverse().Aggregate(0ul, (n, ch) => {
-            n += (ulong) RadixConsts.R_CHARS[ch] * factor;
-            factor *= r;
-            return n;
-        });
+        return EnumerateDigits(s, radix)
+            .Reverse()
+            .Aggregate(0ul, (n, digit) => {
+                n += (ulong) digit * factor;
+                factor *= r;
+                return n;
+            });
+    }
+
+    private static IEnumerable<int> EnumerateDigits(string s, int radix) {
+        var charCount = RadixConsts.R_CHARS.Length;
+        foreach (char ch in s) {
+            if (ch >= charCount) { yield break; }
+            int v = RadixConsts.R_CHARS[ch];
+            if (v < 0 || v >= radix) { yield break; }
+            yield return v;
+        }
     }
 
     public static int ToInt32(this string s, bool treatPrefix)
@@ -114,16 +125,26 @@ public static partial class StringExtensions {
 
     // NOTE: T 并不适配所有内容，该接口不可开放
     static T ParseWithPrefix<T>(string s, bool treadPrefix, Func<string, int, T> parser) {
-        if (!treadPrefix && s.Length <= 2) { return parser(s, 10); }
-        var radix = s[1] switch {
-            'x' => 16,
-            'X' => 16,
-            'b' => 2,
-            'B' => 2,
+        if (s.Length == 0) { return parser(s, 10); }
+        bool negative = s[0] == '-';
+        int digitStart = negative ? 1 : 0;
+        if (!treadPrefix || s.Length <= digitStart + 2 || s[digitStart] != '0') { return parser(s, 10); }
+        var radix = s[++digitStart] switch {
+            'x' or 'X' => 16,
+            'b' or 'B' => 2,
             _ => 10,
         };
 
-        return radix == 10 ? parser(s, 10) : parser(s.Substring(2), radix);
+        return radix switch {
+            10 => parser(s, 10),
+#if NETSTANDARD2_0
+            _ when negative => parser($"-{s.Substring(3)}", radix),
+            _ => parser(s.Substring(2), radix),
+#else
+            _ when negative => parser($"-{s[3..]}", radix),
+            _ => parser(s[2..], radix),
+#endif
+        };
     }
 
     static void CheckRadix(int radix = 10) {

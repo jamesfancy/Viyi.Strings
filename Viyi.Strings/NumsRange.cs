@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Viyi.Strings.Extensions;
 
 namespace Viyi.Strings;
 
 public class NumsRange {
-    readonly static string[] DefaultSeparators = new[] { ",", ";", " " };
-    readonly static string[] DefaultRangeLinker = new[] { "-", "~" };
-    readonly static Regex IntRegex = new("(-?\\d+)");
+    static readonly string[] DefaultSeparators = new[] { ",", ";", " " };
+    static readonly string[] DefaultRangeLinker = new[] { "-", "~" };
+    static readonly Regex IntRegex = new("(-?\\d+)");
 
     public static int[] Parse(string range, bool suppressException = true) {
         try {

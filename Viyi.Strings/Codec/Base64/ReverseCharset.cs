@@ -1,5 +1,3 @@
-using System;
-
 namespace Viyi.Strings.Codec.Base64;
 
 abstract class ReverseCharset {
