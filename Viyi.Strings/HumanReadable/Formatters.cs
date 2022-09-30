@@ -1,6 +1,6 @@
 namespace Viyi.Strings.HumanReadable;
 
-public static class Fomatters {
+public static class Formatters {
     private static readonly IFormatter defaultInstance = new DefaultFormatter(new());
 
     public static IFormatter Create(Action<Options>? config = null) {
