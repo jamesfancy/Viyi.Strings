@@ -1,8 +1,6 @@
-using System;
-using System.IO;
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Io; 
+namespace Viyi.Strings.Codec.Io;
 public partial class CodecWrappingWriter : CodecTextWriter {
     // 该数组元素（数量及顺序）与 LineEndings 枚举保持一致
     static readonly string[] EndOfLines = new[] {
@@ -26,7 +24,7 @@ public partial class CodecWrappingWriter : CodecTextWriter {
         }
 
         restOfLine = lineWidth = options.LineWidth;
-        lineEnding = EndOfLines[(int)options.LineEnding];
+        lineEnding = EndOfLines[(int) options.LineEnding];
     }
 
     public override void Write(char[] data) => Write(data, 0, data.Length);

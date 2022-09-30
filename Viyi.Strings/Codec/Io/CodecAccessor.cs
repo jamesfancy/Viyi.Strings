@@ -1,6 +1,6 @@
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Io; 
+namespace Viyi.Strings.Codec.Io;
 public abstract class CodecAccessor {
     protected CodecOptions Options { get; }
 

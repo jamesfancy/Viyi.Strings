@@ -6,7 +6,7 @@ Viyi.Strings 是从 [Viyi.Util][viyi_util] 中分离出来的，专注于处理�
 
 > ###### English [en]
 >
-> Viyi.Strings is a library separated from [Viyi.Util][viyi_util], which focuses on processing strings. At present, Viyi.Strings suplies Base64 and Hex encoding/decoding by extension methods, as  well as a text encoding/decoding framework. More string tools will be avaliable in the future.
+> Viyi.Strings is a library separated from [Viyi.Util][viyi_util], which focuses on processing strings. At present, Viyi.Strings supplies Base64 and Hex encoding/decoding by extension methods, as  well as a text encoding/decoding framework. More string tools will be available in the future.
 
 Viyi.Strings 使用木兰宽松许可证第 2 版（Mulan Permissive Software License, Version 2）。
 
@@ -38,7 +38,7 @@ dotnet add package Viyi.Strings
 ## 4. 主要功能 (Main Features)
 
 - [x] [基于文本的编/解码](https://gitee.com/jamesfancy/viyi-strings/wikis/%E6%96%87%E6%9C%AC%E7%BC%96%E7%A0%81%E5%92%8C%E8%A7%A3%E7%A0%81%20(Viyi.Strings.Codec))
-    
+  
     > 基于文本的编/解码主要依据 [RFC-4648 (rfc-editor.org)][rfc_4648]。
     
     - Base 64 编/解码：`EncodeBase64()`/`DecodeBase64()`
@@ -91,6 +91,27 @@ dotnet add package Viyi.Strings
     - `NumsRange.Parse()` / `new NumsRange().Parse()`
     - `NumsRange.ToRangeString()`
 
+    > 注意：`ToRangeString()` 不会对数据源进行排序，若有必要请先调用 `OrderBy()` 扩展方法排序。
+
+- [x] Human Readable Size 表示
+
+    将整数表示的存储容量大小（字节/位）处理成对人类友好，易于识别的，带 K、M、G 等单位的格式。
+
+    - `(ulong/long/uint/int).ToReadableSize(Action<Options>? config = null)`
+    - 可以通过 `Options` 或 `Action<Options>` 配置
+        - 基本单位 `B` 或 `b`，或者其他
+        - 计量单位 `K, M, G, ...` 或其他
+        - 计算方式，以 `1024` 或 `1000` 作为除数
+        - 总长度及小数位数
+        - ……
+
+- [x] 解析表示时间长度的字符串，如 `5m`、`2hours` 等
+
+    - `string.ToTimeSpan(string defaultUnit = "m")`
+        - 可以解析分钟 (`m/minutes`)、小时 (`h/hours`)、秒 (`s/seconds`)、天 (`d/days`)、周 (`w/weeks`) 及毫秒 (`ms/milliseconds`) 等
+        - 数值部分目前仅支持整数
+
+
 - [x] [对 FormattableString 预先进行一次格式化处理](https://gitee.com/jamesfancy/viyi-strings/issues/I5HNMY)
 
     在使用 `ExecuteSqlInterpolated()` 前可以使用 `PreFormat` 预先处理掉不是 SQL 参数的插值（比如表名）。
@@ -114,4 +135,3 @@ dotnet add package Viyi.Strings
 [argumentexception]: https://docs.microsoft.com/dotnet/api/system.argumentexception	" ArgumentException"
 [notsupportedexception]: https://docs.microsoft.com/dotnet/api/system.notsupportedexception	"NotSupportedException"
 [vs_nuget]: https://docs.microsoft.com/zh-cn/nuget/consume-packages/install-use-packages-visual-studio
-

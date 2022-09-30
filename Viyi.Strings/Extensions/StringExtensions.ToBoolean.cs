@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Viyi.Strings.Extensions;
 
 public static partial class StringExtensions {

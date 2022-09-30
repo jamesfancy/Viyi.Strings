@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Viyi.Strings.Extensions;
 
 public static class NumsRangeExtensions {

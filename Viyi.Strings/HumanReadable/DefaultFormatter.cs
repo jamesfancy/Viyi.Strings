@@ -7,7 +7,7 @@ public class DefaultFormatter : IFormatter {
     readonly string pattern;
     readonly int intLength;
 
-    internal protected DefaultFormatter(Options options) {
+    protected internal DefaultFormatter(Options options) {
         this.options = options;
         var maxLength = Math.Min(Options.MaxLengthLimit, Math.Max(0, options.MaxLength));
         var @decimal = Math.Max(0, Math.Min(maxLength - 2, options.Decimal));

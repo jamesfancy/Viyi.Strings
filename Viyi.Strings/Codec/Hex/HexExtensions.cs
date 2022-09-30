@@ -1,4 +1,3 @@
-using System;
 using Viyi.Strings.Codec.Base16;
 using Viyi.Strings.Codec.Options;
 

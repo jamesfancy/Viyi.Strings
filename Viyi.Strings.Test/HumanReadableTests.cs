@@ -28,7 +28,7 @@ public class HumanReadableTests {
         Assert.AreEqual("234.57KB", 234567.ToReadableSize(opt => opt.Step = Options.Steps.By1000));
         Assert.AreEqual("0.224MB", 234567.ToReadableSize(opt => opt.Decimal = 3));
 
-        var formatter = Fomatters.Create(opt => {
+        var formatter = Formatters.Create(opt => {
             opt.MaxLength = 4;
             opt.Decimal = 2;
         });

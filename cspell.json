@@ -4,8 +4,12 @@
         "Consts",
         "CORELIB",
         "cref",
+        "formattable",
+        "gitee",
+        "Mulan",
         "netstandard",
         "nums",
+        "ulong",
         "Viyi"
     ]
 }

@@ -1,6 +1,6 @@
 using Viyi.Strings.Codec.Options;
 
-namespace Viyi.Strings.Codec.Base64; 
+namespace Viyi.Strings.Codec.Base64;
 public static partial class Base64Extensions {
     /// <summary>
     /// 对 Base64 编码字符串进行解码，解码时兼容处理 `+/-_` 这 4 个特号。

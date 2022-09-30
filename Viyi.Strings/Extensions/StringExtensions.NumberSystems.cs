@@ -139,7 +139,7 @@ public static partial class StringExtensions {
             10 => parser(s, 10),
 #if NETSTANDARD2_0
             _ when negative => parser($"-{s.Substring(3)}", radix),
-            _ => parser(s.Substring( 2), radix),
+            _ => parser(s.Substring(2), radix),
 #else
             _ when negative => parser($"-{s[3..]}", radix),
             _ => parser(s[2..], radix),

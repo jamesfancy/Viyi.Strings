@@ -3,7 +3,7 @@
     <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <VersionPrefix>1.2.2</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
