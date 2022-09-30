@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Viyi.Strings.Codec.Abstract;
 using Viyi.Strings.Codec.Base16;
 using Viyi.Strings.Codec.Base32;

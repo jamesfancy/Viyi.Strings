@@ -1,5 +1,3 @@
-using System;
-
 namespace Viyi.Strings.Extensions.Internal;
 
 internal static class ArrayExtensions {

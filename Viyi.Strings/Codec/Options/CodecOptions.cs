@@ -1,5 +1,3 @@
-using System;
-
 namespace Viyi.Strings.Codec.Options;
 
 public enum LineEndings {

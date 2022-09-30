@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Viyi.Strings.CaseConverters;
 using static Viyi.Strings.CaseConverters.ConverterCollection;

@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace Viyi.Strings.Codec.Io;
 
 public partial class CodecWrappingWriter {

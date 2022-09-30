@@ -1,4 +1,3 @@
-using System;
 using Viyi.Strings.Extensions;
 
 namespace Viyi.Strings;
