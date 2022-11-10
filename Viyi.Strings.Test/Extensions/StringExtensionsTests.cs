@@ -186,4 +186,23 @@ public class StringExtensionsTests {
         Assert.AreEqual(TimeSpan.FromSeconds(2022), "2022".ToTimeSpan("s"));
         Assert.AreEqual(TimeSpan.FromDays(14), "2w".ToTimeSpan("s"));
     }
+
+    [TestMethod]
+    public void SliceTest() {
+        const string s = "hello world";
+        Assert.AreEqual("hello world", s.Slice(0, s.Length));
+        Assert.AreEqual("hello", s.Slice(0, -6));
+        Assert.AreEqual("world", s.Slice(-5, s.Length));
+        Assert.AreEqual("", s.Slice(s.Length, s.Length + 3));
+        Assert.AreEqual("", s.Slice(5, 4));
+        Assert.AreEqual("", s.Slice(5, 5));
+
+        Assert.AreEqual("hello", s.SliceUntil(' '));
+
+        Assert.AreEqual("o w", s.Clice(s => s.IndexOf('o'), (s, i) => s.IndexOf('o', i + 1)));
+        Assert.AreEqual("llo wo", s.Clice(s => s.IndexOf('l'), s => s.IndexOf('r')));
+        Assert.AreEqual("hello", s.Clice(s => s.IndexOf('x'), (s, i) => s.IndexOf(' ', i + 1)));
+        Assert.AreEqual(" world", s.Clice(s => s.IndexOf(' ')));
+        Assert.AreEqual("hello", s.CliceUntil(s => s.IndexOf(' ')));
+    }
 }
