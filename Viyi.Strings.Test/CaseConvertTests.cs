@@ -103,7 +103,7 @@ public class CaseConvertTests {
     }
 
     class MyCaseConverter : ICaseConverter {
-        [return: NotNullIfNotNull("value")]
+        [return: NotNullIfNotNull(nameof(value))]
         public string? Convert(string? value) {
             return CaseToolkit.ToKebabCase(value)?.Replace("-", " ");
         }

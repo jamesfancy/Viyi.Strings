@@ -9,6 +9,6 @@ public sealed class LambdaCaseConverter : ICaseConverter {
         this.convert = convert ?? throw new ArgumentNullException(nameof(convert));
     }
 
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public string? Convert(string? value) => convert(value);
 }

@@ -24,7 +24,7 @@ public static partial class StringExtensions {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="value">指定用于代替空串的值</param>
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public static string? EmptyAs(this string? str, string? value) {
         return string.IsNullOrEmpty(str) ? value : str;
     }
@@ -36,7 +36,7 @@ public static partial class StringExtensions {
     /// </summary>
     /// <param name="str"></param>
     /// <param name="value">指定用于代替空白字符串的值</param>
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public static string? SpacesAs(this string? str, string? value) {
         return string.IsNullOrWhiteSpace(str) ? value : str;
     }
