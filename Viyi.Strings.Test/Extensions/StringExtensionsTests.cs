@@ -199,10 +199,10 @@ public class StringExtensionsTests {
 
         Assert.AreEqual("hello", s.SliceUntil(' '));
 
-        Assert.AreEqual("o w", s.Clice(s => s.IndexOf('o'), (s, i) => s.IndexOf('o', i + 1)));
-        Assert.AreEqual("llo wo", s.Clice(s => s.IndexOf('l'), s => s.IndexOf('r')));
-        Assert.AreEqual("hello", s.Clice(s => s.IndexOf('x'), (s, i) => s.IndexOf(' ', i + 1)));
-        Assert.AreEqual(" world", s.Clice(s => s.IndexOf(' ')));
-        Assert.AreEqual("hello", s.CliceUntil(s => s.IndexOf(' ')));
+        Assert.AreEqual("o w", s.Slice(s => s.IndexOf('o'), (s, i) => s.IndexOf('o', i + 1)));
+        Assert.AreEqual("llo wo", s.Slice(s => s.IndexOf('l'), s => s.IndexOf('r')));
+        Assert.AreEqual("hello", s.Slice(s => s.IndexOf('x'), (s, i) => s.IndexOf(' ', i + 1)));
+        Assert.AreEqual(" world", s.Slice(s => s.IndexOf(' ')));
+        Assert.AreEqual("hello", s.SliceUntil(s => s.IndexOf(' ')));
     }
 }

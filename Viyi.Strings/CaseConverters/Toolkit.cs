@@ -27,7 +27,7 @@ public static class Toolkit {
         return SplittingRegex.Replace(str, splitter);
     }
 
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public static string? ToPascalCase(string? value) {
         if (string.IsNullOrEmpty(value)) { return value; }
 
@@ -37,7 +37,7 @@ public static class Toolkit {
         );
     }
 
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public static string? ToKebabCase(string? value) {
         if (string.IsNullOrEmpty(value)) { return value; }
 

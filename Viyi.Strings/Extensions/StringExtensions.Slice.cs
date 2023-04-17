@@ -16,7 +16,7 @@ public static partial class StringExtensions {
 #endif
     }
 
-    public static string Clice(this string str, Func<string, int> starting, Func<string, int>? ending = null) {
+    public static string Slice(this string str, Func<string, int> starting, Func<string, int>? ending = null) {
         var startIndex = starting(str).MinusOneAs(0);
         var endIndex = (ending?.Invoke(str) ?? -1).MinusOneAs(str.Length);
 #if NETSTANDARD2_0
@@ -26,7 +26,7 @@ public static partial class StringExtensions {
 #endif
     }
 
-    public static string Clice(this string str, Func<string, int> starting, Func<string, int, int> ending) {
+    public static string Slice(this string str, Func<string, int> starting, Func<string, int, int> ending) {
         var startIndex = starting(str);
         var endIndex = (ending?.Invoke(str, startIndex) ?? -1).MinusOneAs(str.Length);
         startIndex = startIndex.MinusOneAs(0);
@@ -37,7 +37,7 @@ public static partial class StringExtensions {
 #endif
     }
 
-    public static string CliceUntil(this string str, Func<string, int> ending) {
+    public static string SliceUntil(this string str, Func<string, int> ending) {
         var endIndex = ending(str);
 #if NETSTANDARD2_0
         return endIndex < 0 ? str : str.Substring(0, endIndex);
