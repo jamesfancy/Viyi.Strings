@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Viyi.Strings.CaseConverters;
 
 internal sealed class CamelCaseConverter : ICaseConverter {
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     public string? Convert(string? value) {
         if (string.IsNullOrEmpty(value)) { return value; }
 

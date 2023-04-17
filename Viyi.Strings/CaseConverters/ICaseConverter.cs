@@ -3,6 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace Viyi.Strings.CaseConverters;
 
 public interface ICaseConverter {
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     string? Convert(string? value);
 }
