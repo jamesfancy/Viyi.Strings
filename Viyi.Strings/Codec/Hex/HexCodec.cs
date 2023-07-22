@@ -12,6 +12,5 @@ internal class HexDecoder : Base16Decoder {
 }
 
 class HexEncoder : Base16Encoder {
-    public HexEncoder(CodecOptions options) : base(options) {
-    }
+    public HexEncoder(CodecOptions options) : base(options) { }
 }
