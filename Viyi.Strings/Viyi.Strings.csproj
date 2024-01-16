@@ -2,14 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;netstandard2.1;netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <VersionPrefix>1.2.5</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionPrefix>1.3.0</VersionPrefix>
+    <VersionSuffix>beta</VersionSuffix>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
-    <Authors>James Fan</Authors>
+    <Authors>边城 (James Fan)</Authors>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
