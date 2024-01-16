@@ -3,6 +3,7 @@ bin/
 obj/
 TestResults/
 .vscode/
+.cr/
 
 *.user
 **/@/*.cs
