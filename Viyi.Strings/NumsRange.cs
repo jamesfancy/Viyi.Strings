@@ -19,36 +19,53 @@ public class NumsRange {
 
     public static string ToRangeString(
         IEnumerable<int> nums,
-        string prefix = "",
-        string between = "~",
+        Func<int, string> numberFormatter,
+        Func<int, int, string>? serialFormatter = null,
         string separator = ","
     ) {
+        serialFormatter ??= (first, last) => $"{numberFormatter(first)}~{numberFormatter(last)}";
+
         List<(int, int)> segments = new();
-        (int, int) last;
+        (int, int) lastSegment;
 
         using IEnumerator<int> enumerator = nums.GetEnumerator();
 
         if (!enumerator.MoveNext()) { return ""; }
-        last = (enumerator.Current, enumerator.Current);
+        lastSegment = (enumerator.Current, enumerator.Current);
 
         while (enumerator.MoveNext()) {
             var current = enumerator.Current;
-            if (current == last.Item2 + 1) {
-                last.Item2 = current;
+            if (current == lastSegment.Item2 + 1) {
+                lastSegment.Item2 = current;
                 continue;
             }
 
-            segments.Add(last);
-            last = (current, current);
+            segments.Add(lastSegment);
+            lastSegment = (current, current);
         }
-        segments.Add(last);
+        segments.Add(lastSegment);
 
         return segments
             .Select(entry => {
-                var (begin, end) = entry;
-                return begin == end ? $"{prefix}{end}" : $"{prefix}{begin}{between}{prefix}{end}";
+                var (first, last) = entry;
+                return first == last ? numberFormatter(last) : serialFormatter(first, last);
             })
             .JoinString(separator);
+
+    }
+
+    public static string ToRangeString(
+        IEnumerable<int> nums,
+        string prefix = "",
+        string between = "~",
+        string separator = ","
+    ) {
+        return ToRangeString(
+            nums,
+            n => $"{prefix}{n}",
+            (first, last) => $"{prefix}{first}{between}{prefix}{last}",
+            separator
+        );
     }
 
     public Func<string, string[]> Spliter { get; set; }
