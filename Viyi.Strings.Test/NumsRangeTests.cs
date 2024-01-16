@@ -20,5 +20,19 @@ public class NumsRangeTests {
             "3,10-12,21-25",
             new[] { 3, 10, 11, 12, 21, 22, 23, 24, 25 }.ToRangeString("", "-")
         );
+
+        Assert.AreEqual(
+            "$03,$09~$12,$21~$25",
+            new[] { 3, 9, 10, 11, 12, 21, 22, 23, 24, 25 }
+                .ToRangeString(n => $"${n:00}")
+        );
+
+        Assert.AreEqual(
+            "$03,#9-12,#21-25",
+            new[] { 3, 9, 10, 11, 12, 21, 22, 23, 24, 25 }.ToRangeString(
+                n => $"${n:00}",
+                (a, b) => $"#{a}-{b}"
+            )
+        );
     }
 }
