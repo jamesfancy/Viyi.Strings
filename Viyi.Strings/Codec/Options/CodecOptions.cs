@@ -11,6 +11,45 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     public const int NoLineWidth = 0;
 
     /// <summary>
+    /// 设置一个全局的 Build 函数，用来初始化配置。
+    /// </summary>
+    /// <remarks>
+    /// 除非使用 CodecOptions.CreatePure() 开始创建配置，
+    /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
+    /// </remarks>
+    /// <param name="prototype">指定配置所基于的原型配置对象</param>
+    /// <param name="building"></param>
+    public static void SetDefaultCreator(
+        CodecOptions prototype,
+        Action<Builder>? building = null
+    ) {
+        defaultCreator = () => {
+            var builder = Create(prototype);
+            building?.Invoke(builder);
+            return builder.Build();
+        };
+    }
+
+    /// <summary>
+    /// 设置一个全局的 Build 函数，用来初始化配置。
+    /// </summary>
+    /// <remarks>
+    /// 除非使用 CodecOptions.CreatePure() 开始创建配置，
+    /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
+    /// </remarks>
+    /// <param name="building"></param>
+    public static void SetDefaultCreator(Action<Builder>? building = null) {
+        defaultCreator = building == null
+            ? null
+            : () => {
+                var builder = CreatePure();
+                building(builder);
+                return builder.Build();
+            };
+    }
+    private static Func<CodecOptions>? defaultCreator;
+
+    /// <summary>
     /// 默认配置创建程序（已不推荐）。
     /// </summary>
     /// <remarks>
@@ -22,29 +61,6 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     public static Func<CodecOptions>? DefaultCreator {
         get => defaultCreator;
     }
-
-    /// <summary>
-    /// 设置一个全局的 Build 函数，用来初始化配置。
-    /// </summary>
-    /// <remarks>
-    /// 除非使用 CodecOptions.CreatePure() 开始创建配置，
-    /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
-    /// </remarks>
-    /// <param name="building"></param>
-    /// <param name="prototype">指定配置所基于的原型配置对象</param>
-    public static void SetDefaultCreator(
-        Action<Builder>? building,
-        CodecOptions? prototype = null
-    ) {
-        defaultCreator = building == null
-            ? null
-            : () => {
-                var builder = prototype == null ? CreatePure() : Create(prototype);
-                building?.Invoke(builder);
-                return builder.Build();
-            };
-    }
-    private static Func<CodecOptions>? defaultCreator;
 
     /// <summary>
     /// 预定义的默认配置
