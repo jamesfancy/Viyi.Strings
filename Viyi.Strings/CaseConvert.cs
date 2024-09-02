@@ -90,11 +90,6 @@ public static class CaseConvert {
     public static ICaseConverter Snake => Predefined.Snake;
 
     [return: NotNullIfNotNull(nameof(value))]
-    [Obsolete("在 v1.1 删除。使用 CaseTo(this string? value, string casing) 代替")]
-    public static string? SpecifiedCase(string? value, string casing) =>
-        Converters.Get(casing).Convert(value);
-
-    [return: NotNullIfNotNull(nameof(value))]
     public static string? CaseTo(this string? value, string casing) =>
         Converters.Get(casing).Convert(value);
 
