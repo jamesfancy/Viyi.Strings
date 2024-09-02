@@ -11,18 +11,23 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     public const int NoLineWidth = 0;
 
     /// <summary>
-    /// 默认配置创建程序（已不推荐）。
+    /// 设置一个全局的 Build 函数，用来初始化配置。
     /// </summary>
     /// <remarks>
-    /// 由于 DefaultCreator 的创建结果有可能会用于 Builder 加工，
-    /// 所以对 DefaultCreator 的每次调用都应该产生新的 CodecOptions
-    /// <strong>警告：由于 Codec.Create() 会调用 DefaultCreator，
-    /// 如果用户在 DefaultCreator 中调用了 Codec.Create() 会造成无限递归调用</strong>
+    /// 除非使用 CodecOptions.CreatePure() 开始创建配置，
+    /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
     /// </remarks>
-    public static Func<CodecOptions>? DefaultCreator {
-        get => defaultCreator;
-        [Obsolete("DefaultCreator 可能造成递无限归调用。应该使用 SetDefaultCreator 代替默认全局配置。DefaultCreator 的设置接口将在 2022-9-1 后的 v1.x 版本中删除。")]
-        set => defaultCreator = value;
+    /// <param name="prototype">指定配置所基于的原型配置对象</param>
+    /// <param name="building"></param>
+    public static void SetDefaultCreator(
+        CodecOptions prototype,
+        Action<Builder>? building = null
+    ) {
+        defaultCreator = () => {
+            var builder = Create(prototype);
+            building?.Invoke(builder);
+            return builder.Build();
+        };
     }
 
     /// <summary>
@@ -33,20 +38,29 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     /// 否则配置都是重新创建并从由本方法设置的 building 开始进行配置。
     /// </remarks>
     /// <param name="building"></param>
-    /// <param name="prototype">指定配置所基于的原型配置对象</param>
-    public static void SetDefaultCreator(
-        Action<Builder>? building,
-        CodecOptions? prototype = null
-    ) {
+    public static void SetDefaultCreator(Action<Builder>? building = null) {
         defaultCreator = building == null
             ? null
             : () => {
-                var builder = prototype == null ? CreatePure() : Create(prototype);
-                building?.Invoke(builder);
+                var builder = CreatePure();
+                building(builder);
                 return builder.Build();
             };
     }
     private static Func<CodecOptions>? defaultCreator;
+
+    /// <summary>
+    /// 默认配置创建程序（已不推荐）。
+    /// </summary>
+    /// <remarks>
+    /// 由于 DefaultCreator 的创建结果有可能会用于 Builder 加工，
+    /// 所以对 DefaultCreator 的每次调用都应该产生新的 CodecOptions
+    /// <strong>警告：由于 Codec.Create() 会调用 DefaultCreator，
+    /// 如果用户在 DefaultCreator 中调用了 Codec.Create() 会造成无限递归调用</strong>
+    /// </remarks>
+    public static Func<CodecOptions>? DefaultCreator {
+        get => defaultCreator;
+    }
 
     /// <summary>
     /// 预定义的默认配置

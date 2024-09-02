@@ -36,9 +36,4 @@ public static partial class Base64Extensions {
     public static string EncodeBase64Url(this string source, bool lineBreak) {
         return source.DecodeUtf8().EncodeBase64Url(lineBreak);
     }
-
-    [Obsolete("deprecated since a spell error. use EncodeBase64Url to instead.")]
-    public static string EncodeBaes64Url(this string source, bool lineBreak) {
-        return source.DecodeUtf8().EncodeBase64Url(lineBreak);
-    }
 }
