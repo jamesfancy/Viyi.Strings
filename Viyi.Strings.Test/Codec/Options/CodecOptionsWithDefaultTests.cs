@@ -49,7 +49,7 @@ public class CodecOptionsWithDefaultTests {
         Trace.WriteLine($"DefaultCreator is null: {CodecOptions.DefaultCreator == null}");
         Assert.IsNull(CodecOptions.DefaultCreator);
 
-        CodecOptions.DefaultCreator = () => CodecOptions.Create(CodecOptions.Default).Build();
+        CodecOptions.SetDefaultCreator(_ => CodecOptions.Create(CodecOptions.Default).Build());
         var opt1 = CodecOptions.CreateDefault();
         var opt2 = CodecOptions.CreateDefault();
         Assert.IsNotNull(opt1);
@@ -58,7 +58,7 @@ public class CodecOptionsWithDefaultTests {
         Assert.AreNotSame(opt1, opt2);
 
         // 恢复为 null
-        CodecOptions.DefaultCreator = null;
+        CodecOptions.SetDefaultCreator(null);
     }
 
     [TestMethod]
@@ -78,7 +78,7 @@ public class CodecOptionsWithDefaultTests {
         Assert.AreEqual(prototype, CodecOptions.Create(prototype).Build());
         Assert.AreNotSame(prototype, CodecOptions.Create(prototype).Build());
 
-        CodecOptions.DefaultCreator = () => CodecOptions.Create(prototype).Build();
+        CodecOptions.SetDefaultCreator(_ => CodecOptions.Create(prototype).Build());
         Assert.AreEqual(CodecOptions.Default, CodecOptions.CreatePure().Build());
         Assert.AreNotEqual(CodecOptions.Default, CodecOptions.Create().Build());
         Assert.AreNotEqual(prototype, CodecOptions.CreatePure().Build());

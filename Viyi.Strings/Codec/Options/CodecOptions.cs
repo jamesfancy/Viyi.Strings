@@ -21,8 +21,6 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     /// </remarks>
     public static Func<CodecOptions>? DefaultCreator {
         get => defaultCreator;
-        [Obsolete("DefaultCreator 可能造成递无限归调用。应该使用 SetDefaultCreator 代替默认全局配置。DefaultCreator 的设置接口将在 2022-9-1 后的 v1.x 版本中删除。")]
-        set => defaultCreator = value;
     }
 
     /// <summary>
