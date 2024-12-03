@@ -130,7 +130,7 @@ dotnet add package Viyi.Strings
 
 [viyi_util]: https://www.nuget.org/packages/Viyi.Util/	"Viyi.Util"
 [viyi_strings]: https://www.nuget.org/packages/Viyi.Strings/	"Viyi.Strings in NuGet"
-[rfc_4648]: https://www.rfc-editor.org/rfc/inline-errata/rfc4648.html	""RFC-4648""
+[rfc_4648]: https://www.rfc-editor.org/rfc/inline-errata/rfc4648.html	"RFC-4648"
 [argumentnullexception]: https://docs.microsoft.com/dotnet/api/system.argumentnullexception "ArgumentNullException"
 [argumentexception]: https://docs.microsoft.com/dotnet/api/system.argumentexception	" ArgumentException"
 [notsupportedexception]: https://docs.microsoft.com/dotnet/api/system.notsupportedexception	"NotSupportedException"
