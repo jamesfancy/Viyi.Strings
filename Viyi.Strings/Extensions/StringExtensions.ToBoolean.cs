@@ -54,8 +54,41 @@ public static partial class StringExtensions {
     /// <param name="value"></param>
     /// <param name="valueStrings"></param>
     /// <returns></returns>
-    public static bool ToBoolean(this string? str, bool value, params string?[] valueStrings) {
+    public static bool ToBoolean(this string? str, bool value, params string?[] valueStrings) =>
+        ToBoolean(str, value, (IReadOnlyList<string?>) valueStrings);
+
+    public static bool ToBoolean(this string? str, bool value, IReadOnlyList<string?> valueStrings) {
         return !(value ^ valueStrings.Any(v => string.Equals(str, v, BoolComparison)));
+    }
+
+    /// <summary>
+    /// 如果 str 在给定的 truthyStrings 中（包含 null 元素），返回 `true`；
+    /// 否则返回 `false`
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="truthyStrings"></param>
+    /// <returns></returns>
+    public static bool ToBooleanByTruthy(this string? str, params string?[] truthyStrings) {
+        return truthyStrings.Any(v => string.Equals(str, v, BoolComparison));
+    }
+
+    public static bool ToBooleanByTruthy(this string? str, IReadOnlyList<string?> truthyStrings) {
+        return truthyStrings.Any(v => string.Equals(str, v, BoolComparison));
+    }
+
+    /// <summary>
+    /// 如果 str 在给定的 falsyStrings 中（包含 null 元素），返回 `false`；
+    /// 否则返回 `true`
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="falsyStrings"></param>
+    /// <returns></returns>
+    public static bool ToBooleanByFalsy(this string? str, params string?[] falsyStrings) {
+        return !falsyStrings.Any(v => string.Equals(str, v, BoolComparison));
+    }
+
+    public static bool ToBooleanByFalsy(this string? str, IReadOnlyList<string?> falsyStrings) {
+        return !falsyStrings.Any(v => string.Equals(str, v, BoolComparison));
     }
 
     /// <summary>
@@ -68,7 +101,8 @@ public static partial class StringExtensions {
     /// <param name="trueStrings"></param>
     /// <param name="falseStrings"></param>
     /// <returns></returns>
-    public static bool? ToBoolean(this string? str, string?[] trueStrings, string?[] falseStrings) {
+    public static bool? ToBoolean(this string? str,
+        IReadOnlyList<string?> trueStrings, IReadOnlyList<string?> falseStrings) {
         // str 为 null 时优先判定 false 值
         if (str == null && falseStrings.Any(v => v is null)) { return false; }
 

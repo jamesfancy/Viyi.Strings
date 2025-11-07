@@ -38,9 +38,9 @@ public class StringExtensionsTests {
     }
 
     const string? NullString = null;
-    readonly string[] TrueStrings = new[] { "true", "on", "yes" };
-    readonly string[] FalseStrings = new[] { "false", "off", "no" };
-    readonly string?[] StringsContainsNull = new[] { "abc", "xyz", "hello world", null };
+    readonly string[] TrueStrings = ["true", "on", "yes"];
+    readonly string[] FalseStrings = ["false", "off", "no"];
+    readonly string?[] StringsContainsNull = ["abc", "xyz", "hello world", null];
 
     [TestMethod()]
     public void ToBooleanTest() {
@@ -52,6 +52,14 @@ public class StringExtensionsTests {
         new[] { "blabal", "    ", "tRue" }.ForEach(str => {
             Assert.IsTrue(str.ToBoolean());
             Assert.IsTrue(str.ToBoolean(false));
+        });
+
+        Booleans.Truthy.ForEach(str => {
+            Assert.IsTrue(str.ToBooleanByTruthy(Booleans.Truthy));
+        });
+
+        Booleans.Falsy.ForEach(str => {
+            Assert.IsFalse(str.ToBooleanByFalsy(Booleans.Falsy));
         });
 
         // 严格模式
