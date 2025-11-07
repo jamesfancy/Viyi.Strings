@@ -10,7 +10,7 @@ public static partial class StringExtensions {
     /// <param name="str"></param>
     /// <returns></returns>
     public static bool ToBoolean(this string? str) {
-        return !str.EmptyAs("false")!.Equals("false", BoolComparison);
+        return !str.EmptyAs("false").Equals("false", BoolComparison);
     }
 
     /// <summary>
@@ -20,8 +20,9 @@ public static partial class StringExtensions {
     /// <param name="strict">指示是否严格模式</param>
     /// <returns></returns>
     public static bool? ToBoolean(this string? str, bool strict) {
-        if (!strict) { return ToBoolean(str); }
-        return bool.TryParse(str, out var value) ? value : null;
+        return strict
+            ? (bool.TryParse(str, out var value) ? value : null)
+            : ToBoolean(str);
     }
 
     /// <summary>
@@ -37,11 +38,11 @@ public static partial class StringExtensions {
         if (str == null) {
             if (falseString == null) { return false; }
             if (trueString == null) { return true; }
-            return null;
         }
-
-        if (str.Equals(trueString, BoolComparison)) { return true; }
-        if (str.Equals(falseString, BoolComparison)) { return false; }
+        else {
+            if (str.Equals(trueString, BoolComparison)) { return true; }
+            if (str.Equals(falseString, BoolComparison)) { return false; }
+        }
         return null;
     }
 
@@ -54,11 +55,7 @@ public static partial class StringExtensions {
     /// <param name="valueStrings"></param>
     /// <returns></returns>
     public static bool ToBoolean(this string? str, bool value, params string?[] valueStrings) {
-        if (str == null) {
-            return !(value ^ (valueStrings?.Contains(null) ?? false));
-        }
-
-        return !(value ^ (valueStrings?.Any(s => str.Equals(s, BoolComparison)) ?? false));
+        return !(value ^ valueStrings.Any(v => string.Equals(str, v, BoolComparison)));
     }
 
     /// <summary>
@@ -71,10 +68,9 @@ public static partial class StringExtensions {
     /// <param name="trueStrings"></param>
     /// <param name="falseStrings"></param>
     /// <returns></returns>
-    public static bool? ToBoolean(this string? str,
-        string?[] trueStrings, string?[] falseStrings) {
+    public static bool? ToBoolean(this string? str, string?[] trueStrings, string?[] falseStrings) {
         // str 为 null 时优先判定 false 值
-        if (str == null && falseStrings.Contains(null)) { return false; }
+        if (str == null && falseStrings.Any(v => v is null)) { return false; }
 
         // 其他情况优先判断 true 值
         if (ToBoolean(str, true, trueStrings)) { return true; }
@@ -89,8 +85,7 @@ public static partial class StringExtensions {
     /// <param name="str"></param>
     /// <param name="predicator"></param>
     /// <returns></returns>
-    public static bool? ToBoolean(this string? str,
-        Func<string?, bool?> predicator) => predicator(str);
+    public static bool? ToBoolean(this string? str, Func<string?, bool?> predicator) => predicator(str);
 
     /// <summary>
     /// 根据指定的 predicator 判定当前字符串为 true/false。
@@ -99,6 +94,5 @@ public static partial class StringExtensions {
     /// <param name="str"></param>
     /// <param name="predicator"></param>
     /// <returns></returns>
-    public static bool ToBoolean(this string? str,
-        Func<string?, bool> predicator) => predicator(str);
+    public static bool ToBoolean(this string? str, Func<string?, bool> predicator) => predicator(str);
 }
