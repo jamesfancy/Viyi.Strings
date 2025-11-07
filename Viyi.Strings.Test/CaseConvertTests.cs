@@ -12,6 +12,7 @@ public class CaseConvertTests {
         new[] { "", "", "", "", "" },
         new[] { "single", "Single", "single", "single", "single" },
         new[] { "two words", "TwoWords", "twoWords", "two-words", "two_words" },
+        new[] { "_-two words", "TwoWords", "twoWords", "two-words", "two_words" },
         new[] {
             "the quick brown fox jumps over the lazy dog",
             "TheQuickBrownFoxJumpsOverTheLazyDog",

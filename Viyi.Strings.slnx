@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Viyi.Strings.Generator/Viyi.Strings.Build.csproj" />
+  <Project Path="Viyi.Strings.Test/Viyi.Strings.Test.csproj">
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="Viyi.Strings/Viyi.Strings.csproj" />
+</Solution>
