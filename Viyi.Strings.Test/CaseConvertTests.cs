@@ -6,31 +6,32 @@ namespace Viyi.Strings.Test;
 
 [TestClass]
 public class CaseConvertTests {
-    readonly static string?[][] cases = new[] {
+    readonly static string?[][] cases = [
         // original, pascal, camel, kebab, snake
         new string?[] { null, null, null, null, null },
-        new[] { "", "", "", "", "" },
-        new[] { "single", "Single", "single", "single", "single" },
-        new[] { "two words", "TwoWords", "twoWords", "two-words", "two_words" },
-        new[] {
+        ["", "", "", "", ""],
+        ["single", "Single", "single", "single", "single"],
+        ["two words", "TwoWords", "twoWords", "two-words", "two_words"],
+        ["_-two words", "TwoWords", "twoWords", "two-words", "two_words"],
+        [
             "the quick brown fox jumps over the lazy dog",
             "TheQuickBrownFoxJumpsOverTheLazyDog",
             "theQuickBrownFoxJumpsOverTheLazyDog",
             "the-quick-brown-fox-jumps-over-the-lazy-dog",
             "the_quick_brown_fox_jumps_over_the_lazy_dog",
-        },
-        new[] { "HTML", "Html", "html", "html", "html" },
-        new[] {
+        ],
+        ["HTML", "Html", "html", "html", "html"],
+        [
             "CONTENT_CASE_STRING",
             "ContentCaseString", "contentCaseString",
             "content-case-string", "content_case_string",
-        },
-        new[] {
+        ],
+        [
             "HTTPClient", "HttpClient", "httpClient", "http-client", "http_client"
-        },
-    };
+        ],
+    ];
 
-    string[] x = new[] { "asdf", "dasfasdf" };
+    string[] x = ["asdf", "dasfasdf"];
 
     [TestMethod]
     public void SingleCaseTest() {

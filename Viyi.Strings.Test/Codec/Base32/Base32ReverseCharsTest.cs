@@ -13,10 +13,10 @@ public class Base32ReverseCharsTest {
         PrintTable(map);
 
         var codes = Base32ReverseCharset.Codes;
-        codes.Select((v, i) => {
+        for (int i = 0; i < codes.Length; i++) {
+            var v = codes[i];
             Assert.AreEqual(map.TryGetValue(i, out int value) ? v : -1, v);
-            return true;
-        });
+        }
 
         map.ForEach(entry => Assert.AreEqual(entry.Value, codes[entry.Key]));
     }
@@ -30,16 +30,15 @@ public class Base32ReverseCharsTest {
         PrintTable(map);
 
         var codes = Base32HexReverseCharset.Codes;
-
-        codes.Select((v, i) => {
+        for (int i = 0; i < codes.Length; i++) {
+            var v = codes[i];
             Assert.AreEqual(map.TryGetValue(i, out int value) ? v : -1, v);
-            return true;
-        });
+        }
 
         map.ForEach(entry => Assert.AreEqual(entry.Value, codes[entry.Key]));
     }
 
-    private static void PrintTable(Dictionary<int, int>? map) {
+    private static void PrintTable(Dictionary<int, int> map) {
         Print(0, 16, map);
         Print(16, 32, map);
         Print(32, 48, map);
@@ -56,7 +55,7 @@ public class Base32ReverseCharsTest {
         Print(97 + 14 + 6, 97 + 26, map);
     }
 
-    private static void Print(int start, int end, Dictionary<int, int>? map) {
+    private static void Print(int start, int end, Dictionary<int, int> map) {
         var line = string.Join(
             ", ",
             Enumerable.Range(start, end - start)
