@@ -6,7 +6,7 @@ namespace Viyi.Strings.Generator;
 internal class CodecsGenerator : IIncrementalGenerator {
     public void Initialize(IncrementalGeneratorInitializationContext context) {
         var primitiveTypesProvider = context.CompilationProvider
-           .Select((compilation, token) => new Entry[] {
+           .Select((compilation, token) => new CodecEntry[] {
                new("Base32Hex", "Base 32 Hex", "Base32"),
                new("Base32", "Base 32"),
                new("Base16", "Base 16"),
@@ -15,7 +15,7 @@ internal class CodecsGenerator : IIncrementalGenerator {
         context.RegisterSourceOutput(primitiveTypesProvider, GenerateForPrimitiveTypes);
     }
 
-    private void GenerateForPrimitiveTypes(SourceProductionContext context, Entry[] codecEntries) {
+    private void GenerateForPrimitiveTypes(SourceProductionContext context, CodecEntry[] codecEntries) {
         foreach (var entry in codecEntries) {
             try {
                 var sourceCode = BuildContent(entry);
@@ -37,7 +37,7 @@ internal class CodecsGenerator : IIncrementalGenerator {
         }
     }
 
-    private static string BuildContent(Entry it) {
+    private static string BuildContent(CodecEntry it) {
         return $$"""
             namespace Viyi.Strings.Codec.{{it.Namespace}};
 

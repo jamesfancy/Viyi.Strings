@@ -1,7 +1,7 @@
 namespace Viyi.Strings.Generator;
 
-internal record Entry {
-    public Entry(string name, string? caption, string? ns = null, int width = 64) {
+internal record CodecEntry {
+    public CodecEntry(string name, string? caption, string? ns = null, int width = 64) {
         Name = name;
         Caption = caption;
         Namespace = ns ?? name;
