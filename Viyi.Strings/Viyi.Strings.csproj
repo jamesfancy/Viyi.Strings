@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <RepositoryUrl>https://gitee.com/jamesfancy/viyi-strings.git</RepositoryUrl>
-    <PackageProjectUrl>https://gitee.com/jamesfancy/viyi-strings</PackageProjectUrl>
+    <RepositoryUrl>https://gitee.com/jamesfancy/Viyi.Strings.git</RepositoryUrl>
+    <PackageProjectUrl>https://gitee.com/jamesfancy/Viyi.Strings</PackageProjectUrl>
     <Authors>边城 (James Fan)</Authors>
     <LicenseUrl>https://license.coscl.org.cn/MulanPSL2/</LicenseUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
