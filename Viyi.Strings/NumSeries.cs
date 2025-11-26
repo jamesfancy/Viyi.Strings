@@ -3,21 +3,47 @@ using Viyi.Strings.Extensions;
 
 namespace Viyi.Strings;
 
-public class NumsRange {
-    static readonly string[] DefaultSeparators = new[] { ",", ";", " " };
-    static readonly string[] DefaultRangeLinker = new[] { "-", "~" };
-    static readonly Regex IntRegex = new("(-?\\d+)");
+[Obsolete("The name 'NumsRange' is misleading. Use Viyi.Strings.NumSeries instead.")]
+public class NumsRange : NumSeries {
+    [Obsolete("use ToSeriesString to instead")]
+    public static string ToRangeStringX(
+        IEnumerable<int> nums,
+        Func<int, string> numberFormatter,
+        Func<int, int, string>? serialFormatter = null,
+        string separator = ","
+    ) => ToSeriesString(nums, numberFormatter, serialFormatter, separator);
 
-    public static int[] Parse(string range, bool suppressException = true) {
+    [Obsolete("use ToSeriesString to instead")]
+    public static string ToRangeStringx(
+        IEnumerable<int> nums,
+        string prefix = "",
+        string between = "~",
+        string separator = ","
+    ) => ToSeriesString(nums, prefix, between, separator);
+}
+
+public partial class NumSeries {
+#if NET8_0
+    [GeneratedRegex("(-?\\d+)")]
+    private static partial Regex GenerateIntRegex();
+    private static readonly Regex IntRegex = GenerateIntRegex();
+#else
+    private static readonly Regex IntRegex = new("(-?\\d+)", RegexOptions.Compiled);
+#endif
+
+    static readonly string[] DefaultSeparators = [",", ";", " "];
+    static readonly string[] DefaultRangeLinker = ["-", "~"];
+
+    public static int[] Parse(string series, bool suppressException = true) {
         try {
-            return new NumsRange().Parse(range);
+            return new NumSeries().Parse(series);
         }
         catch when (suppressException) {
-            return Array.Empty<int>();
+            return [];
         }
     }
 
-    public static string ToRangeString(
+    public static string ToSeriesString(
         IEnumerable<int> nums,
         Func<int, string> numberFormatter,
         Func<int, int, string>? serialFormatter = null,
@@ -25,7 +51,7 @@ public class NumsRange {
     ) {
         serialFormatter ??= (first, last) => $"{numberFormatter(first)}~{numberFormatter(last)}";
 
-        List<(int, int)> segments = new();
+        List<(int, int)> segments = [];
         (int, int) lastSegment;
 
         using IEnumerator<int> enumerator = nums.GetEnumerator();
@@ -54,13 +80,13 @@ public class NumsRange {
 
     }
 
-    public static string ToRangeString(
+    public static string ToSeriesString(
         IEnumerable<int> nums,
         string prefix = "",
         string between = "~",
         string separator = ","
     ) {
-        return ToRangeString(
+        return ToSeriesString(
             nums,
             n => $"{prefix}{n}",
             (first, last) => $"{prefix}{first}{between}{prefix}{last}",
@@ -68,16 +94,23 @@ public class NumsRange {
         );
     }
 
-    public Func<string, string[]> Spliter { get; set; }
-    public Func<string, string[]> Unpair { get; set; }
+    public Func<string, string[]> Split { get; set; }
+    public Func<string, string[]> ExtractRange { get; set; }
+
+    [Obsolete("spell error, use Splitter to instead")]
+    public Func<string, string[]> Spliter { get => Split; set => Split = value; }
+
+    [Obsolete("use ExtractRange to instead")]
+    public Func<string, string[]> Unpair { get => ExtractRange; set => ExtractRange = value; }
+
     public Func<string, int> ToInt { get; set; }
 
     public string[]? Separators { get; set; }
     public bool InOrder { get; set; } = true;
 
-    public NumsRange() {
-        Spliter = InternalSplit;
-        Unpair = InternalUnpair;
+    public NumSeries() {
+        Split = InternalSplit;
+        ExtractRange = InternalExtractRange;
         ToInt = InternalToInt;
     }
 
@@ -87,21 +120,24 @@ public class NumsRange {
             return true;
         }
         catch {
-            nums = Array.Empty<int>();
+            nums = [];
             return false;
         }
     }
 
     public int[] Parse(string range) {
-        if (range.IsSpaces()) { return Array.Empty<int>(); }
+        if (range.IsSpaces()) { return []; }
 
-        var result = Spliter(range)
+        var result = Split(range)
             .SelectMany(segment => {
-                var entry = Unpair(segment).Select(ToInt).ToArray();
-                if (entry.Length == 0) { return Enumerable.Empty<int>(); }
-                var end = entry.Length > 1 ? entry[1] : entry[0];
-                return Enumerable.Range(entry[0], end - entry[0] + 1);
+                var entries = ExtractRange(segment).Select(ToInt).ToArray();
+                return entries.Length switch {
+                    0 => [],
+                    1 => entries,
+                    _ => Enumerable.Range(entries[0], entries[1] - entries[0] + 1)
+                };
             })
+            .Distinct()
             .ToArray();
 
         if (InOrder) { Array.Sort(result); }
@@ -113,7 +149,7 @@ public class NumsRange {
         return range.Split(Separators ?? DefaultSeparators, StringSplitOptions.RemoveEmptyEntries);
     }
 
-    private string[] InternalUnpair(string segment) {
+    private string[] InternalExtractRange(string segment) {
         return segment.Split(DefaultRangeLinker, 2, StringSplitOptions.RemoveEmptyEntries);
     }
 

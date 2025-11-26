@@ -3,12 +3,12 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Codec.Io;
 public partial class CodecWrappingWriter : CodecTextWriter {
     // 该数组元素（数量及顺序）与 LineEndings 枚举保持一致
-    static readonly string[] EndOfLines = new[] {
+    static readonly string[] EndOfLines = [
         Environment.NewLine,
         "\n",
         "\r\n",
         "\r",
-    };
+    ];
 
     readonly string lineEnding;
     readonly int lineWidth;

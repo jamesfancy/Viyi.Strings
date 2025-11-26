@@ -49,10 +49,13 @@ public partial class BufferedReader {
     }
 
     private static void CheckParameters(int bufferSize, int start, int count) {
-        if (start < 0 || count < 0) {
-            throw new ArgumentOutOfRangeException();
-        }
-
+#if NET8_0
+        ArgumentOutOfRangeException.ThrowIfLessThan(start, 0, nameof(start));
+        ArgumentOutOfRangeException.ThrowIfLessThan(count, 0, nameof(start));
+#else
+        if (start < 0) { throw new ArgumentOutOfRangeException(nameof(start)); }
+        if (count < 0) { throw new ArgumentOutOfRangeException(nameof(count)); }
+#endif
         if (start + count > bufferSize) {
             throw new ArgumentException("buffer length is not enough for 'count'");
         }

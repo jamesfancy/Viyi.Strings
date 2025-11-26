@@ -34,7 +34,7 @@ public class Base64MoreExtensionsTests {
     public void TestSpecialCases() {
         new[]
         {
-            (new byte[] { 0, 0 ,0, 0 }, "AAAAAA=="),
+            ([0, 0 ,0, 0], "AAAAAA=="),
             ("administrator".DecodeUtf8(), "YWRtaW5pc3RyYXRvcg=="),
             (
                 Enumerable.Range(0, 256).Select(n => (byte) n).ToArray(),

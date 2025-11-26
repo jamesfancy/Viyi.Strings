@@ -46,7 +46,7 @@ public class CodecOptionsWithDefaultTests {
 
     [TestMethod]
     public void TestDefaultCreator() {
-        Trace.WriteLine($"DefaultCreator is null: {CodecOptions.DefaultCreator == null}");
+        Trace.WriteLine($"DefaultCreator is null: {CodecOptions.DefaultCreator is null}");
         Assert.IsNull(CodecOptions.DefaultCreator);
 
         CodecOptions.SetDefaultCreator(CodecOptions.Default);

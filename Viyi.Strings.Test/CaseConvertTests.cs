@@ -8,7 +8,7 @@ namespace Viyi.Strings.Test;
 public class CaseConvertTests {
     readonly static string?[][] cases = [
         // original, pascal, camel, kebab, snake
-        new string?[] { null, null, null, null, null },
+        [null, null, null, null, null],
         ["", "", "", "", ""],
         ["single", "Single", "single", "single", "single"],
         ["two words", "TwoWords", "twoWords", "two-words", "two_words"],

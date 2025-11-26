@@ -10,7 +10,7 @@ public class Options {
         By1000 = 1,
     }
 
-    private static readonly string[] defaultUnits = new[] { "", "K", "M", "G", "T", "P", "E" };
+    private static readonly string[] defaultUnits = ["", "K", "M", "G", "T", "P", "E"];
     public static readonly IReadOnlyList<string> DefaultUnits = defaultUnits;
     public static IReadOnlyList<string> DefaultUnitsWithSpace =>
         defaultUnitsWithSpace ??= defaultUnits.Select(it => $" {it}").ToArray();

@@ -8,16 +8,16 @@ namespace Viyi.Strings.Test.Codec.Base64;
 public class Base64ExtensionsTests {
     readonly Random random = new();
 
-    readonly int[] cases = new[] {
+    readonly int[] cases = [
         0, 1, 2, 3, 4,
         1023, 1024, 1025, 1026
-    };
+    ];
 
     [TestMethod]
     public void TestBase64Decode() {
         // Base64 编码按 4 个字符分组，末尾去掉 padding（=号）后，
         // 长度除以 4 的余数对应的原始字节数如下表
-        int[] restCounts = new[] { 0, 0, 1, 2 };
+        int[] restCounts = [0, 0, 1, 2];
 
         cases.ForEach(n => {
             if (n % 4 == 1) {
@@ -102,7 +102,7 @@ public class Base64ExtensionsTests {
     public void TestSpecialCases() {
         new[]
         {
-            (new byte[] { 0, 0 ,0, 0 }, "AAAAAA=="),
+            ([0, 0 ,0, 0], "AAAAAA=="),
             ("administrator".DecodeUtf8(), "YWRtaW5pc3RyYXRvcg=="),
             (
                 Enumerable.Range(0, 256).Select(n => (byte) n).ToArray(),

@@ -6,10 +6,10 @@ namespace Viyi.Strings.Test.Codec.Hex;
 public class HexExtensionsTests {
     readonly Random random = new();
 
-    readonly int[] cases = new[] {
+    readonly int[] cases = [
         0, 1, 2, 3, 4,
         1023, 1024, 1025, 1026
-    };
+    ];
 
     [TestMethod]
     public void TestHexDecode() {

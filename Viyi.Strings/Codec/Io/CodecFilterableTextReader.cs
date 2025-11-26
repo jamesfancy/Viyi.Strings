@@ -44,7 +44,7 @@ public class CodecFilterableTextReader : CodecTextReader {
 
     public override string? ReadLine() {
         var line = Reader.ReadLine();
-        if (line == null) { return null; }
+        if (line is null) { return null; }
         return FilterCharsInString(filter, line);
     }
 

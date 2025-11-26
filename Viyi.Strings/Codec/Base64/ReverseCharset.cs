@@ -9,7 +9,7 @@ abstract class ReverseCharset {
     static Base64UrlReverseCharset? base64Url;
     static Base64CompatibleReverseCharset? base64Compatible;
 
-    protected static readonly int[] AllCodes = {
+    protected static readonly int[] AllCodes = [
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -25,7 +25,7 @@ abstract class ReverseCharset {
         33, 34, 35, 36, 37, 38, 39,                 // [h~n]    104~110 (count 7)
         40, 41, 42, 43, 44, 45,                     // [o~t]    111~116 (count 6)
         46, 47, 48, 49, 50, 51,                     // [u~z]    117~122 (count 6)
-    };
+    ];
 
     readonly int[] codes;
 

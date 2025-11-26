@@ -39,7 +39,7 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     /// </remarks>
     /// <param name="building"></param>
     public static void SetDefaultCreator(Action<Builder>? building = null) {
-        defaultCreator = building == null
+        defaultCreator = building is null
             ? null
             : () => {
                 var builder = CreatePure();
@@ -113,7 +113,7 @@ public partial class CodecOptions : IEquatable<CodecOptions> {
     }
 
     public bool Equals(CodecOptions? other) {
-        if (other == null) { return false; }
+        if (other is null) { return false; }
         return LineWidth == other.LineWidth
             && LineEnding == other.LineEnding
             && UpperCase == other.UpperCase;

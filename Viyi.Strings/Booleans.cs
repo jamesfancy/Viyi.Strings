@@ -1,21 +1,23 @@
-using System.Collections.Immutable;
 using Viyi.Strings.Extensions;
 
 namespace Viyi.Strings;
 
 public static class Booleans {
-    public static readonly ImmutableArray<string?> Truthy = ["true", "yes", "on"];
+    public static readonly IReadOnlyList<string> Truthy = ["true", "yes", "on"];
     public static readonly IReadOnlyList<string?> Falsy = ["false", "no", "off", "", null];
 
     public static Func<string?, bool?> CreatePredicator(
-        string? trueString, string? falseString) =>
-        str => str.ToBoolean(trueString, falseString);
+        string? truthyString,
+        string? falsyString
+    ) => str => str.ToBoolean(truthyString, falsyString);
 
     public static Func<string?, bool?> CreatePredicator(
-        string?[] trueStrings, string?[] falseStrings) =>
-        str => str.ToBoolean(trueStrings, falseStrings);
+        IEnumerable<string?> truthyStrings,
+        IEnumerable<string?> falsyStrings
+    ) => str => str.ToBoolean(truthyStrings, falsyStrings);
 
     public static Func<string?, bool> CreatePredicator(
-        bool value, string?[] valueStrings) =>
-        str => str.ToBoolean(value, valueStrings);
+        bool targetValue,
+        string?[] targetStrings
+    ) => str => str.ToBoolean(targetValue, targetStrings);
 }

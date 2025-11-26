@@ -2,14 +2,14 @@ namespace Viyi.Strings.Extensions;
 
 public static partial class StringExtensions {
     static class RadixConsts {
-        public static readonly char[] CHARS = new[] {
+        public static readonly char[] CHARS = [
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',   // 0 ~ 9
             'a', 'b', 'c', 'd', 'e', 'f',                       // 10 ~ 15
             'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',   // 16 ~ 25
             'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'    // 25 ~ 35
-        };
+        ];
 
-        public static readonly int[] R_CHARS = new[] {
+        public static readonly int[] R_CHARS = [
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 0 ~ 11
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 12 ~ 23
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // 24 ~ 31
@@ -23,82 +23,125 @@ public static partial class StringExtensions {
             10, 11, 12, 13, 14, 15,                             // 'a' ~ 'f'
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25,             // 'g' ~ 'p'
             26, 27, 28, 29, 30, 31, 32, 33, 34, 35,             // 'q' ~ 'z'
-        };
+        ];
     }
 
-    public static string ToString(this uint value, int radix) {
-        CheckRadix(radix);
-        if (value == 0u) { return "0"; }
-        var r = (uint) radix;
-        const int bufferSize = 32;
-        char[] buffer = new char[bufferSize];
-        int i = bufferSize;
-        while (value > 0) {
-            buffer[--i] = RadixConsts.CHARS[value % r];
-            value /= r;
+    extension(ulong value) {
+        public string ToString(int radix) {
+            CheckRadix(radix);
+            if (value == 0ul) { return "0"; }
+            var r = (ulong) radix;
+            const int bufferSize = 64;
+            char[] buffer = new char[bufferSize];
+            int i = bufferSize;
+            while (value > 0) {
+                buffer[--i] = RadixConsts.CHARS[value % r];
+                value /= r;
+            }
+
+            return new string(buffer, i, bufferSize - i);
         }
 
-        return new string(buffer, i, bufferSize - i);
+        public string ToHexLiteral() => $"0x{value:x}";
     }
 
-    public static string ToString(this int value, int radix) {
-        return value < 0
-            ? $"-{ToString((uint) -value, radix)}"
-            : ToString((uint) value, radix);
+    extension(uint value) {
+        public string ToString(int radix) {
+            CheckRadix(radix);
+            if (value == 0u) { return "0"; }
+            var r = (uint) radix;
+            const int bufferSize = 32;
+            char[] buffer = new char[bufferSize];
+            int i = bufferSize;
+            while (value > 0) {
+                buffer[--i] = RadixConsts.CHARS[value % r];
+                value /= r;
+            }
+
+            return new string(buffer, i, bufferSize - i);
+        }
+        public string ToHexLiteral() => $"0x{value:x}";
     }
 
-    public static string ToString(this ulong value, int radix) {
-        CheckRadix(radix);
-        if (value == 0ul) { return "0"; }
-        var r = (ulong) radix;
-        const int bufferSize = 64;
-        char[] buffer = new char[bufferSize];
-        int i = bufferSize;
-        while (value > 0) {
-            buffer[--i] = RadixConsts.CHARS[value % r];
-            value /= r;
+    extension(long value) {
+        public string ToString(int radix) {
+            return value < 0
+                ? $"-{ToString((ulong) -value, radix)}"
+                : ToString((ulong) value, radix);
         }
 
-        return new string(buffer, i, bufferSize - i);
+        public string ToHexLiteral() => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
+
     }
 
-    public static string ToString(this long value, int radix) {
-        return value < 0
-            ? $"-{ToString((ulong) -value, radix)}"
-            : ToString((ulong) value, radix);
+    extension(int value) {
+        public string ToString(int radix) {
+            return value < 0
+                ? $"-{ToString((uint) -value, radix)}"
+                : ToString((uint) value, radix);
+        }
+
+        public string ToHexLiteral() => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
     }
 
-    public static string ToHexLiteral(this int value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
-    public static string ToHexLiteral(this uint value) => $"0x{value:x}";
-    public static string ToHexLiteral(this long value) => value < 0 ? $"-0x{-value:x}" : $"0x{value:x}";
-    public static string ToHexLiteral(this ulong value) => $"0x{value:x}";
+    extension(string s) {
+        public uint ToUInt32(int radix = 10) {
+            CheckRadix(radix);
+            if (string.IsNullOrEmpty(s)) { return 0u; }
+            var factor = 1u;
+            var r = (uint) radix;
+            return EnumerateDigits(s, radix)
+                .Reverse()
+                .Aggregate(0u, (n, digit) => {
+                    n += (uint) digit * factor;
+                    factor *= r;
+                    return n;
+                });
+        }
 
-    public static uint ToUInt32(this string s, int radix = 10) {
-        CheckRadix(radix);
-        if (string.IsNullOrEmpty(s)) { return 0u; }
-        var factor = 1u;
-        var r = (uint) radix;
-        return EnumerateDigits(s, radix)
-            .Reverse()
-            .Aggregate(0u, (n, digit) => {
-                n += (uint) digit * factor;
-                factor *= r;
-                return n;
-            });
-    }
+        public ulong ToUInt64(int radix = 10) {
+            CheckRadix(radix);
+            if (string.IsNullOrEmpty(s)) { return 0u; }
+            var factor = 1ul;
+            var r = (ulong) radix;
+            return EnumerateDigits(s, radix)
+                .Reverse()
+                .Aggregate(0ul, (n, digit) => {
+                    n += (ulong) digit * factor;
+                    factor *= r;
+                    return n;
+                });
+        }
 
-    public static ulong ToUInt64(this string s, int radix = 10) {
-        CheckRadix(radix);
-        if (string.IsNullOrEmpty(s)) { return 0u; }
-        var factor = 1ul;
-        var r = (ulong) radix;
-        return EnumerateDigits(s, radix)
-            .Reverse()
-            .Aggregate(0ul, (n, digit) => {
-                n += (ulong) digit * factor;
-                factor *= r;
-                return n;
-            });
+#if NETSTANDARD2_0
+        public int ToInt32(int radix = 10) {
+            return s.StartsWith("-") ? -(int) ToUInt32(s.Substring(1), radix) : (int) ToUInt32(s, radix);
+        }
+
+        public long ToInt64(int radix = 10) {
+            return s.StartsWith("-") ? -(long) ToUInt64(s.Substring(1), radix) : (long) ToUInt64(s, radix);
+        }
+#else
+        public int ToInt32(int radix = 10) {
+            return s.StartsWith('-') ? -(int) ToUInt32(s[1..], radix) : (int) ToUInt32(s, radix);
+        }
+
+        public long ToInt64(int radix = 10) {
+            return s.StartsWith('-') ? -(long) ToUInt64(s[1..], radix) : (long) ToUInt64(s, radix);
+        }
+#endif
+
+        public int ToInt32(bool treatPrefix)
+            => ParseWithPrefix(s, treatPrefix, ToInt32);
+
+        public uint ToUInt32(bool treatPrefix)
+            => ParseWithPrefix(s, treatPrefix, ToUInt32);
+
+        public long ToInt64(bool treatPrefix)
+            => ParseWithPrefix(s, treatPrefix, ToInt64);
+
+        public ulong ToUInt64(bool treatPrefix)
+            => ParseWithPrefix(s, treatPrefix, ToUInt64);
     }
 
     private static IEnumerable<int> EnumerateDigits(string s, int radix) {
@@ -111,20 +154,8 @@ public static partial class StringExtensions {
         }
     }
 
-    public static int ToInt32(this string s, bool treatPrefix)
-        => ParseWithPrefix(s, treatPrefix, ToInt32);
-
-    public static uint ToUInt32(this string s, bool treatPrefix)
-        => ParseWithPrefix(s, treatPrefix, ToUInt32);
-
-    public static long ToInt64(this string s, bool treatPrefix)
-        => ParseWithPrefix(s, treatPrefix, ToInt64);
-
-    public static ulong ToUInt64(this string s, bool treatPrefix)
-        => ParseWithPrefix(s, treatPrefix, ToUInt64);
-
     // NOTE: T 并不适配所有内容，该接口不可开放
-    static T ParseWithPrefix<T>(string s, bool treadPrefix, Func<string, int, T> parser) {
+    private static T ParseWithPrefix<T>(string s, bool treadPrefix, Func<string, int, T> parser) {
         if (s.Length == 0) { return parser(s, 10); }
         bool negative = s[0] == '-';
         int digitStart = negative ? 1 : 0;
