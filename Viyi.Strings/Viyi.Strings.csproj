@@ -6,7 +6,6 @@
     <VersionSuffix>beta</VersionSuffix>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://gitee.com/jamesfancy/Viyi.Strings.git</RepositoryUrl>
     <PackageProjectUrl>https://gitee.com/jamesfancy/Viyi.Strings</PackageProjectUrl>
     <Authors>边城 (James Fan)</Authors>
