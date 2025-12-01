@@ -6,7 +6,7 @@ namespace Viyi.Strings;
 [Obsolete("The name 'NumsRange' is misleading. Use Viyi.Strings.NumSeries instead.")]
 public class NumsRange : NumSeries {
     [Obsolete("use ToSeriesString to instead")]
-    public static string ToRangeStringX(
+    public static string ToRangeString(
         IEnumerable<int> nums,
         Func<int, string> numberFormatter,
         Func<int, int, string>? serialFormatter = null,
@@ -14,7 +14,7 @@ public class NumsRange : NumSeries {
     ) => ToSeriesString(nums, numberFormatter, serialFormatter, separator);
 
     [Obsolete("use ToSeriesString to instead")]
-    public static string ToRangeStringx(
+    public static string ToRangeString(
         IEnumerable<int> nums,
         string prefix = "",
         string between = "~",
@@ -157,6 +157,6 @@ public partial class NumSeries {
         var match = IntRegex.Match(num);
         return match.Success
             ? int.Parse(match.Value)
-            : throw new FormatException($"cannot parse interger from '{num}'");
+            : throw new FormatException($"cannot parse integer from '{num}'");
     }
 }
