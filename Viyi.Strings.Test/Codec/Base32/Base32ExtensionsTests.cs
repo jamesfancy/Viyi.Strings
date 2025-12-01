@@ -24,7 +24,7 @@ public class Base32ExtensionsTests {
         cases.ForEach(length => {
             var restCount = restCounts[length % groupSize];
             if (restCount < 0) {
-                Assert.ThrowsException<CodecException>(() => test(length));
+                Assert.ThrowsExactly<CodecException>(() => test(length));
             }
             else {
                 test(length);

@@ -1,12 +1,12 @@
 namespace Viyi.Strings.Extensions.Tests;
 
-[TestClass()]
+[TestClass]
 public class StringExtensionsTests {
     const string Spaces = "         ";
     const string SpacesWithTabs = "   \t  \t   ";
     const string SpacesWithLineBreaks = "\r\n";
 
-    [TestMethod()]
+    [TestMethod]
     public void EmptyAsTest() {
         const string? nullString = null;
         const string specifiedValue = "specified value";
@@ -16,7 +16,7 @@ public class StringExtensionsTests {
         Assert.AreEqual(Spaces, Spaces.EmptyAs(specifiedValue));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void SpacesAsTest() {
         const string? nullString = null;
         const string specifiedValue = "specified value";
@@ -28,7 +28,7 @@ public class StringExtensionsTests {
         Assert.AreEqual(specifiedValue, SpacesWithLineBreaks.SpacesAs(specifiedValue));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void RepeatTest() {
         Assert.AreEqual("aaaaaa", "a".Repeat(6));
         Assert.AreEqual("aaaaaa", 'a'.Repeat(6));
@@ -42,13 +42,14 @@ public class StringExtensionsTests {
     readonly string[] FalseStrings = ["false", "off", "no"];
     readonly string?[] StringsContainsNull = ["abc", "xyz", "hello world", null];
 
-    [TestMethod()]
+    [TestMethod]
     public void ToBooleanTest() {
         // 非严格模式
         new[] { null, "False", "" }.ForEach(str => {
             Assert.IsFalse(str.ToBoolean());
             Assert.IsFalse(str.ToBoolean(false));
         });
+
         new[] { "blabal", "    ", "tRue" }.ForEach(str => {
             Assert.IsTrue(str.ToBoolean());
             Assert.IsTrue(str.ToBoolean(false));
@@ -98,7 +99,7 @@ public class StringExtensionsTests {
         });
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void ToBooleanPredicatorTest() {
         var stringsPredicator = Booleans.CreatePredicator(TrueStrings, FalseStrings);
         TrueStrings.ForEach(str => Assert.IsTrue(str.ToBoolean(stringsPredicator)));
@@ -115,7 +116,7 @@ public class StringExtensionsTests {
         TrueStrings.ForEach(str => Assert.IsTrue(str.ToBoolean(valueStringsPredicator)));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void IsEmptyAndIsSpacesTest() {
         // orders
         // case string,
@@ -151,7 +152,7 @@ public class StringExtensionsTests {
         });
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void ToStringTest() {
         Assert.AreEqual("0", 0.ToString(3));
         Assert.AreEqual("a83", 2691u.ToString(16));
@@ -165,7 +166,7 @@ public class StringExtensionsTests {
     [TestMethod]
     public void ToIntTypesTest() {
 #pragma warning disable CS8604 // Possible null reference argument.
-        Assert.ThrowsException<NullReferenceException>(() => (null as string).ToInt32(8));
+        Assert.ThrowsExactly<NullReferenceException>(() => (null as string).ToInt32(8));
 #pragma warning restore CS8604 // Possible null reference argument.
         Assert.AreEqual(0, "".ToInt32(8));
         Assert.AreEqual(0, "0".ToInt32(7));

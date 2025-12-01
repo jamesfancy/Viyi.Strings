@@ -30,7 +30,7 @@ public static partial class StringExtensions {
 #if NETSTANDARD2_0
             return beginIndex < str.Length ? str.Substring(beginIndex) : string.Empty;
 #else
-            return str[beginIndex..];
+            return beginIndex < str.Length ? str[beginIndex..] : string.Empty;
 #endif
         }
 

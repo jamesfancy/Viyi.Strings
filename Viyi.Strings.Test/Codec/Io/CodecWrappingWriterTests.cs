@@ -22,7 +22,7 @@ public class CodecWrappingWriterTests {
 
     [TestMethod]
     public void TestInvalidWrapping() {
-        Assert.ThrowsException<ArgumentException>(() => InternalProcess(0));
+        Assert.ThrowsExactly<ArgumentException>(() => InternalProcess(0));
     }
 
     [TestMethod]
@@ -36,12 +36,12 @@ public class CodecWrappingWriterTests {
             (LineEndings)(-1),
             (LineEndings)4
         }.ForEach(
-            lineEnding => Assert.ThrowsException<IndexOutOfRangeException>(
+            lineEnding => Assert.ThrowsExactly<IndexOutOfRangeException>(
                 () => test(lineEnding, _ => { })
             )
         );
 
-        Assert.ThrowsException<IndexOutOfRangeException>(
+        Assert.ThrowsExactly<IndexOutOfRangeException>(
             () => test((LineEndings)10, s => assert(s, ""))
         );
 

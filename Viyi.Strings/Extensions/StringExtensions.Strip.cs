@@ -1,60 +1,65 @@
 namespace Viyi.Strings.Extensions;
 
 public static partial class StringExtensions {
+    private const char Lf = '\n';
+    private const char Ht = '\t';
+    private const char Sp = ' ';
+
     extension(string text) {
-        public string StripIndent(int indent = 0, bool toSpace = false, int tabSize = 4) {
+        public string StripIndent(bool toSpaces = false, int tabSize = 4) {
             tabSize = tabSize < 1 ? 4 : tabSize;
 
-            string[] lines = text.Split('\n');
+            string[] lines = text.Split(Lf);
 
-            if (toSpace) {
-                var newLines = preDealWithConverting(lines, out int stripCount);
-                if (stripCount == 0) {
-                    return newLines.JoinString('\n');
-                }
-                else {
-                    return newLines.Select(line => line.Slice(stripCount)).JoinString('\n');
-                }
+            (IEnumerable<string> newLines, int stripCount) = toSpaces
+                ? preDealWithConverting(lines)
+                : ((IEnumerable<string>) lines, calcMinLeading(lines));
+
+            if (stripCount == 0) {
+                return newLines.JoinString(Lf);
             }
             else {
-                int stripCount = calcMinLoading(lines);
-                if (stripCount == 0) {
-                    return lines.JoinString('\n');
-                }
-                return lines.Select(line => line.Slice(stripCount)).JoinString('\n');
+                return newLines.Select(line => line.Slice(stripCount)).JoinString(Lf);
             }
 
-
             //////// local functions ///////////////////////////////////////////////
-            int calcMinLoading(IEnumerable<string> lines) {
-                return lines.Select(findNonSpaceIndex).DefaultIfEmpty().Min();
+            int calcMinLeading(IEnumerable<string> lines) {
+                return lines
+                    .Where(line => line.Length > 0)
+                    .Select(findNonSpaceIndex)
+                    .DefaultIfEmpty()
+                    .Min();
             }
 
             int findNonSpaceIndex(string s) {
-                return s.Select((ch, i) => ch == ' ' || ch == '\t' ? i : -1)
+                return s.Select((ch, i) => ch != Sp && ch != Ht ? i : -1)
                         .FirstOrDefault(i => i != -1);
             }
 
-            List<string> preDealWithConverting(IEnumerable<string> lines, out int minLeading) {
+            (List<string>, int) preDealWithConverting(IEnumerable<string> lines) {
                 List<string> result = [];
                 int minSpaces = int.MaxValue;
                 foreach (var line in lines) {
-                    var spaces = calcIndent(line);
-                    minSpaces = Math.Min(minSpaces, spaces);
-                    result.Add(' '.Repeat(spaces) + line.TrimStart());
+                    if (line.Length == 0) {
+                        result.Add("");
+                    }
+                    else {
+                        var spaces = calcIndent(line);
+                        minSpaces = Math.Min(minSpaces, spaces);
+                        result.Add(Sp.Repeat(spaces) + line.TrimStart());
+                    }
                 }
-                minLeading = minSpaces;
-                return result;
+                return (result, minSpaces);
             }
 
             int calcIndent(string line) {
                 int indent = 0;
                 foreach (char ch in line) {
                     switch (ch) {
-                        case ' ':
+                        case Sp:
                             indent++;
                             break;
-                        case '\t':
+                        case Ht:
                             indent += tabSize;
                             indent -= indent % tabSize;
                             break;

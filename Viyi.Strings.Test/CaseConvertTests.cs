@@ -88,16 +88,16 @@ public class CaseConvertTests {
 
     [TestMethod]
     public void RegisterTest() {
-        Assert.ThrowsException<InvalidOperationException>(() => {
-            CaseConvert.Register("camel", s => s?.ToLower());
-        });
+        Assert.ThrowsExactly<InvalidOperationException>(() =>
+            CaseConvert.Register("camel", s => s?.ToLower()));
         Assert.IsFalse(CaseConvert.Register("camel", s => s?.ToLower(), false, true));
         CaseConvert.Register("camel", s => s?.ToLower(), true);
+
         const string? theCase = "HTTPClient";
         Assert.AreEqual("httpClient", theCase.CamelCase());
         Assert.AreEqual("httpclient", theCase.CaseTo("camel"));
 
-        Assert.ThrowsException<NotSupportedException>(() => theCase.CaseTo("unknown"));
+        Assert.ThrowsExactly<NotSupportedException>(() => theCase.CaseTo("unknown"));
 
         CaseConvert.Register("sentence", new MyCaseConverter());
         Assert.AreEqual("hello world", "HelloWorld".CaseTo("sentence"));

@@ -23,7 +23,7 @@ public class Base64ExtensionsTests {
             if (n % 4 == 1) {
                 // Base64 编码的 padding 只可能是 = 或者 ==，
                 // 所以去掉 padding 的 Base46 编码长度除以 4 的余数只可能是 2 或 3。
-                Assert.ThrowsException<CodecException>(() => test(n));
+                Assert.ThrowsExactly<CodecException>(() => test(n));
             }
             else {
                 test(n);
