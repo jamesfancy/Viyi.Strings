@@ -32,6 +32,9 @@ public static partial class StringExtensions {
             return string.IsNullOrEmpty(str) ? value : str;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? EmptyAsNull() => string.IsNullOrEmpty(str) ? null : str;
+
         /// <summary>
         /// 扩展方法。如果当前字符串是 null、空字符串 ("") 或仅含空白字符，则返回指定值；
         /// 否则返回当前字符串。
@@ -45,7 +48,7 @@ public static partial class StringExtensions {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string? SpacesAsNull() => str.SpacesAs(null);
+        public string? SpacesAsNull() => string.IsNullOrWhiteSpace(str) ? null : str;
 
         /// <summary>
         /// 判断是否空字符串，根据 strict 的值来决定判空时是否包括 null。

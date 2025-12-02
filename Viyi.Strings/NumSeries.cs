@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.RegularExpressions;
 using Viyi.Strings.Extensions;
 
@@ -128,21 +129,29 @@ public partial class NumSeries {
     public int[] Parse(string range) {
         if (range.IsSpaces()) { return []; }
 
-        var result = Split(range)
-            .SelectMany(segment => {
-                var entries = ExtractRange(segment).Select(ToInt).ToArray();
-                return entries.Length switch {
-                    0 => [],
-                    1 => entries,
-                    _ => Enumerable.Range(entries[0], entries[1] - entries[0] + 1)
-                };
-            })
-            .Distinct()
-            .ToArray();
+        IEnumerable<int> series = Split(range)
+           .SelectMany(segment => {
+               var entries = ExtractRange(segment).Select(ToInt).ToArray();
+               return entries.Length switch {
+                   0 => [],
+                   1 => entries,
+                   _ => Enumerable.Range(entries[0], entries[1] - entries[0] + 1)
+               };
+           });
 
-        if (InOrder) { Array.Sort(result); }
+        return InOrder ? toOrderedArray(series) : [.. series];
 
-        return result;
+#if NET8_0
+        static int[] toOrderedArray(IEnumerable<int> series) {
+            return [.. series.Order().Distinct()];
+        }
+#else
+        static int[] toOrderedArray(IEnumerable<int> series) {
+            var result = series.Distinct().ToArray();
+            Array.Sort(result);
+            return result;
+        }
+#endif
     }
 
     private string[] InternalSplit(string range) {
