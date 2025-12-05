@@ -89,7 +89,7 @@ public class Base64ExtensionsTests {
                 for (int i = 0; i < sections.Length - 1; i++) {
                     Assert.AreEqual(76, sections[i].Length);
                 }
-#if NET48
+#if NET481
                 Assert.IsTrue(sections[sections.Length - 1].Length <= 76);
 #else
                 Assert.IsTrue(sections[^1].Length <= 76);

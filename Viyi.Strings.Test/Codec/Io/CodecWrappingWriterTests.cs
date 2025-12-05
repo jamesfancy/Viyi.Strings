@@ -67,7 +67,7 @@ public class CodecWrappingWriterTests {
         }
 
         void assert(string s, string splitter) {
-#if NET48
+#if NET481
             var segments = s.Split(splitter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 #else
             var segments = s.Split(splitter);
