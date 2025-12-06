@@ -1,21 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk/3.11.1">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
-    <IsPackable>false</IsPackable>
+    <TargetFrameworks>net8.0;net6.0;net481</TargetFrameworks>
     <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+    <LangVersion>14.0</LangVersion>
     <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
     <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MSTest" Version="3.11.1" />
-    <PackageReference Include="MSTest.Sdk" Version="3.11.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.11.1" />
-  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
@@ -32,7 +25,8 @@
     <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" Properties="TargetFramework=net6.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net481'">
     <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" Properties="TargetFramework=netstandard2.0" />
   </ItemGroup>
+
 </Project>

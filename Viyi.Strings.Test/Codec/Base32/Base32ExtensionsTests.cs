@@ -74,7 +74,7 @@ public class Base32ExtensionsTests {
             var paddingLength = base32.Length - validCodeLength;
             Assert.IsTrue(base32.EndsWith(new string('=', paddingLength)));
             Assert.IsTrue(base32Hex.EndsWith(new string('=', paddingLength)));
-#if NET48
+#if NET481
             Assert.IsTrue(base32[base32.Length - paddingLength - 1] != '=');
             Assert.IsTrue(base32Hex[base32.Length - paddingLength - 1] != '=');
 #else
