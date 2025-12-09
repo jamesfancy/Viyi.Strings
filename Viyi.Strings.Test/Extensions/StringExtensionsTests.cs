@@ -1,4 +1,7 @@
-namespace Viyi.Strings.Extensions.Tests;
+using Viyi.Strings;
+using Viyi.Strings.Extensions;
+
+namespace Viyi.Strings.Test.Extensions;
 
 [TestClass]
 public class StringExtensionsTests {
@@ -45,23 +48,33 @@ public class StringExtensionsTests {
     [TestMethod]
     public void ToBooleanTest() {
         // 非严格模式
-        new[] { null, "False", "" }.ForEach(str => {
-            Assert.IsFalse(str.ToBoolean());
-            Assert.IsFalse(str.ToBoolean(false));
-        });
+        Enumerable.Empty<string?>().Concat([null, "False", ""])
+            .ForEach(str => {
+                Assert.IsFalse(str.ToBoolean());
+                Assert.IsFalse(str.ToBoolean(false));
+            });
 
-        new[] { "blabal", "    ", "tRue" }.ForEach(str => {
-            Assert.IsTrue(str.ToBoolean());
-            Assert.IsTrue(str.ToBoolean(false));
-        });
+        Enumerable.Empty<string>().Concat(["blabal", "    ", "tRue"])
+            .ForEach(str => {
+                Assert.IsTrue(str.ToBoolean());
+                Assert.IsTrue(str.ToBoolean(false));
+            });
 
+        // TODO 这可能是 Roslyn 的 BUG (https://github.com/dotnet/roslyn/issues/80024)
+        //      这个 BUG 修复之后解开此 disable CS8620
+#pragma warning disable CS8620, CS8625 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         Booleans.Truthy.ForEach(str => {
             Assert.IsTrue(str.ToBooleanByTruthy(Booleans.Truthy));
+            Assert.IsTrue(str.ToBooleanByTruthy("none", "true", "yes", "on"));
+            Assert.IsFalse(str.ToBooleanByTruthy("none"));
         });
 
         Booleans.Falsy.ForEach(str => {
             Assert.IsFalse(str.ToBooleanByFalsy(Booleans.Falsy));
+            Assert.IsFalse(str.ToBooleanByFalsy("none", "false", "no", "off", "", null));
+            Assert.IsTrue(str.ToBooleanByFalsy("none"));
         });
+#pragma warning restore CS8620, CS8625 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
         // 严格模式
         Assert.IsTrue("truE".ToBoolean(true));

@@ -14,20 +14,20 @@ public static class FormattableStringExtensions {
         /// </param>
         public FormattableString PreFormat(Func<object?, int, bool> choosePreArgs) {
             var arguments = formattable.GetArguments();
-            var restArguments = Enumerable.Empty<object?>();
-            int restIndex = 0;
+            var newArguments = Enumerable.Empty<object?>();
+            int newIndex = 0;
             var preArgs = arguments
                 .Select((value, index) => {
                     if (choosePreArgs(value, index)) { return value; }
                     else {
-                        restArguments = restArguments.Append(value);
-                        return $"{{{restIndex++}}}";
+                        newArguments = newArguments.Append(value);
+                        return $"{{{newIndex++}}}";
                     }
                 })
                 .ToArray();
             return FormattableStringFactory.Create(
                 string.Format(formattable.Format, preArgs),
-                [.. restArguments]
+                [.. newArguments]
             );
         }
 
@@ -50,7 +50,8 @@ public static class FormattableStringExtensions {
         /// 预先对 FormattableString 进行一次不完全的格式化
         /// </summary>
         /// <param name="preArgIndexes">用于预格式化的参数序号</param>
-        public FormattableString PreFormat(params int[] preArgIndexes) {
+        public FormattableString PreFormat(params IEnumerable<int> preArgIndexes) {
+            if (preArgIndexes is null) { return formattable; }
             return PreFormat(
                 formattable,
                 (_, i) => preArgIndexes.Contains(i)

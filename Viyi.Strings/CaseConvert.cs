@@ -10,21 +10,21 @@ public static class CaseConvert {
 
     /// <summary>
     /// 按名称获取 Converter，若要获取的 Converter 名称未注册，
-    /// 根据 casing 的值来决定是抛出异常还是返回 null。
+    /// 根据 suppressException 的值来决定是抛出异常还是返回 null。
     /// </summary>
-    /// <param name="casing"></param>
-    /// <param name="holdException">true，不抛异常；false 可能抛异常</param>
+    /// <param name="casing">已注册的转换方法名称</param>
+    /// <param name="suppressException">true，不抛异常；false 可能抛异常</param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ICaseConverter? Get(string casing, bool holdException) {
-        return holdException ? Converters[casing] : Get(casing);
+    public static ICaseConverter? Get(string casing, bool suppressException) {
+        return suppressException ? Converters[casing] : Get(casing);
     }
 
     /// <summary>
     /// 按名称获取 Converter，如果名称未注册会抛出异常。
     /// 如果希望用返回 null 来代替抛出异常，请使用 Get(casing, true)
     /// </summary>
-    /// <param name="casing"></param>
+    /// <param name="casing">转换方法名称</param>
     /// <exception cref="System.NotSupportedException">casing 指定的名称未注册时</exception>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

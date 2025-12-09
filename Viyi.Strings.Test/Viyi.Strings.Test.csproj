@@ -29,4 +29,12 @@
     <ProjectReference Include="..\Viyi.Strings\Viyi.Strings.csproj" Properties="TargetFramework=netstandard2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\James-Workspace\Viyi.Strings\Viyi.Strings.Test\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="D:\James-Workspace\Viyi.Strings\Viyi.Strings.Test\.editorconfig" />
+  </ItemGroup>
+
 </Project>

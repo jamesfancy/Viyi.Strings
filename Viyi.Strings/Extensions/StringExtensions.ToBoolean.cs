@@ -44,10 +44,7 @@ public static partial class StringExtensions {
         /// 如果 str 在给定的 valueStrings 中（包含 null 元素），则返回 value；
         /// 否则返回 !value。
         /// </summary>
-        public bool ToBoolean(bool value, params string?[] valueStrings) =>
-            ToBoolean(str, value, (IEnumerable<string?>) valueStrings);
-
-        public bool ToBoolean(bool value, IEnumerable<string?> valueStrings) {
+        public bool ToBoolean(bool value, params IEnumerable<string?> valueStrings) {
             return !(value ^ valueStrings.Any(v => string.Equals(str, v, BoolComparison)));
         }
 
@@ -55,11 +52,7 @@ public static partial class StringExtensions {
         /// 如果 str 在给定的 truthyStrings 中（包含 null 元素），返回 `true`；
         /// 否则返回 `false`
         /// </summary>
-        public bool ToBooleanByTruthy(params string?[] truthyStrings) {
-            return truthyStrings.Any(v => string.Equals(str, v, BoolComparison));
-        }
-
-        public bool ToBooleanByTruthy(IReadOnlyList<string?> truthyStrings) {
+        public bool ToBooleanByTruthy(params IEnumerable<string?> truthyStrings) {
             return truthyStrings.Any(v => string.Equals(str, v, BoolComparison));
         }
 
@@ -67,11 +60,7 @@ public static partial class StringExtensions {
         /// 如果 str 在给定的 falsyStrings 中（包含 null 元素），返回 `false`；
         /// 否则返回 `true`
         /// </summary>
-        public bool ToBooleanByFalsy(params string?[] falsyStrings) {
-            return !falsyStrings.Any(v => string.Equals(str, v, BoolComparison));
-        }
-
-        public bool ToBooleanByFalsy(IReadOnlyList<string?> falsyStrings) {
+        public bool ToBooleanByFalsy(params IEnumerable<string?> falsyStrings) {
             return !falsyStrings.Any(v => string.Equals(str, v, BoolComparison));
         }
 
