@@ -1,7 +1,7 @@
 namespace Viyi.Strings.Codec.Base32;
 
 static class Base32ReverseCharset {
-    public static readonly long[] Codes = {
+    public static readonly long[] Codes = [
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
@@ -16,14 +16,14 @@ static class Base32ReverseCharset {
         7, 8, 9, 10, 11, 12, 13,                    // [h~n] 104~110 (count 7)
         14, 15, 16, 17, 18, 19,                     // [o~t] 111~116 (count 6)
         20, 21, 22, 23, 24, 25,                     // [u~z] 117~122 (count 6)
-    };
+    ];
 
     public static bool IsValid(char ch) =>
         ch >= 50 && ch <= 122 && Codes[ch] != -1;
 }
 
 static class Base32HexReverseCharset {
-    public static readonly long[] Codes = {
+    public static readonly long[] Codes = [
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,     // (count 16)
@@ -38,7 +38,7 @@ static class Base32HexReverseCharset {
         17, 18, 19, 20, 21, 22, 23,                 // [h~n] 104~110 (count 7)
         24, 25, 26, 27, 28, 29,                     // [o~t] 111~116 (count 6)
         30, 31, -1, -1, -1, -1,                     // [u~z] 117~122 (count 6)
-    };
+    ];
 
     public static bool IsValid(char ch) =>
         ch >= 48 && ch <= 122 && Codes[ch] != -1;

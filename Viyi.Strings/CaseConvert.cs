@@ -1,29 +1,33 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Viyi.Strings.CaseConverters;
 using static Viyi.Strings.CaseConverters.ConverterCollection;
 
 namespace Viyi.Strings;
+
 public static class CaseConvert {
     static readonly ConverterCollection Converters = new();
 
     /// <summary>
     /// 按名称获取 Converter，若要获取的 Converter 名称未注册，
-    /// 根据 casing 的值来决定是抛出异常还是返回 null。
+    /// 根据 suppressException 的值来决定是抛出异常还是返回 null。
     /// </summary>
-    /// <param name="casing"></param>
-    /// <param name="holdException">true，不抛异常；false 可能抛异常</param>
+    /// <param name="casing">已注册的转换方法名称</param>
+    /// <param name="suppressException">true，不抛异常；false 可能抛异常</param>
     /// <returns></returns>
-    public static ICaseConverter? Get(string casing, bool holdException) {
-        return holdException ? Converters[casing] : Get(casing);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ICaseConverter? Get(string casing, bool suppressException) {
+        return suppressException ? Converters[casing] : Get(casing);
     }
 
     /// <summary>
     /// 按名称获取 Converter，如果名称未注册会抛出异常。
     /// 如果希望用返回 null 来代替抛出异常，请使用 Get(casing, true)
     /// </summary>
-    /// <param name="casing"></param>
+    /// <param name="casing">转换方法名称</param>
     /// <exception cref="System.NotSupportedException">casing 指定的名称未注册时</exception>
     /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ICaseConverter Get(string casing) => Converters.Get(casing);
 
     /// <summary>
@@ -40,6 +44,7 @@ public static class CaseConvert {
     /// CaseConvert 提供的对应的扩展方法也是使用的预置转换器，而不是注册的同名转换器。
     /// 但可以扩展方法 CaseTo(string casing) 会使用注册的同名转换器。
     /// </remark>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Register(string casing, ICaseConverter converter, bool force = false) {
         Converters.Register(casing, converter, force);
     }
@@ -89,39 +94,45 @@ public static class CaseConvert {
     public static ICaseConverter Kebab => Predefined.Kebab;
     public static ICaseConverter Snake => Predefined.Snake;
 
-    [return: NotNullIfNotNull(nameof(value))]
-    public static string? CaseTo(this string? value, string casing) =>
-        Converters.Get(casing).Convert(value);
+    extension(string? value) {
+        [return: NotNullIfNotNull(nameof(value))]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? CaseTo(string casing) => Converters.Get(casing).Convert(value);
 
-    /// <summary>
-    /// 始终获取预定义的 Pascal Case Converter。
-    /// 即使用 "pascal" 覆盖注册了新的 Converter 也不会影响结果。
-    /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
-    /// </summary>
-    [return: NotNullIfNotNull(nameof(value))]
-    public static string? PascalCase(this string? value) => Pascal.Convert(value);
+        /// <summary>
+        /// 始终获取预定义的 Pascal Case Converter。
+        /// 即使用 "pascal" 覆盖注册了新的 Converter 也不会影响结果。
+        /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
+        /// </summary>
+        [return: NotNullIfNotNull(nameof(value))]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? PascalCase() => Pascal.Convert(value);
 
-    /// <summary>
-    /// 始终获取预定义的 Camel Case Converter。
-    /// 即使用 "camel" 覆盖注册了新的 Converter 也不会影响结果。
-    /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
-    /// </summary>
-    [return: NotNullIfNotNull(nameof(value))]
-    public static string? CamelCase(this string? value) => Camel.Convert(value);
+        /// <summary>
+        /// 始终获取预定义的 Camel Case Converter。
+        /// 即使用 "camel" 覆盖注册了新的 Converter 也不会影响结果。
+        /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
+        /// </summary>
+        [return: NotNullIfNotNull(nameof(value))]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? CamelCase() => Camel.Convert(value);
 
-    /// <summary>
-    /// 始终获取预定义的 Snake Case Converter。
-    /// 即使用 "snake" 覆盖注册了新的 Converter 也不会影响结果。
-    /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
-    /// </summary>
-    [return: NotNullIfNotNull(nameof(value))]
-    public static string? SnakeCase(this string? value) => Snake.Convert(value);
+        /// <summary>
+        /// 始终获取预定义的 Snake Case Converter。
+        /// 即使用 "snake" 覆盖注册了新的 Converter 也不会影响结果。
+        /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
+        /// </summary>
+        [return: NotNullIfNotNull(nameof(value))]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? SnakeCase() => Snake.Convert(value);
 
-    /// <summary>
-    /// 始终获取预定义的 Kebab Case Converter。
-    /// 即使用 "kebab" 覆盖注册了新的 Converter 也不会影响结果。
-    /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
-    /// </summary>
-    [return: NotNullIfNotNull(nameof(value))]
-    public static string? KebabCase(this string? value) => Kebab.Convert(value);
+        /// <summary>
+        /// 始终获取预定义的 Kebab Case Converter。
+        /// 即使用 "kebab" 覆盖注册了新的 Converter 也不会影响结果。
+        /// 若要使用覆盖注册的 Converter 请使用 Get 或 SpecifiedCase 方法获。
+        /// </summary>
+        [return: NotNullIfNotNull(nameof(value))]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public string? KebabCase() => Kebab.Convert(value);
+    }
 }

@@ -4,9 +4,7 @@ public static class Formatters {
     private static readonly IFormatter defaultInstance = new DefaultFormatter(new());
 
     public static IFormatter Create(Action<Options>? config = null) {
-        if (config == null) {
-            return defaultInstance;
-        }
+        if (config is null) { return defaultInstance; }
 
         Options options = new();
         config(options);

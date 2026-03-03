@@ -7,11 +7,11 @@ namespace Viyi.Strings.Test.Codec.Io;
 public class BufferedReaderTests {
     readonly Random random = new();
 
-    readonly int[] cases = new[] {
+    readonly int[] cases = [
         0, 1,
         63, 64, 65,
         4095, 4096, 4097,
-    };
+    ];
 
     [TestMethod]
     public void TestReadJustBufferSize() {

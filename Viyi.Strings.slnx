@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
+    <File Path="cspell.config.yaml" />
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>

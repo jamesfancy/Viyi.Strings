@@ -24,12 +24,12 @@ public partial class Base64CodecOptions : CodecOptions, IEquatable<Base64CodecOp
         Action<Builder>? building,
         CodecOptions? prototype = null
     ) {
-        if (building == null) {
+        if (building is null) {
             DefaultCreator = null;
             return;
         }
 
-        Func<Builder> createBuilder = prototype == null
+        Func<Builder> createBuilder = prototype is null
             ? () => CreatePure()
             : prototype is Base64CodecOptions b64Prototype
                 ? () => Create(b64Prototype)
@@ -102,7 +102,7 @@ public partial class Base64CodecOptions : CodecOptions, IEquatable<Base64CodecOp
     Schemes? encodingScheme;
 
     public bool Equals([NotNullWhen(true)] Base64CodecOptions? other) {
-        if (other == null) { return false; }
+        if (other is null) { return false; }
         if (!base.Equals(other)) { return false; }
         return Scheme == other.Scheme
             && (EncodingScheme == Schemes.Base64 ^ (other.EncodingScheme != Schemes.Base64));
