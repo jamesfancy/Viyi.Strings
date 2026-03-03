@@ -6,31 +6,32 @@ namespace Viyi.Strings.Test;
 
 [TestClass]
 public class CaseConvertTests {
-    readonly static string?[][] cases = new[] {
+    readonly static string?[][] cases = [
         // original, pascal, camel, kebab, snake
-        new string?[] { null, null, null, null, null },
-        new[] { "", "", "", "", "" },
-        new[] { "single", "Single", "single", "single", "single" },
-        new[] { "two words", "TwoWords", "twoWords", "two-words", "two_words" },
-        new[] {
+        [null, null, null, null, null],
+        ["", "", "", "", ""],
+        ["single", "Single", "single", "single", "single"],
+        ["two words", "TwoWords", "twoWords", "two-words", "two_words"],
+        ["_-two words", "TwoWords", "twoWords", "two-words", "two_words"],
+        [
             "the quick brown fox jumps over the lazy dog",
             "TheQuickBrownFoxJumpsOverTheLazyDog",
             "theQuickBrownFoxJumpsOverTheLazyDog",
             "the-quick-brown-fox-jumps-over-the-lazy-dog",
             "the_quick_brown_fox_jumps_over_the_lazy_dog",
-        },
-        new[] { "HTML", "Html", "html", "html", "html" },
-        new[] {
+        ],
+        ["HTML", "Html", "html", "html", "html"],
+        [
             "CONTENT_CASE_STRING",
             "ContentCaseString", "contentCaseString",
             "content-case-string", "content_case_string",
-        },
-        new[] {
+        ],
+        [
             "HTTPClient", "HttpClient", "httpClient", "http-client", "http_client"
-        },
-    };
+        ],
+    ];
 
-    string[] x = new[] { "asdf", "dasfasdf" };
+    string[] x = ["asdf", "dasfasdf"];
 
     [TestMethod]
     public void SingleCaseTest() {
@@ -87,16 +88,16 @@ public class CaseConvertTests {
 
     [TestMethod]
     public void RegisterTest() {
-        Assert.ThrowsException<InvalidOperationException>(() => {
-            CaseConvert.Register("camel", s => s?.ToLower());
-        });
+        Assert.ThrowsExactly<InvalidOperationException>(() =>
+            CaseConvert.Register("camel", s => s?.ToLower()));
         Assert.IsFalse(CaseConvert.Register("camel", s => s?.ToLower(), false, true));
         CaseConvert.Register("camel", s => s?.ToLower(), true);
+
         const string? theCase = "HTTPClient";
         Assert.AreEqual("httpClient", theCase.CamelCase());
         Assert.AreEqual("httpclient", theCase.CaseTo("camel"));
 
-        Assert.ThrowsException<NotSupportedException>(() => theCase.CaseTo("unknown"));
+        Assert.ThrowsExactly<NotSupportedException>(() => theCase.CaseTo("unknown"));
 
         CaseConvert.Register("sentence", new MyCaseConverter());
         Assert.AreEqual("hello world", "HelloWorld".CaseTo("sentence"));

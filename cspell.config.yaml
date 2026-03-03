@@ -1,0 +1,22 @@
+version: "0.2"
+ignorePaths:
+  - "**/bin/**"
+  - "**/obj/**"
+  - Viyi.Strings.Test/**
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - buildtransitive
+  - Consts
+  - contentfiles
+  - CORELIB
+  - cref
+  - formattable
+  - gitee
+  - Mulan
+  - NETSTANDARD
+  - nums
+  - ulong
+  - Viyi
+ignoreWords: []
+import: []

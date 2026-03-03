@@ -24,6 +24,6 @@ public class DefaultFormatter : IFormatter {
         for (; value > topLimit; level++) {
             value /= @base;
         }
-        return $"{string.Format(pattern, value)}{options.Units[level]}{options.BasicUnit}";
+        return string.Format(pattern, value) + options.Units[level] + options.BasicUnit;
     }
 }

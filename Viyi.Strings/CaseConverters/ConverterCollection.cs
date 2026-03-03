@@ -24,20 +24,18 @@ class ConverterCollection {
             { PredefinedNames.Kebab, Predefined.Kebab }
         };
 
-    /// <summary></summary>
-    /// <param name="casing"></param>
-    /// <param name="converter"></param>
+    /// <summary>注册 Case Converter</summary>
+    /// <param name="casing">转换器名称</param>
+    /// <param name="converter">转换器实例</param>
     /// <param name="force">如果已经存在某个名称的 Converter，则强制覆盖之。</param>
-    /// <returns></returns>
-    public ConverterCollection Register(string casing,
-        ICaseConverter converter, bool force = false) {
-        if (string.IsNullOrWhiteSpace(casing)) {
-            throw new ArgumentNullException(nameof(casing));
-        }
-
-        if (converter == null) {
-            throw new ArgumentNullException(nameof(converter));
-        }
+    public ConverterCollection Register(string casing, ICaseConverter converter, bool force = false) {
+#if NET8_0_OR_GREATER
+        ArgumentNullException.ThrowIfNullOrEmpty(casing, nameof(casing));
+        ArgumentNullException.ThrowIfNull(converter, nameof(converter));
+#else
+        if (string.IsNullOrWhiteSpace(casing)) { throw new ArgumentNullException(nameof(casing)); }
+        if (converter is null) { throw new ArgumentNullException(nameof(converter)); }
+#endif
 
         if (!force && data.ContainsKey(casing)) {
             throw new InvalidOperationException(
@@ -54,7 +52,6 @@ class ConverterCollection {
     /// </summary>
     /// <param name="casing">转换器名称</param>
     /// <exception cref="NotSupportedException">未找到指定名称的 Converter </exception>
-    /// <returns></returns>
     public ICaseConverter Get(string casing) {
         if (data.TryGetValue(casing, out ICaseConverter? converter)) {
             return converter;

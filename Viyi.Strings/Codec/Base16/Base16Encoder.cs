@@ -5,15 +5,15 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Codec.Base16;
 
 class Base16Encoder : TextEncoder {
-    static readonly char[] UpperHexChars = {
+    static readonly char[] UpperHexChars = [
         '0', '1', '2', '3', '4', '5', '6', '7',
         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
-    };
+    ];
 
-    static readonly char[] LowerHexChars = {
+    static readonly char[] LowerHexChars = [
         '0', '1', '2', '3', '4', '5', '6', '7',
         '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
-    };
+    ];
 
     readonly char[] hexChars;
 

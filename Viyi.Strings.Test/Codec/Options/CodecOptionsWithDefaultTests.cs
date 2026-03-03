@@ -2,8 +2,13 @@ using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Test.Codec.Options;
 
-[TestClass]
+[TestClass, DoNotParallelize]
 public class CodecOptionsWithDefaultTests {
+    [TestCleanup]
+    public void Cleanup() {
+        CodecOptions.SetDefaultCreator(null);
+    }
+
     [TestMethod]
     public void TestSetDefaultCreator() {
         CodecOptions.SetDefaultCreator(_ => { });
@@ -46,7 +51,7 @@ public class CodecOptionsWithDefaultTests {
 
     [TestMethod]
     public void TestDefaultCreator() {
-        Trace.WriteLine($"DefaultCreator is null: {CodecOptions.DefaultCreator == null}");
+        Trace.WriteLine($"DefaultCreator is null: {CodecOptions.DefaultCreator is null}");
         Assert.IsNull(CodecOptions.DefaultCreator);
 
         CodecOptions.SetDefaultCreator(CodecOptions.Default);

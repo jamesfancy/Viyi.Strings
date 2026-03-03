@@ -1,12 +1,15 @@
-namespace Viyi.Strings.Extensions.Tests;
+using Viyi.Strings;
+using Viyi.Strings.Extensions;
 
-[TestClass()]
+namespace Viyi.Strings.Test.Extensions;
+
+[TestClass]
 public class StringExtensionsTests {
     const string Spaces = "         ";
     const string SpacesWithTabs = "   \t  \t   ";
     const string SpacesWithLineBreaks = "\r\n";
 
-    [TestMethod()]
+    [TestMethod]
     public void EmptyAsTest() {
         const string? nullString = null;
         const string specifiedValue = "specified value";
@@ -16,7 +19,7 @@ public class StringExtensionsTests {
         Assert.AreEqual(Spaces, Spaces.EmptyAs(specifiedValue));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void SpacesAsTest() {
         const string? nullString = null;
         const string specifiedValue = "specified value";
@@ -28,7 +31,7 @@ public class StringExtensionsTests {
         Assert.AreEqual(specifiedValue, SpacesWithLineBreaks.SpacesAs(specifiedValue));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void RepeatTest() {
         Assert.AreEqual("aaaaaa", "a".Repeat(6));
         Assert.AreEqual("aaaaaa", 'a'.Repeat(6));
@@ -38,21 +41,40 @@ public class StringExtensionsTests {
     }
 
     const string? NullString = null;
-    readonly string[] TrueStrings = new[] { "true", "on", "yes" };
-    readonly string[] FalseStrings = new[] { "false", "off", "no" };
-    readonly string?[] StringsContainsNull = new[] { "abc", "xyz", "hello world", null };
+    readonly string[] TrueStrings = ["true", "on", "yes"];
+    readonly string[] FalseStrings = ["false", "off", "no"];
+    readonly string?[] StringsContainsNull = ["abc", "xyz", "hello world", null];
 
-    [TestMethod()]
+    [TestMethod]
     public void ToBooleanTest() {
         // 非严格模式
-        new[] { null, "False", "" }.ForEach(str => {
-            Assert.IsFalse(str.ToBoolean());
-            Assert.IsFalse(str.ToBoolean(false));
+        Enumerable.Empty<string?>().Concat([null, "False", ""])
+            .ForEach(str => {
+                Assert.IsFalse(str.ToBoolean());
+                Assert.IsFalse(str.ToBoolean(false));
+            });
+
+        Enumerable.Empty<string>().Concat(["blabal", "    ", "tRue"])
+            .ForEach(str => {
+                Assert.IsTrue(str.ToBoolean());
+                Assert.IsTrue(str.ToBoolean(false));
+            });
+
+        // TODO 这可能是 Roslyn 的 BUG (https://github.com/dotnet/roslyn/issues/80024)
+        //      这个 BUG 修复之后解开此 disable CS8620
+#pragma warning disable CS8620, CS8625 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+        Booleans.Truthy.ForEach(str => {
+            Assert.IsTrue(str.ToBooleanByTruthy(Booleans.Truthy));
+            Assert.IsTrue(str.ToBooleanByTruthy("none", "true", "yes", "on"));
+            Assert.IsFalse(str.ToBooleanByTruthy("none"));
         });
-        new[] { "blabal", "    ", "tRue" }.ForEach(str => {
-            Assert.IsTrue(str.ToBoolean());
-            Assert.IsTrue(str.ToBoolean(false));
+
+        Booleans.Falsy.ForEach(str => {
+            Assert.IsFalse(str.ToBooleanByFalsy(Booleans.Falsy));
+            Assert.IsFalse(str.ToBooleanByFalsy("none", "false", "no", "off", "", null));
+            Assert.IsTrue(str.ToBooleanByFalsy("none"));
         });
+#pragma warning restore CS8620, CS8625 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
         // 严格模式
         Assert.IsTrue("truE".ToBoolean(true));
@@ -90,7 +112,7 @@ public class StringExtensionsTests {
         });
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void ToBooleanPredicatorTest() {
         var stringsPredicator = Booleans.CreatePredicator(TrueStrings, FalseStrings);
         TrueStrings.ForEach(str => Assert.IsTrue(str.ToBoolean(stringsPredicator)));
@@ -107,7 +129,7 @@ public class StringExtensionsTests {
         TrueStrings.ForEach(str => Assert.IsTrue(str.ToBoolean(valueStringsPredicator)));
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void IsEmptyAndIsSpacesTest() {
         // orders
         // case string,
@@ -143,7 +165,7 @@ public class StringExtensionsTests {
         });
     }
 
-    [TestMethod()]
+    [TestMethod]
     public void ToStringTest() {
         Assert.AreEqual("0", 0.ToString(3));
         Assert.AreEqual("a83", 2691u.ToString(16));
@@ -157,7 +179,7 @@ public class StringExtensionsTests {
     [TestMethod]
     public void ToIntTypesTest() {
 #pragma warning disable CS8604 // Possible null reference argument.
-        Assert.ThrowsException<NullReferenceException>(() => (null as string).ToInt32(8));
+        Assert.ThrowsExactly<NullReferenceException>(() => (null as string).ToInt32(8));
 #pragma warning restore CS8604 // Possible null reference argument.
         Assert.AreEqual(0, "".ToInt32(8));
         Assert.AreEqual(0, "0".ToInt32(7));

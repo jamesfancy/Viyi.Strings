@@ -6,7 +6,7 @@ namespace Viyi.Strings.Test;
 public class NumsRangeTests {
     [TestMethod]
     public void ParseRangeTest() {
-        CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 10, 11, 12 }, NumsRange.Parse("#1~#4,10-12"));
+        CollectionAssert.AreEqual(new[] { 1, 2, 3, 4, 10, 11, 12 }, NumSeries.Parse("#1~#4,10-12"));
     }
 
     [TestMethod]

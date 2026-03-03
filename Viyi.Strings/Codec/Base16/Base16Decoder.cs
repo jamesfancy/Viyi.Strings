@@ -5,7 +5,7 @@ using Viyi.Strings.Codec.Options;
 namespace Viyi.Strings.Codec.Base16;
 
 internal class Base16Decoder : TextDecoder {
-    static readonly int[] ReverseHexCodes = {
+    static readonly int[] ReverseHexCodes = [
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -16,7 +16,7 @@ internal class Base16Decoder : TextDecoder {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // ASCII 81 ~ 90
         -1, -1, -1, -1, -1, -1,                 // ASCII 91 ~ 96
         10, 11, 12, 13, 14, 15                  // ASCII 97 ~ 102
-    };
+    ];
 
     static bool IsValidChar(char ch) =>
         ch >= 48 && ch <= 102 && ReverseHexCodes[ch] != -1;
