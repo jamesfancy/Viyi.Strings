@@ -23,7 +23,7 @@ public class NumsRange : NumSeries {
 }
 
 public partial class NumSeries {
-#if NET8_0
+#if NET8_0_OR_GREATER
     [GeneratedRegex("(-?\\d+)")]
     private static partial Regex GenerateIntRegex();
     private static readonly Regex IntRegex = GenerateIntRegex();
@@ -140,7 +140,7 @@ public partial class NumSeries {
 
         return InOrder ? toOrderedArray(series) : [.. series];
 
-#if NET8_0
+#if NET8_0_OR_GREATER
         static int[] toOrderedArray(IEnumerable<int> series) {
             return [.. series.Order().Distinct()];
         }

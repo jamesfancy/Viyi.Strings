@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 namespace Viyi.Strings.Extensions;
 
 public static partial class StringExtensions {
-#if NET8_0
+#if NET8_0_OR_GREATER
     [GeneratedRegex(@"^\s*(\d+)\s*([a-z]*)\s*$", RegexOptions.IgnoreCase)]
     private static partial Regex GenerateSimpleRegex();
     private static readonly Regex SimpleRegex = GenerateSimpleRegex();

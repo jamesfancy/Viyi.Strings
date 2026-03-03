@@ -29,7 +29,7 @@ class ConverterCollection {
     /// <param name="converter">转换器实例</param>
     /// <param name="force">如果已经存在某个名称的 Converter，则强制覆盖之。</param>
     public ConverterCollection Register(string casing, ICaseConverter converter, bool force = false) {
-#if NET8_0
+#if NET8_0_OR_GREATER
         ArgumentNullException.ThrowIfNullOrEmpty(casing, nameof(casing));
         ArgumentNullException.ThrowIfNull(converter, nameof(converter));
 #else

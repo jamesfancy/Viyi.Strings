@@ -38,7 +38,7 @@ public static class TextCodec {
     /// <exception cref="ArgumentNullException">如果 name 为 null 或全为空白字符时抛此异常</exception>
     /// <exception cref="NotSupportedException">如果 name 未注册时抛此异常</exception>
     public static ITextCodec Create(string name) {
-#if NET8_0
+#if NET8_0_OR_GREATER
         ArgumentNullException.ThrowIfNullOrWhiteSpace(name, nameof(name));
 #else
         if (string.IsNullOrWhiteSpace(name)) { throw new ArgumentNullException(nameof(name)); }

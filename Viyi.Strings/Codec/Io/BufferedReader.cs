@@ -49,7 +49,7 @@ public partial class BufferedReader {
     }
 
     private static void CheckParameters(int bufferSize, int start, int count) {
-#if NET8_0
+#if NET8_0_OR_GREATER
         ArgumentOutOfRangeException.ThrowIfLessThan(start, 0, nameof(start));
         ArgumentOutOfRangeException.ThrowIfLessThan(count, 0, nameof(start));
 #else

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace Viyi.Strings.CaseConverters;
 
 public static partial class Toolkit {
-#if NET8_0
+#if NET8_0_OR_GREATER
     [GeneratedRegex(@"[-_\s]+", RegexOptions.ECMAScript)]
     private static partial Regex GenerateSplittingRegex();
     [GeneratedRegex("[A-Z][a-z]|[A-Z]+(?![a-z])", RegexOptions.ECMAScript)]
