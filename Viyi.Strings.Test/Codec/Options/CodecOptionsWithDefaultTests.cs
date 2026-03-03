@@ -2,8 +2,13 @@ using Viyi.Strings.Codec.Options;
 
 namespace Viyi.Strings.Test.Codec.Options;
 
-[TestClass]
+[TestClass, DoNotParallelize]
 public class CodecOptionsWithDefaultTests {
+    [TestCleanup]
+    public void Cleanup() {
+        CodecOptions.SetDefaultCreator(null);
+    }
+
     [TestMethod]
     public void TestSetDefaultCreator() {
         CodecOptions.SetDefaultCreator(_ => { });
